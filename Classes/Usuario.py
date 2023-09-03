@@ -1,5 +1,7 @@
-class Usuario:
-    def __init__(self, codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep, email):
+from abc import ABC, abstractmethod
+
+class Usuario(ABC):
+    def __init__(self, codigoUsuario,nome, cpf, rg, dataNascimento, endereco, cep, email):
         self._codigoUsuario = codigoUsuario
         self._nome = nome
         self._cpf = cpf
@@ -8,6 +10,7 @@ class Usuario:
         self._endereco = endereco
         self._cep = cep
         self._email = email
+        Usuario.Estatico_codigoUsuario+=1
 
     def __str__(self):
         return f"Código do Usuário: {self._codigoUsuario}\n" \
@@ -51,10 +54,6 @@ class Usuario:
     def email(self):
         return self._email
 
-    @codigoUsuario.setter
-    def codigoUsuario(self, codigoUsuario):
-        self._codigoUsuario = codigoUsuario
-
     @nome.setter
     def nome(self, nome):
         self._nome = nome
@@ -85,12 +84,14 @@ class Usuario:
 
 
 class Cliente(Usuario):
-    def __init__(self, codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep, email, categoriaCNH, numeroCNH, validadeCNH, clienteOuro):
-        super().__init__(codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep, email)
+    Estatico_codigoCliente = 0
+    def __init__(self, nome, cpf, rg, dataNascimento, endereco, cep, email, categoriaCNH, numeroCNH, validadeCNH, clienteOuro):
+        super().__init__(Cliente.Estatico_codigoCliente,nome, cpf, rg, dataNascimento, endereco, cep, email)
         self._categoriaCNH = categoriaCNH
         self._numeroCNH = numeroCNH
         self._validadeCNH = validadeCNH
         self._clienteOuro = clienteOuro
+        Cliente.Estatico_codigoCliente +=1
 
     def __str__(self):
         usuarioStr = super().__str__()
@@ -133,11 +134,13 @@ class Cliente(Usuario):
 
 
 class Funcionario(Usuario):
-    def __init__(self, codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep, email, salario, pis, dataAdmissao):
-        super().__init__(codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep, email)
+    Estatico_codigoFuncionario = 0
+    def __init__(self, nome, cpf, rg, dataNascimento, endereco, cep, email, salario, pis, dataAdmissao):
+        super().__init__(Funcionario.Estatico_codigoFuncionario,nome, cpf, rg, dataNascimento, endereco, cep, email)
         self._salario = float(salario)
         self._pis = pis
         self._dataAdmissao = dataAdmissao
+        Funcionario.Estatico_codigoFuncionario +=1
 
     def __str__(self):
         usuarioStr = super().__str__()
