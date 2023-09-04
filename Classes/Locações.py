@@ -17,7 +17,7 @@ class Seguro():
         return self._nome
 
     @nome.setter
-    def tipo(self, nome):
+    def nome(self, nome):
         self._nome = nome
 
     @property
