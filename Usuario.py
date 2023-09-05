@@ -10,7 +10,6 @@ class Usuario(ABC):
         self._endereco = endereco
         self._cep = cep
         self._email = email
-        Usuario.Estatico_codigoUsuario+=1
 
     def __str__(self):
         return f"Código do Usuário: {self._codigoUsuario}\n" \
