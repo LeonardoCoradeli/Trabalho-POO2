@@ -19,3 +19,15 @@ class BancodeDados:
             print("Enviado com sucesso!\n")
         else:
             print("Não enviado!\n")
+
+    def getFuncionario(id):
+        response = requests.get(
+            f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{id}/.json")
+        if response.status_code == 200:
+            print("Recebido com sucesso!\n")
+        else:
+            print("Não recebido!\n")
+        funcionario_dict = response.json()
+        funcionario = Funcionario('', '', '', '', '', '', '', 0, '', '', 0)
+        funcionario.__dict__.update(funcionario_dict)
+        return funcionario
