@@ -126,18 +126,29 @@ class Cartao(Pagamento):
 
 class Locacao():
     estatico_codigoLocacao = 0
-    def __init__(self,codCliente,codFuncionario,dataLocacao,dataDevolucao,valorBase,formaPagamento,segurosContratados,
-                 finalizada):
-        self._codLocacao = Locacao.estatico_codigoLocacao
-        self._codCliente = codCliente
-        self._codFuncionario = codFuncionario
-        self._dataLocacao = datetime.strptime(dataLocacao, "%d/%m/%Y")
-        self._dataDevolucao = datetime.strptime(dataDevolucao, "%d/%m/%Y")
-        self._valorTotal = float(valorBase)
-        self._formapagamento = formaPagamento
-        self._segurosContratados = segurosContratados
-        self._finalizada = finalizada
-        Locacao.estatico_codigoLocacao+=1
+    def __init__(self,codCliente,codFuncionario,dataLocacao,dataDevolucao,valorBase,formaPagamento,segurosContratados,finalizada, codLocacao=None):
+        if codLocacao  == None:
+            self._codLocacao = Locacao.estatico_codigoLocacao
+            self._codCliente = codCliente
+            self._codFuncionario = codFuncionario
+            self._dataLocacao = datetime.strptime(dataLocacao, "%d/%m/%Y")
+            self._dataDevolucao = datetime.strptime(dataDevolucao, "%d/%m/%Y")
+            self._valorTotal = float(valorBase)
+            self._formapagamento = formaPagamento
+            self._segurosContratados = segurosContratados
+            self._finalizada = finalizada
+            Locacao.estatico_codigoLocacao+=1
+        else:
+            self._codLocacao = Locacao.estatico_codigoLocacao
+            self._codCliente = codCliente
+            self._codFuncionario = codFuncionario
+            self._dataLocacao = datetime.strptime(dataLocacao, "%d/%m/%Y")
+            self._dataDevolucao = datetime.strptime(dataDevolucao, "%d/%m/%Y")
+            self._valorTotal = float(valorBase)
+            self._formapagamento = formaPagamento
+            self._segurosContratados = segurosContratados
+            self._finalizada = finalizada
+
 
     def __str__(self):
         return f"Código de Locação: {self._codLocacao}\n" \

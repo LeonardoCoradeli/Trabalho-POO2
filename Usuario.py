@@ -149,8 +149,7 @@ class Funcionario(Usuario):
             self._dataAdmissao = dataAdmissao
             Funcionario.Estatico_codigoFuncionario +=1
         else:
-            super().__init__(codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep,
-                             email)
+            super().__init__(codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep,email)
             self._salario = float(salario)
             self._pis = pis
             self._dataAdmissao = dataAdmissao
