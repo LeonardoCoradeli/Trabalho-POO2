@@ -1,4 +1,4 @@
-import abc from ABC, abstractmethod
+from abc import ABC, abstractmethod
 
 #Classe veiculos e seus atributos
 
@@ -40,21 +40,24 @@ class Veiculo(ABC):
     def anoFabricacao(self):
         return self._anoFabricacao
     
-    @anoFabricacao.setter(self,anoFabricacao):
+    @anoFabricacao.setter
+    def anoFabricacao(self,anoFabricacao):
         self._anoFabricacao = anoFabricacao
     
     @property
     def anoModelo(self):
         return self._anoModelo
     
-    @anoModelo.setter(self,anoModelo):
+    @anoModelo.setter
+    def anoModelo(self,anoModelo):
         self._anoModelo = anoModelo
     
     @property 
     def placa(self):
         return self._placa
         
-    @placa.setter(self,placa):
+    @placa.setter
+    def placa(self,placa):
         self._placa = placa 
     
     @property
@@ -97,27 +100,24 @@ class Veiculo(ABC):
     def alugado(self,alugado):
         self._alugado = alugado
     
-    @abstratcmethod
+    @abstractmethod
     def calcularValorMedia(self):
         pass
     
-    def bool estaAlugado(self):
-        if self._alugado = True:
+    def estaAlugado(self):
+        if self._alugado:
             return True
-        if self._alugado = False:
-            return False
+        return False
             
     def alugar(self):
-        if estaAlugado = False:
-            self._alugado = True
-        if estaAlugado = True:
-            return "Já está alugado"
+        if self.estaAlugado():
+            return False
+        return True
     
     def devolver(self):
-        if estaAlugado = True:
-            self._alugado = False
-        if estaAlugado = False:
-            return "O veiculo não foi alugado ainda"
+        if self.estaAlugado():
+            return False
+        return "O veiculo não foi alugado ainda"
     
     def __str__(self):
         return  f"Codigo Veiculo: {self._codigoVeiculo}\n" \
@@ -154,7 +154,9 @@ class VeiculoNacional(Veiculo):
         
 class VeiculoImportado(Veiculo):
     def __init__(self,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado,taxaImpostoEstadual,taxaImpostoFederal):
-    
+        super().__init__(nomeModelo, montadora, anoFabricacao, anoModelo, placa, categoria, valorFipe, valorDiaria,categoriaCNHNecessaria, alugado)
+        self._taxaImpostoEstadual = taxaImpostoEstadual
+        self._taxaImpostoFederal = taxaImpostoFederal
     @property
     def taxaImpostoEstadual(self):
         return self._taxaImpostoEstadual
