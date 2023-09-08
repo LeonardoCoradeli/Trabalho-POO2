@@ -1,6 +1,5 @@
 import requests
 import json
-
 import Locacoes
 import Usuario
 
@@ -19,8 +18,9 @@ class BancodeDados:
         funcionario_dic = funcionario.__dict__
         requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{funcionario_dic['_codigoUsuario']}.json",data=json.dumps(funcionario_dic))
 
-    def getFuncionario(id):
-        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{id}/.json")
+    @staticmethod
+    def recuperarFuncionario(codFuncioanrio):
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncioanrio}/.json")
         funcionario_dict = response.json()
         funcionario = Usuario.Funcionario('', '', '', '', '', '', '', 0, '', '')
         funcionario.__dict__.update(funcionario_dict)
@@ -36,7 +36,6 @@ class BancodeDados:
         locacao_dic["_dataDevolucao"] = dataDevolucao
         requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{locacao_dic['_codLocacao']}.json",data=json.dumps(locacao_dic))
 
-
     @staticmethod
     def recuperarLocacao(codLocacao):
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json")
@@ -45,3 +44,16 @@ class BancodeDados:
         locacao.__dict__.update(locacao_dict)
         return locacao
 
+    @staticmethod
+    def criarCliente(cliente):
+        cliente_dic = cliente.__dict__
+        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{cliente_dic['_codigoUsuario']}.json",
+                     data=json.dumps(cliente_dic))
+
+    @staticmethod
+    def recuperarCliente(codCliente):
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codCliente}/.json")
+        funcionario_dict = response.json()
+        funcionario = Usuario.Cliente('','','','1/1/2023','','','','','',1/1/2023,False,1)
+        funcionario.__dict__.update(funcionario_dict)
+        return funcionario
