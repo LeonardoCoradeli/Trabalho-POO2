@@ -46,14 +46,18 @@ class BancodeDados:
 
     @staticmethod
     def criarCliente(cliente):
-        cliente_dic = cliente.__dict__
-        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{cliente_dic['_codigoUsuario']}.json",
-                     data=json.dumps(cliente_dic))
+        cliente_dict = cliente.__dict__
+        dataNascimento = cliente_dict["_dataNascimento"].strftime("%d/%m/%Y")
+        dataVencimentoCNH = cliente_dict["_validadeCNH"].strftime("%d/%m/%Y")
+        cliente_dict["_dataNascimento"] = dataNascimento
+        cliente_dict["_validadeCNH"] = dataVencimentoCNH
+        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{cliente_dict['_codigoUsuario']}.json",
+                     data=json.dumps(cliente_dict))
 
     @staticmethod
     def recuperarCliente(codCliente):
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codCliente}/.json")
         funcionario_dict = response.json()
-        funcionario = Usuario.Cliente('','','','1/1/2023','','','','','',1/1/2023,False,1)
+        funcionario = Usuario.Cliente('','','','1/1/2023','','','','','','1/1/2023',False,1)
         funcionario.__dict__.update(funcionario_dict)
         return funcionario
