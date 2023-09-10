@@ -34,6 +34,8 @@ class BancodeDados:
         dataDevolucao = locacao_dict["_dataDevolucao"].strftime("%d/%m/%Y")
         locacao_dict["_dataLocacao"] = dataLocacao
         locacao_dict["_dataDevolucao"] = dataDevolucao
+        listaSeguros = locacao_dict['_seguros']
+        locacao_dict['_seguros'] = [c.__dict__ for c in listaSeguros]
         requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{locacao_dict['_codLocacao']}.json",data=json.dumps(locacao_dict))
 
     @staticmethod
