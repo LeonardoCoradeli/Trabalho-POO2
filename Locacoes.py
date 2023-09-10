@@ -126,7 +126,7 @@ class Cartao(Pagamento):
 
 class Locacao():
     estatico_codigoLocacao = 0
-    def __init__(self,codCliente,codFuncionario,dataLocacao,dataDevolucao,valorBase,formaPagamento,segurosContratados,finalizada, codLocacao=None):
+    def __init__(self,codCliente,codFuncionario,dataLocacao,dataDevolucao,valorBase,formaPagamento,finalizada,segurosContratados=None, codLocacao=None):
         if codLocacao  == None:
             self._codLocacao = Locacao.estatico_codigoLocacao
             self._codCliente = codCliente
@@ -135,7 +135,7 @@ class Locacao():
             self._dataDevolucao = datetime.strptime(dataDevolucao, "%d/%m/%Y")
             self._valorTotal = float(valorBase)
             self._formapagamento = formaPagamento
-            self._segurosContratados = segurosContratados
+            self._segurosContratados = segurosContratados if not segurosContratados == None else []
             self._finalizada = finalizada
             Locacao.estatico_codigoLocacao+=1
         else:
@@ -146,7 +146,7 @@ class Locacao():
             self._dataDevolucao = datetime.strptime(dataDevolucao, "%d/%m/%Y")
             self._valorTotal = float(valorBase)
             self._formapagamento = formaPagamento
-            self._segurosContratados = segurosContratados
+            self._segurosContratados = segurosContratados if not segurosContratados == None else []
             self._finalizada = finalizada
 
 
