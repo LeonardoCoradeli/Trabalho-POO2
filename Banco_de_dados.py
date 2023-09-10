@@ -29,17 +29,25 @@ class BancodeDados:
 
     @staticmethod
     def criarLocacao(locacao):
-        locacao_dic = locacao.__dict__
-        dataLocacao = locacao_dic["_dataLocacao"].strftime("%d/%m/%Y")
-        dataDevolucao = locacao_dic["_dataDevolucao"].strftime("%d/%m/%Y")
-        locacao_dic["_dataLocacao"] = dataLocacao
-        locacao_dic["_dataDevolucao"] = dataDevolucao
-        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{locacao_dic['_codLocacao']}.json",data=json.dumps(locacao_dic))
+        locacao_dict = locacao.__dict__
+        dataLocacao = locacao_dict["_dataLocacao"].strftime("%d/%m/%Y")
+        dataDevolucao = locacao_dict["_dataDevolucao"].strftime("%d/%m/%Y")
+        locacao_dict["_dataLocacao"] = dataLocacao
+        locacao_dict["_dataDevolucao"] = dataDevolucao
+        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{locacao_dict['_codLocacao']}.json",data=json.dumps(locacao_dict))
 
     @staticmethod
     def recuperarLocacao(codLocacao):
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json")
         locacao_dict = response.json()
+        if locacao_dict['_seguros'] != None:
+            listaSeguros = locacao_dict['_seguros']
+            seguros = []
+            for c in listaSeguros:
+                seguro = Locacoes.Seguro('', '', '', 0)
+                seguro.__dict__.update(c)
+                seguros.append(seguro)
+            locacao_dict['_seguros'] = seguros
         locacao = Locacoes.Locacao('', '', '1/1/2023', '1/1/2023', 0, '', '', '', 1)
         locacao.__dict__.update(locacao_dict)
         return locacao
