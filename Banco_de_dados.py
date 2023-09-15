@@ -83,6 +83,6 @@ class BancodeDados:
     def recuperarVeiculoNacional(codVeiculo):
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}/.json")
         veiculo_dict = response.json()
-        veiculo = Veiculos.VeiculoNacional('','',0,0,'','',0,0,'',False,0)
+        veiculo = Veiculos.VeiculoNacional('','',0,0,'','',0,0,'',False,0,0)
         veiculo.__dict__.update(veiculo_dict)
         return veiculo
