@@ -2,6 +2,7 @@ import requests
 import json
 import Locacoes
 import Usuario
+import Veiculos
 
 
 class BancodeDados:
@@ -66,8 +67,22 @@ class BancodeDados:
 
     @staticmethod
     def recuperarCliente(codCliente):
-        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codCliente}/.json")
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{codCliente}/.json")
         funcionario_dict = response.json()
         funcionario = Usuario.Cliente('','','','1/1/2023','','','','','','1/1/2023',False,1)
         funcionario.__dict__.update(funcionario_dict)
         return funcionario
+
+    @staticmethod
+    def criarVeiculoNacional(veiculo):
+        veiculo_dict = veiculo.__dict__
+        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{veiculo_dict['_codigoVeiculo']}.json",
+                         data=json.dumps(veiculo_dict))
+
+    @staticmethod
+    def recuperarVeiculoNacional(codVeiculo):
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}/.json")
+        veiculo_dict = response.json()
+        veiculo = Veiculos.VeiculoNacional('','',0,0,'','',0,0,'',False,0)
+        veiculo.__dict__.update(veiculo_dict)
+        return veiculo
