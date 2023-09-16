@@ -76,7 +76,7 @@ class BancodeDados:
     @staticmethod
     def criarVeiculoNacional(veiculo):
         veiculo_dict = veiculo.__dict__
-        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{veiculo_dict['_codigoVeiculo']}.json",
+        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{veiculo_dict['_codigoVeiculo']}.json",
                          data=json.dumps(veiculo_dict))
 
     @staticmethod
@@ -84,5 +84,19 @@ class BancodeDados:
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}/.json")
         veiculo_dict = response.json()
         veiculo = Veiculos.VeiculoNacional('','',0,0,'','',0,0,'',False,0,0)
+        veiculo.__dict__.update(veiculo_dict)
+        return veiculo
+
+    @staticmethod
+    def criarVeiculoImportado(veiculo):
+        veiculo_dict = veiculo.__dict__
+        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{veiculo_dict['_codigoVeiculo']}.json",
+                     data=json.dumps(veiculo_dict))
+
+    @staticmethod
+    def recuperarVeiculoImportado(codVeiculo):
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{codVeiculo}/.json")
+        veiculo_dict = response.json()
+        veiculo = Veiculos.VeiculoImportado('','',0,0,'','',0,0,'',False,0,0,0)
         veiculo.__dict__.update(veiculo_dict)
         return veiculo
