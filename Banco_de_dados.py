@@ -125,15 +125,109 @@ class BancodeDados:
     @staticmethod
     def atualizarFuncionario(codFuncionario,nome=None, cpf=None, rg=None, dataNascimento=None, endereco=None, cep=None, email=None, salario=None, pis=None, dataAdmissao=None):
         funcionario = {
-            '_nome' : nome if not nome == None else None,
-            '_cpf' : cpf if not cpf == None else None,
-            '_rg' : rg if not rg == None else None,
-            '_dataNascimento' : dataNascimento if not dataAdmissao == None else None,
-            '_endereco' : endereco if not endereco == None else None,
-            '_cep' : cep if not cep == None else None,
-            '_email' : email if not email == None else None,
-            '_salario': float(salario) if not salario == None else None,
-            '_pis': pis if not pis == None else None,
-            '_dataAdmissao': dataAdmissao if not dataAdmissao == None else None
+            '_nome' : nome if nome is not None else None,
+            '_cpf' : cpf if cpf is not None else None,
+            '_rg' : rg if rg is not None else None,
+            '_dataNascimento' : dataNascimento if dataAdmissao is not None else None,
+            '_endereco' : endereco if endereco is not None else None,
+            '_cep' : cep if cep is not None else None,
+            '_email' : email if email is not None else None,
+            '_salario': float(salario) if salario is not None else None,
+            '_pis': pis if pis is not None else None,
+            '_dataAdmissao': dataAdmissao if dataAdmissao is not None else None
         }
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncionario}.json",data=json.dumps(funcionario))
+
+    @staticmethod
+    def atualizarLocacao(codLocacao, dataLocacao=None, dataDevolucao=None, valorTotal=None, veiculo=None, cliente=None,
+                         funcionario=None, seguros=[], formaPagamento=None):
+        locacao = {
+            '_dataLocacao': dataLocacao if dataLocacao is not None else None,
+            '_dataDevolucao': dataDevolucao if dataDevolucao is not None else None,
+            '_valorTotal': float(valorTotal) if valorTotal is not None else None,
+            '_veiculo': veiculo if veiculo is not None else None,
+            '_cliente': cliente if cliente is not None else None,
+            '_funcionario': funcionario if funcionario is not None else None,
+            '_seguros': seguros if seguros is not [] else [],
+            '_formapagamento': formaPagamento if formaPagamento is not None else None
+        }
+        seg = []
+        for c in seguros:
+            seguro = Locacoes.Seguro('', '', '', 0)
+            seguro.__dict__.update(c)
+            seg.append(seguro)
+        locacao['_seguros'] = seguros
+        formaPagamento_dict = formaPagamento.__dict__
+        locacao['_formapagamento'] = formaPagamento_dict
+        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json",
+                       data=json.dumps(locacao))
+
+    @staticmethod
+    def atualizarCliente(codCliente, nome=None, cpf=None, rg=None, dataNascimento=None, endereco=None, cep=None,
+                         email=None, validadeCNH=None, categoriaCNH=None):
+        cliente = {
+            '_nome': nome if nome is not None else None,
+            '_cpf': cpf if cpf is not None else None,
+            '_rg': rg if rg is not None else None,
+            '_dataNascimento': dataNascimento if dataNascimento is not None else None,
+            '_endereco': endereco if endereco is not None else None,
+            '_cep': cep if cep is not None else None,
+            '_email': email if email is not None else None,
+            '_validadeCNH': validadeCNH if validadeCNH is not None else None,
+            '_categoriaCNH': categoriaCNH if categoriaCNH is not None else None,
+        }
+        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{codCliente}.json",
+                       data=json.dumps(cliente))
+
+    @staticmethod
+    def atualizarVeiculoNacional(codVeiculo, marca=None, modelo=None, anoFabricacao=None, anoModelo=None, placa=None,
+                                 cor=None, valorDiaria=None, valorKmRodado=None, categoria=None, disponivel=None,
+                                 quilometragem=None, capacidadeTanque=None):
+        veiculo = {
+            '_marca': marca if marca is not None else None,
+            '_modelo': modelo if modelo is not None else None,
+            '_anoFabricacao': anoFabricacao if anoFabricacao is not None else None,
+            '_anoModelo': anoModelo if anoModelo is not None else None,
+            '_placa': placa if placa is not None else None,
+            '_cor': cor if cor is not None else None,
+            '_valorDiaria': float(valorDiaria) if valorDiaria is not None else None,
+            '_valorKmRodado': float(valorKmRodado) if valorKmRodado is not None else None,
+            '_categoria': categoria if categoria is not None else None,
+            '_disponivel': disponivel if disponivel is not None else None,
+            '_quilometragem': float(quilometragem) if quilometragem is not None else None,
+            '_capacidadeTanque': float(capacidadeTanque) if capacidadeTanque is not None else None
+        }
+        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}.json",
+                       data=json.dumps(veiculo))
+
+    @staticmethod
+    def atualizarVeiculoImportado(codVeiculo, marca=None, modelo=None, anoFabricacao=None, anoModelo=None, placa=None,
+                                  cor=None, valorDiaria=None, valorKmRodado=None, categoria=None, disponivel=None,
+                                  quilometragem=None, capacidadeTanque=None, impostoImportacao=None):
+        veiculo = {
+            '_marca': marca if marca is not None else None,
+            '_modelo': modelo if modelo is not None else None,
+            '_anoFabricacao': anoFabricacao if anoFabricacao is not None else None,
+            '_anoModelo': anoModelo if anoModelo is not None else None,
+            '_placa': placa if placa is not None else None,
+            '_cor': cor if cor is not None else None,
+            '_valorDiaria': float(valorDiaria) if valorDiaria is not None else None,
+            '_valorKmRodado': float(valorKmRodado) if valorKmRodado is not None else None,
+            '_categoria': categoria if categoria is not None else None,
+            '_disponivel': disponivel if disponivel is not None else None,
+            '_quilometragem': float(quilometragem) if quilometragem is not None else None,
+            '_capacidadeTanque': float(capacidadeTanque) if capacidadeTanque is not None else None,
+            '_impostoImportacao': float(impostoImportacao) if impostoImportacao is not None else None
+        }
+        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{codVeiculo}.json",
+                       data=json.dumps(veiculo))
+
+    @staticmethod
+    def atualizarSeguro(codSeguro, descricao=None, cobertura=None, valorFranquia=None, valorMensal=None):
+        seguro = {
+            '_descricao': descricao if descricao is not None else None,
+            '_cobertura': cobertura if cobertura is not None else None,
+            '_valorFranquia': float(valorFranquia) if valorFranquia is not None else None,
+            '_valorMensal': float(valorMensal) if valorMensal is not None else None
+        }
+        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{codSeguro}.json", data=json.dumps(seguro))
