@@ -14,6 +14,7 @@ class BancodeDados:
     URLTVeiculosInternacionais = 'Veiculos_internacionais'
     URLTSeguros = 'Seguros'
 
+    #Enviar e receber dados
     @staticmethod
     def criarFuncionario(funcionario):
         funcionario_dic = funcionario.__dict__
@@ -119,3 +120,20 @@ class BancodeDados:
         seguro = Locacoes.Seguro('','','',0,0)
         seguro.__dict__.update(seguro_dict)
         return seguro
+
+    #Alterar dados
+    @staticmethod
+    def atualizarFuncionario(codFuncionario,nome=None, cpf=None, rg=None, dataNascimento=None, endereco=None, cep=None, email=None, salario=None, pis=None, dataAdmissao=None):
+        funcionario = {
+            '_nome' : nome if not nome == None else None,
+            '_cpf' : cpf if not cpf == None else None,
+            '_rg' : rg if not rg == None else None,
+            '_dataNascimento' : dataNascimento if not dataAdmissao == None else None,
+            '_endereco' : endereco if not endereco == None else None,
+            '_cep' : cep if not cep == None else None,
+            '_email' : email if not email == None else None,
+            '_salario': float(salario) if not salario == None else None,
+            '_pis': pis if not pis == None else None,
+            '_dataAdmissao': dataAdmissao if not dataAdmissao == None else None
+        }
+        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncionario}.json",data=json.dumps(funcionario))
