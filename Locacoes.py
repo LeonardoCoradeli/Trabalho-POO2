@@ -4,13 +4,20 @@ from datetime import datetime
 #Classe seguro e seus atributos
 class Seguro():
     estatico_codigoSeguro = 0
-    def __init__(self,nome,tipo,descricao,valor):
-        self._codigoSeguro = Seguro.estatico_codigoSeguro
-        self._nome = nome
-        self._tipo = tipo
-        self._descricao = descricao
-        self._valor = valor
-        Seguro.estatico_codigoSeguro+=1
+    def __init__(self,nome,tipo,descricao,valor,codigoSeguro=None):
+        if codigoSeguro == None:
+            self._codigoSeguro = Seguro.estatico_codigoSeguro
+            self._nome = nome
+            self._tipo = tipo
+            self._descricao = descricao
+            self._valor = valor
+            Seguro.estatico_codigoSeguro+=1
+        else:
+            self._codigoSeguro = codigoSeguro
+            self._nome = nome
+            self._tipo = tipo
+            self._descricao = descricao
+            self._valor = valor
 
     @property
     def nome(self):
