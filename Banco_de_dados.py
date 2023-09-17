@@ -37,6 +37,8 @@ class BancodeDados:
         locacao_dict["_dataDevolucao"] = dataDevolucao
         listaSeguros = locacao_dict['_seguros']
         locacao_dict['_seguros'] = [c.__dict__ for c in listaSeguros]
+        pagamento = locacao_dict['_formapagamento'].__dict__
+        locacao_dict['_formapagamento'] = pagamento
         requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{locacao_dict['_codLocacao']}.json",data=json.dumps(locacao_dict))
 
     @staticmethod
@@ -51,6 +53,10 @@ class BancodeDados:
                 seguro.__dict__.update(c)
                 seguros.append(seguro)
             locacao_dict['_seguros'] = seguros
+        pag = locacao_dict['_formapagamento']
+        pagamento = Locacoes.Cartao('','','',0,0) if locacao_dict['_formapagamento']['tipo'] == 'cartão' else Locacoes.Dinheiro('',0)
+        pagamento.__dict__.update(pag)
+        locacao_dict['_formapagamento'] = pagamento
         locacao = Locacoes.Locacao('', '', '1/1/2023', '1/1/2023', 0, '', '', '', 1)
         locacao.__dict__.update(locacao_dict)
         return locacao
