@@ -100,3 +100,16 @@ class BancodeDados:
         veiculo = Veiculos.VeiculoImportado('','',0,0,'','',0,0,'',False,0,0,0)
         veiculo.__dict__.update(veiculo_dict)
         return veiculo
+
+    @staticmethod
+    def criarSeguro(seguro):
+        seguro_dict = seguro.__dict__
+        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{seguro_dict['_codigoSeguro']}/.json")
+
+    @staticmethod
+    def recuperarSeguro(codSeguro):
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{codSeguro}/.json")
+        seguro_dict = response.json()
+        seguro = Locacoes.Seguro('','','',0,0)
+        seguro.__dict__.update(seguro_dict)
+        return seguro
