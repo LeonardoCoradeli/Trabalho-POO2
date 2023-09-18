@@ -121,21 +121,30 @@ class BancodeDados:
         seguro.__dict__.update(seguro_dict)
         return seguro
 
-    #Alterar dados
+    #Alterar dados → somente o primeiro esta correto para testar
     @staticmethod
-    def atualizarFuncionario(codFuncionario,nome=None, cpf=None, rg=None, dataNascimento=None, endereco=None, cep=None, email=None, salario=None, pis=None, dataAdmissao=None):
+    def atualizarFuncionario(codFuncionario,**kwargs):
         funcionario = {
-            '_nome' : nome if nome is not None else None,
-            '_cpf' : cpf if cpf is not None else None,
-            '_rg' : rg if rg is not None else None,
-            '_dataNascimento' : dataNascimento if dataAdmissao is not None else None,
-            '_endereco' : endereco if endereco is not None else None,
-            '_cep' : cep if cep is not None else None,
-            '_email' : email if email is not None else None,
-            '_salario': float(salario) if salario is not None else None,
-            '_pis': pis if pis is not None else None,
-            '_dataAdmissao': dataAdmissao if dataAdmissao is not None else None
         }
+
+        #Para usar a função escreva cpf=********** por exemplo 
+        campos = {
+        'nome': '_nome',
+        'cpf': '_cpf',
+        'rg': '_rg',
+        'dataNascimento': '_dataNascimento',
+        'endereco': '_endereco',
+        'cep': '_cep',
+        'email': '_email',
+        'salario': '_salario',
+        'pis': '_pis',
+        'dataAdmissao': '_dataAdmissao'
+        }
+
+        for campo, chave in campos.items():
+            if campo in kwargs:
+                funcionario[chave] = kwargs[campo]
+
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncionario}.json",data=json.dumps(funcionario))
 
     @staticmethod
