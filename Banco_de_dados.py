@@ -232,33 +232,46 @@ class BancodeDados:
                        data=json.dumps(veiculo))
 
     @staticmethod
-    def atualizarVeiculoImportado(codVeiculo, marca=None, modelo=None, anoFabricacao=None, anoModelo=None, placa=None,
-                                  cor=None, valorDiaria=None, valorKmRodado=None, categoria=None, disponivel=None,
-                                  quilometragem=None, capacidadeTanque=None, impostoImportacao=None):
-        veiculo = {
-            '_marca': marca if marca is not None else None,
-            '_modelo': modelo if modelo is not None else None,
-            '_anoFabricacao': anoFabricacao if anoFabricacao is not None else None,
-            '_anoModelo': anoModelo if anoModelo is not None else None,
-            '_placa': placa if placa is not None else None,
-            '_cor': cor if cor is not None else None,
-            '_valorDiaria': float(valorDiaria) if valorDiaria is not None else None,
-            '_valorKmRodado': float(valorKmRodado) if valorKmRodado is not None else None,
-            '_categoria': categoria if categoria is not None else None,
-            '_disponivel': disponivel if disponivel is not None else None,
-            '_quilometragem': float(quilometragem) if quilometragem is not None else None,
-            '_capacidadeTanque': float(capacidadeTanque) if capacidadeTanque is not None else None,
-            '_impostoImportacao': float(impostoImportacao) if impostoImportacao is not None else None
+    def atualizarVeiculoImportado(codVeiculo, **kwargs):
+        veiculo ={}
+
+        campos = {
+            'marca': '_marca',
+            'modelo': '_modelo',
+            'anoFabricacao': '_anoFabricacao',
+            'anoModelo': '_anoModelo',
+            'placa': '_placa',
+            'cor': '_cor',
+            'valorDiaria': '_valorDiaria',
+            'valorKmRodado': '_valorKmRodado',
+            'categoria': '_categoria',
+            'disponivel': '_disponivel',
+            'quilometragem': '_quilometragem',
+            'capacidadeTanque': '_capacidadeTanque',
+            'impostoImportacao': '_impostoImportacao'
         }
+
+        for campo, chave in campos.items():
+            if campo in kwargs:
+                veiculo[chave] = kwargs[campo]
+
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{codVeiculo}.json",
                        data=json.dumps(veiculo))
 
     @staticmethod
-    def atualizarSeguro(codSeguro, descricao=None, cobertura=None, valorFranquia=None, valorMensal=None):
-        seguro = {
-            '_descricao': descricao if descricao is not None else None,
-            '_cobertura': cobertura if cobertura is not None else None,
-            '_valorFranquia': float(valorFranquia) if valorFranquia is not None else None,
-            '_valorMensal': float(valorMensal) if valorMensal is not None else None
+    def atualizarSeguro(codSeguro, **kwargs):
+
+        seguro ={}
+
+        campos = {
+            'descricao': '_descricao',
+            'cobertura': '_cobertura',
+            'valorFranquia': '_valorFranquia',
+            'valorMensal': '_valorMensal'
         }
+
+        for campo, chave in campos.items():
+            if campo in kwargs:
+                seguro[chave] = kwargs[campo]
+
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{codSeguro}.json", data=json.dumps(seguro))
