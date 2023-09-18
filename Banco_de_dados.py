@@ -36,8 +36,11 @@ class BancodeDados:
         dataDevolucao = locacao_dict["_dataDevolucao"].strftime("%d/%m/%Y")
         locacao_dict["_dataLocacao"] = dataLocacao
         locacao_dict["_dataDevolucao"] = dataDevolucao
-        listaSeguros = locacao_dict['_seguros']
-        locacao_dict['_seguros'] = [c.__dict__ for c in listaSeguros]
+        if locacao_dict['seguros'] != []:
+            listaSeguros = locacao_dict['_seguros']
+            locacao_dict['_seguros'] = [c.__dict__ for c in listaSeguros]
+        else:
+            locacao_dict = ''
         pagamento = locacao_dict['_formapagamento'].__dict__
         locacao_dict['_formapagamento'] = pagamento
         requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{locacao_dict['_codLocacao']}.json",data=json.dumps(locacao_dict))
