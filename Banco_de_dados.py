@@ -148,28 +148,38 @@ class BancodeDados:
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncionario}.json",data=json.dumps(funcionario))
 
     @staticmethod
-    def atualizarLocacao(codLocacao, dataLocacao=None, dataDevolucao=None, valorTotal=None, veiculo=None, cliente=None,
-                         funcionario=None, seguros=[], formaPagamento=None):
-        locacao = {
-            '_dataLocacao': dataLocacao if dataLocacao is not None else None,
-            '_dataDevolucao': dataDevolucao if dataDevolucao is not None else None,
-            '_valorTotal': float(valorTotal) if valorTotal is not None else None,
-            '_veiculo': veiculo if veiculo is not None else None,
-            '_cliente': cliente if cliente is not None else None,
-            '_funcionario': funcionario if funcionario is not None else None,
-            '_seguros': seguros if seguros is not [] else [],
-            '_formapagamento': formaPagamento if formaPagamento is not None else None
+    def atualizarLocacao(codLocacao, **kwargs):
+        locacao ={}
+
+        campos = {
+            'dataLocacao': '_dataLocacao',
+            'dataDevolucao': '_dataDevolucao',
+            'valorTotal': '_valorTotal',
+            'veiculo': '_veiculos',
+            'cliente': '_cliente',
+            'funcionario': '_funcionario',
+            'seguros': '_seguros',
+            'formaPagamento': '_formaPagamento'
         }
+
+        for campo, chave in campos.items():
+            if campo in kwargs:
+                locacao[chave] = kwargs[campo]
+
         seg = []
-        for c in seguros:
+        for c in locacao['_seguros']:
             seguro = Locacoes.Seguro('', '', '', 0)
             seguro.__dict__.update(c)
             seg.append(seguro)
-        locacao['_seguros'] = seguros
-        formaPagamento_dict = formaPagamento.__dict__
+        locacao['_seguros'] = seg
+        formaPagamento_dict = locacao['_formapagamento'].__dict__
         locacao['_formapagamento'] = formaPagamento_dict
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json",
                        data=json.dumps(locacao))
+
+        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codLocacao}.json",data=json.dumps(locacao))
+
+
 
     @staticmethod
     def atualizarCliente(codCliente, nome=None, cpf=None, rg=None, dataNascimento=None, endereco=None, cep=None,
