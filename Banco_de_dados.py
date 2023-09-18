@@ -174,10 +174,9 @@ class BancodeDados:
         locacao['_seguros'] = seg
         formaPagamento_dict = locacao['_formapagamento'].__dict__
         locacao['_formapagamento'] = formaPagamento_dict
+
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json",
                        data=json.dumps(locacao))
-
-        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json",data=json.dumps(locacao))
 
 
 
