@@ -177,7 +177,7 @@ class BancodeDados:
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json",
                        data=json.dumps(locacao))
 
-        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codLocacao}.json",data=json.dumps(locacao))
+        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json",data=json.dumps(locacao))
 
 
 
