@@ -121,7 +121,9 @@ class BancodeDados:
         seguro.__dict__.update(seguro_dict)
         return seguro
 
-    #Alterar dados → somente o primeiro esta correto para testar
+    #Alterar dados → somente o primeiro,segundo,terceiro, quarto esta correto para testar
+    #quando for fazer passar os argumentos fazer um dicionario com os nomes dos campos  valores atualizar(cod...,**dicionario)
+
     @staticmethod
     def atualizarFuncionario(codFuncionario,**kwargs):
         funcionario = {
@@ -181,40 +183,51 @@ class BancodeDados:
 
 
     @staticmethod
-    def atualizarCliente(codCliente, nome=None, cpf=None, rg=None, dataNascimento=None, endereco=None, cep=None,
-                         email=None, validadeCNH=None, categoriaCNH=None):
-        cliente = {
-            '_nome': nome if nome is not None else None,
-            '_cpf': cpf if cpf is not None else None,
-            '_rg': rg if rg is not None else None,
-            '_dataNascimento': dataNascimento if dataNascimento is not None else None,
-            '_endereco': endereco if endereco is not None else None,
-            '_cep': cep if cep is not None else None,
-            '_email': email if email is not None else None,
-            '_validadeCNH': validadeCNH if validadeCNH is not None else None,
-            '_categoriaCNH': categoriaCNH if categoriaCNH is not None else None,
-        }
+    def atualizarCliente(codCliente, **kwargs):
+        cliente = {}
+
+        campos = {
+            'nome': '_nome',
+            'cpf': '_cpf',
+            'rg': '_rg',
+            'dataNascimento':'_dataNascimento',
+            'endereco': '_endereco',
+            'cep': '_cep',
+            'email': '_email',
+            'validadeCNH': '_validadeCNH',
+            'categoriaCNH': '_categoriaCNH'
+            }
+
+        for campo, chave in campos.items():
+            if campo in kwargs:
+                cliente[chave] = kwargs[campo]
+
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{codCliente}.json",
                        data=json.dumps(cliente))
 
     @staticmethod
-    def atualizarVeiculoNacional(codVeiculo, marca=None, modelo=None, anoFabricacao=None, anoModelo=None, placa=None,
-                                 cor=None, valorDiaria=None, valorKmRodado=None, categoria=None, disponivel=None,
-                                 quilometragem=None, capacidadeTanque=None):
-        veiculo = {
-            '_marca': marca if marca is not None else None,
-            '_modelo': modelo if modelo is not None else None,
-            '_anoFabricacao': anoFabricacao if anoFabricacao is not None else None,
-            '_anoModelo': anoModelo if anoModelo is not None else None,
-            '_placa': placa if placa is not None else None,
-            '_cor': cor if cor is not None else None,
-            '_valorDiaria': float(valorDiaria) if valorDiaria is not None else None,
-            '_valorKmRodado': float(valorKmRodado) if valorKmRodado is not None else None,
-            '_categoria': categoria if categoria is not None else None,
-            '_disponivel': disponivel if disponivel is not None else None,
-            '_quilometragem': float(quilometragem) if quilometragem is not None else None,
-            '_capacidadeTanque': float(capacidadeTanque) if capacidadeTanque is not None else None
+    def atualizarVeiculoNacional(codVeiculo, **kwargs):
+        veiculo = {}
+
+        campos = {
+            'marca': '_marca',
+            'modelo': '_modelo',
+            'anoFabricacao': '_anoFabricacao',
+            'anoModelo': '_anoModelo',
+            'placa': '_placa',
+            'cor': '_cor',
+            'valorDiaria': '_valorDiaria',
+            'valorKmRodado': '_valorKmRodado',
+            'categoria':'_categoria',
+            'disponivel': '_disponivel',
+            'quilometragem': '_quilometragem',
+            'capacidadeTanque': '_capacidadeTanque'
         }
+
+        for campo, chave in campos.items():
+            if campo in kwargs:
+                veiculo[chave] = kwargs[campo]
+
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}.json",
                        data=json.dumps(veiculo))
 
