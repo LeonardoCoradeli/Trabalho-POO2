@@ -19,6 +19,13 @@ class Seguro():
             self._descricao = descricao
             self._valor = valor
 
+    def __str__(self):
+        return f"Código de Seguro: {self._codigoSeguro}\n" \
+               f"Nome: {self._nome}\n" \
+               f"Tipo: {self._tipo}\n" \
+               f"Descrição: {self._descricao}\n" \
+               f"Valor: R${self._valor:.2f}"
+
     @property
     def nome(self):
         return self._nome
@@ -141,7 +148,7 @@ class Locacao():
             self._dataLocacao = datetime.strptime(dataLocacao, "%d/%m/%Y")
             self._dataDevolucao = datetime.strptime(dataDevolucao, "%d/%m/%Y")
             self._valorTotal = float(valorBase)
-            self._formapagamento = formaPagamento
+            self._formaPagamento = formaPagamento
             self._segurosContratados = segurosContratados if not segurosContratados == None else []
             self._finalizada = finalizada
             Locacao.estatico_codigoLocacao+=1
@@ -158,6 +165,7 @@ class Locacao():
 
 
     def __str__(self):
+        segurosContratados_str = "\n".join(str(seguro) for seguro in self._segurosContratados)
         return f"Código de Locação: {self._codLocacao}\n" \
                f"Código de Cliente: {self._codCliente}\n" \
                f"Código de Funcionário: {self._codFuncionario}\n" \
@@ -165,7 +173,7 @@ class Locacao():
                f"Data de Devolução: {self._dataDevolucao}\n" \
                f"Valor Total: R${self._valorTotal:.2f}\n" \
                f"Forma de Pagamento: {self._formapagamento}\n" \
-               f"Seguros Contratados: {', '.join(self._segurosContratados)}\n" \
+               f"Seguros Contratados: \n\n{segurosContratados_str}\n" \
                f"Finalizada: {'Sim' if self._finalizada else 'Não'}"
 
     @property

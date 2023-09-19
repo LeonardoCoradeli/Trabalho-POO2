@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from datetime import datetime
+
 
 class Usuario(ABC):
     def __init__(self, codigoUsuario,nome, cpf, rg, dataNascimento, endereco, cep, email):
@@ -6,7 +8,7 @@ class Usuario(ABC):
         self._nome = nome
         self._cpf = cpf
         self._rg = rg
-        self._dataNascimento = dataNascimento
+        self._dataNascimento = datetime.strptime(dataNascimento, "%d/%m/%Y")
         self._endereco = endereco
         self._cep = cep
         self._email = email
@@ -89,14 +91,14 @@ class Cliente(Usuario):
             super().__init__(Cliente.Estatico_codigoCliente,nome, cpf, rg, dataNascimento, endereco, cep, email)
             self._categoriaCNH = categoriaCNH
             self._numeroCNH = numeroCNH
-            self._validadeCNH = validadeCNH
+            self._validadeCNH = datetime.strptime(validadeCNH, "%d/%m/%Y")
             self._clienteOuro = clienteOuro
             Cliente.Estatico_codigoCliente +=1
         else:
             super().__init__(codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep, email)
             self._categoriaCNH = categoriaCNH
             self._numeroCNH = numeroCNH
-            self._validadeCNH = validadeCNH
+            self._validadeCNH = datetime.strptime(validadeCNH, "%d/%m/%Y")
             self._clienteOuro = clienteOuro
 
     def __str__(self):
@@ -146,13 +148,13 @@ class Funcionario(Usuario):
             super().__init__(Funcionario.Estatico_codigoFuncionario,nome, cpf, rg, dataNascimento, endereco, cep, email)
             self._salario = float(salario)
             self._pis = pis
-            self._dataAdmissao = dataAdmissao
+            self._dataAdmissao = datetime.strptime(dataAdmissao, "%d/%m/%Y")
             Funcionario.Estatico_codigoFuncionario +=1
         else:
             super().__init__(codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep,email)
             self._salario = float(salario)
             self._pis = pis
-            self._dataAdmissao = dataAdmissao
+            self._dataAdmissao = datetime.strptime(dataAdmissao, "%d/%m/%Y")
 
     def __str__(self):
         usuarioStr = super().__str__()

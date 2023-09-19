@@ -3,8 +3,9 @@ from abc import ABC, abstractmethod
 #Classe veiculos e seus atributos
 
 class Veiculo(ABC):
-    def __init__(self,codigoVeiculos,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado):
-        self._codigoVeiculo = codigoVeiculos
+    codigo_veiculo_estatico = 0
+    def __init__(self,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado):
+        self._codigoVeiculo = self.codigo_veiculo_estatico
         self._nomeModelo = nomeModelo
         self._montadora = montadora
         self._anoFabricacao = anoFabricacao
@@ -15,7 +16,22 @@ class Veiculo(ABC):
         self._valorDiaria = valorDiaria
         self._categoriaCNHNecessaria = categoriaCNHNecessaria
         self._alugado = alugado
-    
+        self.codigo_veiculo_estatico+=1
+
+    def __str__(self):
+        return f"Código do Veículo: {self._codigoVeiculo}\n" \
+               f"Nome do Modelo: {self._nomeModelo}\n" \
+               f"Montadora: {self._montadora}\n" \
+               f"Ano de Fabricação: {self._anoFabricacao}\n" \
+               f"Ano do Modelo: {self._anoModelo}\n" \
+               f"Placa: {self._placa}\n" \
+               f"Categoria: {self._categoria}\n" \
+               f"Valor FIPE: R${self._valorFipe:.2f}\n" \
+               f"Valor da Diária: R${self._valorDiaria:.2f}\n" \
+               f"Categoria CNH Necessária: {self._categoriaCNHNecessaria}\n" \
+               f"Alugado: {'Sim' if self._alugado else 'Não'}"
+
+
     @property
     def codigoVeiculo(self):
         return self._codigoVeiculo
@@ -133,10 +149,9 @@ class Veiculo(ABC):
                 f"Alugado: {'Sim' if self._alugado else 'Não'}\n"
         
 class VeiculoNacional(Veiculo):
-    Estatico_codigoVeiculo = 0
     def __init__(self,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado,taxaImpostoEstadual,codigoVeiculo = None):
         if codigoVeiculo == None:
-            super().__init__(VeiculoNacional.Estatico_codigoVeiculo, nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado)
+            super().__init__(nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado)
             self._taxaImpostoEstadual = taxaImpostoEstadual
         else:
             super().__init__(codigoVeiculo, nomeModelo, montadora, anoFabricacao, anoModelo,
@@ -150,19 +165,30 @@ class VeiculoNacional(Veiculo):
     @taxaImpostoEstadual.setter
     def taxaImpostoEstadual(self,taxaImpostoEstadual):
         self._taxaImpostoEstadual = taxaImpostoEstadual
-    
+
+    def calcularValorMedia(self):
+        return
     def calcularValorDiaria(self):
         return self._valorDiaria+self._valorDiaria*self._taxaImpostoEstadual
-    
+
     def __str__(self):
-        f"{super().__str__}\n" \
-        f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}\n"
+        return f"Código do Veículo: {self._codigoVeiculo}\n" \
+               f"Nome do Modelo: {self._nomeModelo}\n" \
+               f"Montadora: {self._montadora}\n" \
+               f"Ano de Fabricação: {self._anoFabricacao}\n" \
+               f"Ano do Modelo: {self._anoModelo}\n" \
+               f"Placa: {self._placa}\n" \
+               f"Categoria: {self._categoria}\n" \
+               f"Valor FIPE: R${self._valorFipe:.2f}\n" \
+               f"Valor da Diária: R${self._valorDiaria:.2f}\n" \
+               f"Categoria CNH Necessária: {self._categoriaCNHNecessaria}\n" \
+               f"Alugado: {'Sim' if self._alugado else 'Não'}\n" \
+               f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%"
         
 class VeiculoImportado(Veiculo):
-    Estatico_codigoVeiculo = 0
     def __init__(self,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado,taxaImpostoEstadual,taxaImpostoFederal,codigoVeiculo=None):
         if codigoVeiculo == None:
-            super().__init__(VeiculoImportado.Estatico_codigoVeiculo,nomeModelo, montadora, anoFabricacao, anoModelo, placa, categoria, valorFipe, valorDiaria,categoriaCNHNecessaria, alugado)
+            super().__init__(nomeModelo, montadora, anoFabricacao, anoModelo, placa, categoria, valorFipe, valorDiaria,categoriaCNHNecessaria, alugado)
             self._taxaImpostoEstadual = taxaImpostoEstadual
             self._taxaImpostoFederal = taxaImpostoFederal
         else:
@@ -186,11 +212,24 @@ class VeiculoImportado(Veiculo):
     @taxaImpostoFederal.setter
     def taxaImpostoFederal(self,taxaImpostoFederal):
         self._taxaImpostoFederal = taxaImpostoFederal
-    
+
+    def calcularValorMedia(self):
+        return
+
     def calcularValorDiaria(self):
         return self._valorDiaria+self._valorDiaria*self._taxaImpostoEstadual+self._valorDiaria*self._taxaImpostoFederal
-        
+
     def __str__(self):
-        f"{super().__str__}\n" \
-        f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}\n" \
-        f"Taxa de Imposto Federal: {self._taxaImpostoFederal}\n" \
+        return f"Código do Veículo: {self._codigoVeiculo}\n" \
+               f"Nome do Modelo: {self._nomeModelo}\n" \
+               f"Montadora: {self._montadora}\n" \
+               f"Ano de Fabricação: {self._anoFabricacao}\n" \
+               f"Ano do Modelo: {self._anoModelo}\n" \
+               f"Placa: {self._placa}\n" \
+               f"Categoria: {self._categoria}\n" \
+               f"Valor FIPE: R${self._valorFipe:.2f}\n" \
+               f"Valor da Diária: R${self._valorDiaria:.2f}\n" \
+               f"Categoria CNH Necessária: {self._categoriaCNHNecessaria}\n" \
+               f"Alugado: {'Sim' if self._alugado else 'Não'}\n" \
+               f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%\n" \
+               f"Taxa de Imposto Federal: {self._taxaImpostoFederal}%"

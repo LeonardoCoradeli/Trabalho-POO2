@@ -5,6 +5,8 @@ import Usuario
 import Veiculos
 
 
+
+
 class BancodeDados:
     URLBanco = 'https://trabalho-pratico-c3891-default-rtdb.firebaseio.com/'
     URLTClientes = 'Clientes'
@@ -18,6 +20,8 @@ class BancodeDados:
     @staticmethod
     def criarFuncionario(funcionario):
         funcionario_dic = funcionario.__dict__
+        funcionario_dic['_dataNascimento'] = funcionario_dic['_dataNascimento'].strftime("%d/%m/%Y")
+        funcionario_dic['_dataAdmissao'] = funcionario_dic['_dataAdmissao'].strftime("%d/%m/%Y")
         requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{funcionario_dic['_codigoUsuario']}.json",data=json.dumps(funcionario_dic))
 
     @staticmethod
@@ -36,31 +40,31 @@ class BancodeDados:
         dataDevolucao = locacao_dict["_dataDevolucao"].strftime("%d/%m/%Y")
         locacao_dict["_dataLocacao"] = dataLocacao
         locacao_dict["_dataDevolucao"] = dataDevolucao
-        if locacao_dict['seguros'] != []:
-            listaSeguros = locacao_dict['_seguros']
-            locacao_dict['_seguros'] = [c.__dict__ for c in listaSeguros]
+        if locacao_dict['_segurosContratados'] != None:
+            listaSeguros = locacao_dict['_segurosContratados']
+            locacao_dict['_segurosContratados'] = [c.__dict__ for c in listaSeguros]
         else:
             locacao_dict = ''
-        pagamento = locacao_dict['_formapagamento'].__dict__
-        locacao_dict['_formapagamento'] = pagamento
+        pagamento = locacao_dict['_formaPagamento']
+        locacao_dict['_formaPagamento'] = pagamento.__dict__
         requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{locacao_dict['_codLocacao']}.json",data=json.dumps(locacao_dict))
 
     @staticmethod
     def recuperarLocacao(codLocacao):
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json")
         locacao_dict = response.json()
-        if locacao_dict['_seguros'] != None:
-            listaSeguros = locacao_dict['_seguros']
+        if locacao_dict['_segurosContratados'] != None:
+            listaSeguros = locacao_dict['_segurosContratados']
             seguros = []
             for c in listaSeguros:
                 seguro = Locacoes.Seguro('', '', '', 0)
                 seguro.__dict__.update(c)
                 seguros.append(seguro)
-            locacao_dict['_seguros'] = seguros
-        pag = locacao_dict['_formapagamento']
-        pagamento = Locacoes.Cartao('','','',0,0) if locacao_dict['_formapagamento']['tipo'] == 'cartão' else Locacoes.Dinheiro('',0)
+            locacao_dict['_segurosContratados'] = seguros
+        pag = locacao_dict['_formaPagamento']
+        pagamento = Locacoes.Cartao('','','',0,0) if locacao_dict['_formaPagamento']['_tipo'] == 'cartao' else Locacoes.Dinheiro('',0)
         pagamento.__dict__.update(pag)
-        locacao_dict['_formapagamento'] = pagamento
+        locacao_dict['_formaPagamento'] = pagamento
         locacao = Locacoes.Locacao('', '', '1/1/2023', '1/1/2023', 0, '', '', '', 1)
         locacao.__dict__.update(locacao_dict)
         return locacao
@@ -72,8 +76,8 @@ class BancodeDados:
         dataVencimentoCNH = cliente_dict["_validadeCNH"].strftime("%d/%m/%Y")
         cliente_dict["_dataNascimento"] = dataNascimento
         cliente_dict["_validadeCNH"] = dataVencimentoCNH
-        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{cliente_dict['_codigoUsuario']}.json",
-                     data=json.dumps(cliente_dict))
+        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{cliente_dict['_codigoUsuario']}.json",data=json.dumps(cliente_dict))
+
 
     @staticmethod
     def recuperarCliente(codCliente):
@@ -93,7 +97,7 @@ class BancodeDados:
     def recuperarVeiculoNacional(codVeiculo):
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}/.json")
         veiculo_dict = response.json()
-        veiculo = Veiculos.VeiculoNacional('','',0,0,'','',0,0,'',False,0,0)
+        veiculo = Veiculos.VeiculoNacional('','',0,0,'','',0,0,'',False,0)
         veiculo.__dict__.update(veiculo_dict)
         return veiculo
 
@@ -107,20 +111,20 @@ class BancodeDados:
     def recuperarVeiculoImportado(codVeiculo):
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{codVeiculo}/.json")
         veiculo_dict = response.json()
-        veiculo = Veiculos.VeiculoImportado('','',0,0,'','',0,0,'',False,0,0,0)
+        veiculo = Veiculos.VeiculoImportado('','',0,0,'','',0,0,'',False,0,0)
         veiculo.__dict__.update(veiculo_dict)
         return veiculo
 
     @staticmethod
     def criarSeguro(seguro):
         seguro_dict = seguro.__dict__
-        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{seguro_dict['_codigoSeguro']}/.json")
+        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{seguro_dict['_codigoSeguro']}/.json", data=json.dumps(seguro_dict))
 
     @staticmethod
     def recuperarSeguro(codSeguro):
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{codSeguro}/.json")
         seguro_dict = response.json()
-        seguro = Locacoes.Seguro('','','',0,0)
+        seguro = Locacoes.Seguro('','','',0)
         seguro.__dict__.update(seguro_dict)
         return seguro
 
@@ -149,7 +153,18 @@ class BancodeDados:
         for campo, chave in campos.items():
             if campo in kwargs:
                 funcionario[chave] = kwargs[campo]
+            else:
+                funcionario[chave] = ''
 
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncionario}/.json")
+        funcionarioData = response.json()
+        print(funcionarioData)
+
+        for campo, valor in funcionario.items():
+            if valor == '' and campo in funcionarioData:
+                funcionario[campo] = funcionarioData[campo]
+
+        print(funcionario)
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncionario}.json",data=json.dumps(funcionario))
 
     @staticmethod
