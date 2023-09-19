@@ -195,6 +195,8 @@ class BancodeDados:
                 seguro.__dict__.update(c)
                 seg.append(seguro)
             locacao['_seguros'] = seg
+        
+        if locacao['_formaPagamento'] != '':
             formaPagamento_dict = locacao['_formapagamento'].__dict__
             locacao['_formapagamento'] = formaPagamento_dict
 
