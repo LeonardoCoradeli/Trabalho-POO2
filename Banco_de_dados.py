@@ -178,23 +178,34 @@ class BancodeDados:
             'veiculo': '_veiculos',
             'cliente': '_cliente',
             'funcionario': '_funcionario',
-            'seguros': '_seguros',
+            'segurosContradados': '_segurosContratados',
             'formaPagamento': '_formaPagamento'
         }
 
         for campo, chave in campos.items():
             if campo in kwargs:
                 locacao[chave] = kwargs[campo]
+            else:
+                locacao[chave] = ''
 
-        seg = []
-        for c in locacao['_seguros']:
-            seguro = Locacoes.Seguro('', '', '', 0)
-            seguro.__dict__.update(c)
-            seg.append(seguro)
-        locacao['_seguros'] = seg
-        formaPagamento_dict = locacao['_formapagamento'].__dict__
-        locacao['_formapagamento'] = formaPagamento_dict
+        if locacao['_segurosContratados'] != '':
+            seg = []
+            for c in locacao['_segurosContratados']:
+                seguro = Locacoes.Seguro('', '', '', 0)
+                seguro.__dict__.update(c)
+                seg.append(seguro)
+            locacao['_seguros'] = seg
+            formaPagamento_dict = locacao['_formapagamento'].__dict__
+            locacao['_formapagamento'] = formaPagamento_dict
 
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}/.json")
+        funcionarioData = response.json()
+        print(funcionarioData)
+
+        for campo, valor in funcionario.items():
+            if valor == '' and campo in funcionarioData:
+                funcionario[campo] = funcionarioData[campo]
+        
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json",
                        data=json.dumps(locacao))
 
