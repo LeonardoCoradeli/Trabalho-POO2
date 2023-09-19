@@ -293,3 +293,22 @@ class BancodeDados:
                 seguro[chave] = kwargs[campo]
 
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{codSeguro}.json", data=json.dumps(seguro))
+
+    @staticmethod
+    def excluirFuncionario(codFuncionario):
+        requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncionario}.json")
+    @staticmethod
+    def excluirCliente(codCliente):
+        requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{codCliente}.json")
+    @staticmethod
+    def excluirLocacao(codLocacao):
+        requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json")
+    @staticmethod
+    def excluirSeguro(codSeguro):
+        requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{codSeguro}.json")
+    @staticmethod
+    def excluirVeiculoNacional(codVeiculo):
+        requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}.json")
+    @staticmethod
+    def excluirVeiculoInternacional(codVeiculo):
+        requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{codVeiculo}.json")
