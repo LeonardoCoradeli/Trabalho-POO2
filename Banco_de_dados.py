@@ -136,7 +136,6 @@ class BancodeDados:
         funcionario = {
         }
 
-        #Para usar a função escreva cpf=********** por exemplo 
         campos = {
         'nome': '_nome',
         'cpf': '_cpf',
@@ -158,7 +157,6 @@ class BancodeDados:
 
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncionario}/.json")
         funcionarioData = response.json()
-        print(funcionarioData)
 
         for campo, valor in funcionario.items():
             if valor == '' and campo in funcionarioData:
@@ -201,12 +199,11 @@ class BancodeDados:
             locacao['_formapagamento'] = formaPagamento_dict
 
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}/.json")
-        funcionarioData = response.json()
-        print(funcionarioData)
+        locacaoData = response.json()
 
-        for campo, valor in funcionario.items():
-            if valor == '' and campo in funcionarioData:
-                funcionario[campo] = funcionarioData[campo]
+        for campo, valor in locacao.items():
+            if valor == '' and campo in locacaoData:
+                locacao[campo] = locacaoData[campo]
         
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json",
                        data=json.dumps(locacao))
@@ -233,6 +230,14 @@ class BancodeDados:
             if campo in kwargs:
                 cliente[chave] = kwargs[campo]
 
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{codCliente}/.json")
+        clienteData = response.json()
+
+
+        for campo, valor in cliente.items():
+            if valor == '' and campo in clienteData:
+                cliente[campo] = clienteData[campo]
+
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{codCliente}.json",
                        data=json.dumps(cliente))
 
@@ -258,9 +263,16 @@ class BancodeDados:
         for campo, chave in campos.items():
             if campo in kwargs:
                 veiculo[chave] = kwargs[campo]
+        
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}/.json")
+        veiculoData = response.json()
 
-        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}.json",
-                       data=json.dumps(veiculo))
+
+        for campo, valor in veiculo.items():
+            if valor == '' and campo in veiculoData:
+                veiculo[campo] = veiculoData[campo]
+
+        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}.json",data=json.dumps(veiculo))
 
     @staticmethod
     def atualizarVeiculoImportado(codVeiculo, **kwargs):
@@ -285,9 +297,16 @@ class BancodeDados:
         for campo, chave in campos.items():
             if campo in kwargs:
                 veiculo[chave] = kwargs[campo]
+        
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{codVeiculo}/.json")
+        veiculoData = response.json()
 
-        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{codVeiculo}.json",
-                       data=json.dumps(veiculo))
+
+        for campo, valor in veiculo.items():
+            if valor == '' and campo in veiculoData:
+                veiculo[campo] = veiculoData[campo]
+
+        requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{codVeiculo}.json",data=json.dumps(veiculo))
 
     @staticmethod
     def atualizarSeguro(codSeguro, **kwargs):
@@ -304,24 +323,38 @@ class BancodeDados:
         for campo, chave in campos.items():
             if campo in kwargs:
                 seguro[chave] = kwargs[campo]
+        
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{codSeguro}/.json")
+        seguroData = response.json()
+
+
+        for campo, valor in seguro.items():
+            if valor == '' and campo in seguroData:
+                seguro[campo] = seguroData[campo]
 
         requests.patch(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{codSeguro}.json", data=json.dumps(seguro))
 
+    #Excluir dados do banco de dados
     @staticmethod
     def excluirFuncionario(codFuncionario):
         requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncionario}.json")
+
     @staticmethod
     def excluirCliente(codCliente):
         requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{codCliente}.json")
+
     @staticmethod
     def excluirLocacao(codLocacao):
         requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{codLocacao}.json")
+
     @staticmethod
     def excluirSeguro(codSeguro):
         requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}/{codSeguro}.json")
+
     @staticmethod
     def excluirVeiculoNacional(codVeiculo):
         requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}/{codVeiculo}.json")
+
     @staticmethod
     def excluirVeiculoInternacional(codVeiculo):
         requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{codVeiculo}.json")
