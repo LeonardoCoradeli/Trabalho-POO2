@@ -1,5 +1,20 @@
-import Banco_de_dados, Usuario, Locacoes, Veiculos
+import PySimpleGUI as sg
 
-funcionario1 = Usuario.Funcionario("Ronas", '123', '1234', '20/10/2002', 'Rua. CLever', '696969', 'todos@email.com', 10, "2", "20/02/2010")
-Banco_de_dados.BancodeDados.criarFuncionario(funcionario1)
-Banco_de_dados.BancodeDados.excluirFuncionario(0)
+sg.theme('BlueMono')
+
+relatorios = [[sg.Text('Relatórios')],
+              [sg.Checkbox('Testando')],
+              [sg.Button('Teste')]
+              ]
+
+layout_TelaRelatorios = [[
+    sg.Frame('',layout=relatorios,size=(120,100),vertical_alignment='c'),sg.Multiline()
+                        ]]
+
+layout_Geral = [[layout_TelaRelatorios]]
+
+window = sg.Window('Window Title',layout_Geral,size=(500,500))
+
+event, values = window.read()
+window.close()
+
