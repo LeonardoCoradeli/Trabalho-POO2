@@ -15,6 +15,7 @@ class BancodeDados:
     URLTVeiculosNacionais = 'Veiculos_nacionais'
     URLTVeiculosInternacionais = 'Veiculos_internacionais'
     URLTSeguros = 'Seguros'
+    URLTNumeros = 'Numero'
 
     #Enviar e receber dados
     @staticmethod
@@ -128,7 +129,6 @@ class BancodeDados:
         seguro.__dict__.update(seguro_dict)
         return seguro
 
-    #Alterar dados → somente o primeiro,segundo,terceiro, quarto esta correto para testar
     #quando for fazer passar os argumentos fazer um dicionario com os nomes dos campos  valores atualizar(cod...,**dicionario)
 
     @staticmethod
@@ -358,3 +358,15 @@ class BancodeDados:
     @staticmethod
     def excluirVeiculoInternacional(codVeiculo):
         requests.delete(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}/{codVeiculo}.json")
+    
+    #puxar dados
+    @staticmethod
+    def reuperarTodos():
+        response = requests.get(f'{}.json')
+    
+    #validar numero de cada tipo
+    @staticmethod
+    def recuperarNumeroClientes():
+        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}.json')
+        numero = response.json()
+        return numero
