@@ -24,6 +24,7 @@ relatoriosClientes =[sg.Frame('Clientes',layout=[
                 ],size=(330,120))]
 #mudar esses input para combo com respectivos dados
 relatoriosClientes_popup = [[sg.Text('Placa'),sg.InputText(key='placaVeiculo',size=(10,1))],
+                            [sg.Text('ou')],
                             [sg.Text('Codigo do Veiculo'),sg.InputText(key='codveiculo',size=(10,1))],
                             [sg.Button('Gerar'),sg.Button('Cancelar')]]
 
