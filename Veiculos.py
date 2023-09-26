@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
+from Banco_de_dados import BancodeDados
 
+BD = BancodeDados()
 #Classe veiculos e seus atributos
 
 class Veiculo(ABC):
-    codigo_veiculo_estatico = 0
     def __init__(self,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado):
         self._codigoVeiculo = self.codigo_veiculo_estatico
         self._nomeModelo = nomeModelo
@@ -149,9 +150,10 @@ class Veiculo(ABC):
                 f"Alugado: {'Sim' if self._alugado else 'Não'}\n"
         
 class VeiculoNacional(Veiculo):
+    codigo_veiculo_Estatico = 0
     def __init__(self,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado,taxaImpostoEstadual,codigoVeiculo = None):
         if codigoVeiculo == None:
-            super().__init__(nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado)
+            super().__init__(VeiculoNacional.codigo_veiculo_Estatico,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado)
             self._taxaImpostoEstadual = taxaImpostoEstadual
         else:
             super().__init__(codigoVeiculo, nomeModelo, montadora, anoFabricacao, anoModelo,
@@ -186,14 +188,15 @@ class VeiculoNacional(Veiculo):
                f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%"
         
 class VeiculoImportado(Veiculo):
+    codigo_veiculo_Estatico = 0
     def __init__(self,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado,taxaImpostoEstadual,taxaImpostoFederal,codigoVeiculo=None):
         if codigoVeiculo == None:
-            super().__init__(nomeModelo, montadora, anoFabricacao, anoModelo, placa, categoria, valorFipe, valorDiaria,categoriaCNHNecessaria, alugado)
+            super().__init__(VeiculoImportado.codigo_veiculo_Estatico,nomeModelo, montadora, anoFabricacao, anoModelo, placa, categoria, valorFipe, valorDiaria,categoriaCNHNecessaria, alugado)
             self._taxaImpostoEstadual = taxaImpostoEstadual
             self._taxaImpostoFederal = taxaImpostoFederal
         else:
             super().__init__(codigoVeiculo, nomeModelo, montadora, anoFabricacao, anoModelo,
-                             placa, categoria, valorFipe, valorDiaria, categoriaCNHNecessaria, alugado)
+                             placa, categoria, valorFipe, valorDiaria, categoriaCNHNecessaria,alugado)
             self._taxaImpostoEstadual = taxaImpostoEstadual
             self._taxaImpostoFederal = taxaImpostoFederal
 
