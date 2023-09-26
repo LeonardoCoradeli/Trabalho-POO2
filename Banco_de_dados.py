@@ -462,4 +462,3 @@ class BancodeDados:
         locadora = response.json()
         return locadora
 
-    
