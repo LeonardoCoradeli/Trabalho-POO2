@@ -16,6 +16,7 @@ class BancodeDados:
     URLTVeiculosInternacionais = 'Veiculos_internacionais'
     URLTSeguros = 'Seguros'
     URLTNumeros = 'Numero'
+    URLTLocadora = 'Locadora'
 
     #Enviar e receber dados
     @staticmethod
@@ -83,10 +84,10 @@ class BancodeDados:
     @staticmethod
     def recuperarCliente(codCliente):
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTClientes}/{codCliente}/.json")
-        funcionario_dict = response.json()
-        funcionario = Usuario.Cliente('','','','1/1/2023','','','','','','1/1/2023',False,1)
-        funcionario.__dict__.update(funcionario_dict)
-        return funcionario
+        cliente_dict = response.json()
+        cliente = Usuario.Cliente('','','','1/1/2023','','','','','','1/1/2023',False,1)
+        cliente.__dict__.update(cliente_dict)
+        return cliente
 
     @staticmethod
     def criarVeiculoNacional(veiculo):
@@ -361,12 +362,104 @@ class BancodeDados:
     
     #puxar dados
     @staticmethod
-    def reuperarTodos():
-        response = requests.get(f'{}.json')
-    
+    def recuperarTodosClientes():
+        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTClientes}.json')
+        clientes_list = response.json()
+        clientes = []
+        for cliente in clientes_list:
+            c = Usuario.Cliente('', '', '', '1/1/2023', '', '', '', '', '', '1/1/2023', False, 1)
+            c.__dict__.update(cliente)
+            clientes.append(c)
+        return clientes
+
+    @staticmethod
+    def recuperarTodosFuncionarios():
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}.json")
+        funcionario_list = response.json()
+        funcionarios = []
+        for funcionario in funcionario_list:
+            f = Usuario.Funcionario('', '', '', '', '', '', '', 0, '', '')
+            f.__dict__.update(funcionario)
+            funcionarios.append(f)
+        return funcionarios
+
+    @staticmethod
+    def recuperarTodasLocacoes():
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}.json")
+        locacoes_list = response.json()
+        locacoes = []
+        for locacao in locacoes_list:
+            if locacao['_segurosContratados'] != None:
+                listaSeguros = locacao['_segurosContratados']
+                seguros = []
+                for c in listaSeguros:
+                    seguro = Locacoes.Seguro('', '', '', 0)
+                    seguro.__dict__.update(c)
+                    seguros.append(seguro)
+                locacao['_segurosContratados'] = seguros
+            pag = locacao['_formaPagamento']
+            pagamento = Locacoes.Cartao('', '', '', 0, 0) if locacao['_formaPagamento']['_tipo'] == 'cartao' else Locacoes.Dinheiro('', 0)
+            pagamento.__dict__.update(pag)
+            locacao['_formaPagamento'] = pagamento
+            l = Locacoes.Locacao('', '', '1/1/2023', '1/1/2023', 0, '', '', '', 1)
+            l.__dict__.update(locacao)
+            locacoes.append(l)
+
+        return locacoes
+
+    @staticmethod
+    def recuperarTodosVeiculosNacionais():
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosNacionais}.json")
+        veiculo_list = response.json()
+        veiculos = []
+        for veiculo in veiculo_list:
+            v = Veiculos.VeiculoNacional('', '', 0, 0, '', '', 0, 0, '', False, 0)
+            v.__dict__.update(veiculo)
+            veiculos.append(v)
+
+        return veiculos
+
+    @staticmethod
+    def recuperarTodosVeiculosImportados():
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTVeiculosInternacionais}.json")
+        veiculo_list = response.json()
+        veiculos = []
+        for veiculo in veiculo_list:
+            v = Veiculos.VeiculoImportado('', '', 0, 0, '', '', 0, 0, '', False, 0)
+            v.__dict__.update(veiculo)
+            veiculos.append(v)
+
+        return veiculos
+
+    @staticmethod
+    def recuperarTodosSeguros():
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTSeguros}.json")
+        seguro_list = response.json()
+        seguros = []
+        for seguro in seguro_list:
+            s = Locacoes.Seguro('', '', '', 0)
+            s.__dict__.update(seguro)
+            seguros.append(s)
+
+        return seguros
+
     #validar numero de cada tipo
     @staticmethod
-    def recuperarNumeroClientes():
+    def recuperarNumeros():
         response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}.json')
         numero = response.json()
         return numero
+
+
+    #salvar a propia locadora em si
+    @staticmethod
+    def criarLocadora(locadora):#dicionario com nome,endereço,website e rede social
+        response = requests.put(f'{BancodeDados.URLBanco}{BancodeDados.URLTLocadora}.json',data=json.dumps(locadora))
+
+    @staticmethod
+    def recuperarLocadora():
+        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTLocadora}.json',data=json.dumps(locadora))
+        locadora = response.json()
+        return locadora
+
+    
