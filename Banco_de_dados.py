@@ -443,12 +443,69 @@ class BancodeDados:
 
         return seguros
 
-    #validar numero de cada tipo
+    #recuperar numero de cada tipo
     @staticmethod
-    def recuperarNumeros():
-        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}.json')
+    def recuperarNumeroClientes():
+        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Clientes.json')
         numero = response.json()
         return numero
+
+    @staticmethod
+    def recuperarNumeroFuncionarios():
+        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Funcionarios.json')
+        numero = response.json()
+        return numero
+
+    @staticmethod
+    def recuperarNumeroLocacoes():
+        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Locacoes.json')
+        numero = response.json()
+        return numero
+
+    @staticmethod
+    def recuperarNumeroSeguros():
+        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Seguros.json')
+        numero = response.json()
+        return numero
+
+    @staticmethod
+    def recuperarNumeroVeiculosNacionais():
+        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Veiculos_nacionais.json')
+        numero = response.json()
+        return numero
+
+    @staticmethod
+    def recuperarNumeroVeiculosImportados():
+        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Veiculos_internacionais.json')
+        numero = response.json()
+        return numero
+
+    #Salvar cada numero
+    @staticmethod
+    def salvarNumeroClientes(numero):
+        requests.put(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Clientes.json',data=json.dumps(numero))
+
+    @staticmethod
+    def salvarNumeroFuncionarios(numero):
+        requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Funcionarios.json',data=json.dumps(numero))
+
+
+    @staticmethod
+    def salvarNumeroLocacoes(numero):
+        requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Locacoes.json',data=json.dumps(numero))
+
+    @staticmethod
+    def salvarNumeroSeguros(numero):
+        requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Seguros.json',data=json.dumps(numero))
+
+    @staticmethod
+    def salvarNumeroVeiculosNacionais(numero):
+        requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Veiculos_nacionais.json',data=json.dumps(numero))
+
+    @staticmethod
+    def salvarNumeroVeiculosImportados(numero):
+        requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTNumeros}/Veiculos_internacionais.json',data=json.dumps(numero))
+
 
 
     #salvar a propia locadora em si
@@ -458,7 +515,7 @@ class BancodeDados:
 
     @staticmethod
     def recuperarLocadora():
-        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTLocadora}.json',data=json.dumps(locadora))
+        response = requests.get(f'{BancodeDados.URLBanco}{BancodeDados.URLTLocadora}.json')
         locadora = response.json()
         return locadora
 
