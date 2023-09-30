@@ -67,8 +67,8 @@ cadastroDefault = \
                     [sg.Text('Escolha uma das opções abaixo para começar:')],
                     [sg.Button('Funcionario', size=(20, 1), pad=(10, 10),key='btncadFuncionario')],
                     [sg.Button('Cliente', size=(20, 1), pad=(10, 10),key='btncadCliente')],
-                    [sg.Button('Veiculo Nacional', size=(20, 1), pad=(10, 10),key='btncadVeiculoNacional')],
-                    [sg.Button('Veiculo Importado', size=(20, 1), pad=(10, 10),key='btncadVeiculoImportado')],
+                    [sg.Button('Veiculo Nacional', size=(20, 1), pad=(10, 10),key='btnCadVeiculoNacional')],
+                    [sg.Button('Veiculo Importado', size=(20, 1), pad=(10, 10),key='btnCadVeiculoImportado')],
 ]
 
 cadastroFuncionario = \
@@ -137,7 +137,7 @@ menuLayout = [['Cadastro', ['Funcionario', 'Cliente', 'Veiculo Nacional', 'Veicu
 
 layout = [
     [sg.Text('CADASTRO')],
-    [cadastroDefault]]
+    cadastroDefault]
 
 
 layoutvazio = [[]]
@@ -207,58 +207,53 @@ while True:
                     sg.popup('Trabalhando nisso.')
                     window['todosLocacoes'].update(True)
                     popup_window.close()
-    if event == 'cadFuncionario':
-        window = sg.Window('Cadastro de Funcionário', cadastroFuncionario, size=(400, 330), element_justification='c')
-    if event == 'cadCliente':
-        window = sg.Window('Cadastro de Cliente', cadastroCliente, size=(400, 350), element_justification='c')
-    if event == 'cadVeiculoNacional':
-        window = sg.Window('Cadastro de Veiculo Nacional', cadastroVeiculoNacional, size=(400, 350),
-                           element_justification='c')
-    if event == 'cadVeiculoImportado':
-        window = sg.Window('Cadastro de Veiculo Importado', cadastroVeiculoImportado, size=(400, 350),
-                           element_justification='c')
+    if event == 'btncadFuncionario':
+        popup_window = sg.Window('Cadastro de Funcionário', cadastroFuncionario, size=(400, 350), element_justification='c')
+        while True:
+            popup_event, popup_values = popup_window.read()
+            if popup_event in (sg.WINDOW_CLOSED, 'Cancelar'):
+                break
+            if popup_event == 'salvarFuncionario':
+                if popup_values['nome'] != '' and popup_values['cpf'] != '' and popup_values['rg'] != '' and popup_values['dataNascimento'] != '' and popup_values['endereco'] != '' and popup_values['email'] != '' and popup_values['cep'] != '' and popup_values['salario'] != '' and popup_values['pis'] != '' and popup_values['dataAdmissao'] != '':
+                    ## Salvar no banco
+                    pass
+                else:
+                    sg.popup_error("Todos os campos devem ser preenchidos!")
 
-    if event == 'salvarFuncionario':
-        if window.Title == 'Cadastro de Funcionário':
-            if values['nome'] != '' and values['cpf'] != '' and values['rg'] != '' and values[
-                'dataNascimento'] != '' and values['endereco'] != '' and values['email'] != '' and values[
-                'cep'] != '' and values['salario'] != '' and values['pis'] != '' and values['dataAdmissao'] != '':
-                ## Salvar no banco
-                pass
-            else:
-                sg.popup_error("Todos os campos devem ser preenchidos!")
-
-    if event == 'salvarCliente':
-        if window.Title == 'Cadastro de Cliente':
-            if values['nome'] != '' and values['cpf'] != '' and values['rg'] != '' and values[
-                'dataNascimento'] != '' and values['endereco'] != '' and values['email'] != '' and values[
-                'cep'] != '' and values['categoriaCNH'] != '' and values['numeroCNH'] != '' and values[
-                'dataValidadeCNH'] != '' and values['clienteOuro'] != '':
-                ## Salvar no banco
-                pass
-            else:
-                sg.popup_error("Todos os campos devem ser preenchidos!")
-
-    if event == 'salvarVeiculoNacional':
-        if window.Title == 'Cadastro de Veiculo Nacional':
-            if values['nomeModelo'] != '' and values['montadora'] != '' and values['anoFabricacao'] != '' and values[
-                'anoModelo'] != '' and values['placa'] != '' and values['categoria'] != '' and values[
-                'valorFipe'] != '' and values['valorDiaria'] != '' and values['categoriaCNH'] != '' and values[
-                'taxaImpostoEstadual'] != '':
-                ## Salvar no banco
-                pass
-            else:
-                sg.popup_error("Todos os campos devem ser preenchidos!")
-
-    if event == 'salvarVeiculoImportado':
-        if window.Title == 'Cadastro de Veiculo Importado':
-            if values['nomeModelo'] != '' and values['montadora'] != '' and values['anoFabricacao'] != '' and values[
-                'anoModelo'] != '' and values['placa'] != '' and values['categoria'] != '' and values[
-                'valorFipe'] != '' and values['valorDiaria'] != '' and values['categoriaCNH'] != '' and values[
-                'taxaImpostoEstadual'] != '' and values['taxaImpostoFeredal'] != '':
-                ## Salvar no banco
-                pass
-            else:
-                sg.popup_error("Todos os campos devem ser preenchidos!")
-
+    if event == 'btncadCliente':
+        popup_window = sg.Window('Cadastro de Cliente', cadastroCliente, size=(400, 350), element_justification='c')
+        while True:
+            popup_event, popup_values = popup_window.read()
+            if popup_event in (sg.WINDOW_CLOSED, 'Cancelar'):
+                break
+            if popup_event == 'salvarCliente':
+                if popup_values['nome'] != '' and popup_values['cpf'] != '' and popup_values['rg'] != '' and popup_values['dataNascimento'] != '' and popup_values['endereco'] != '' and popup_values['email'] != '' and popup_values['cep'] != '' and popup_values['categoriaCNH'] != '' and popup_values['numeroCNH'] != '' and popup_values['dataValidadeCNH'] != '' and popup_values['clienteOuro'] != '':
+                    ## Salvar no banco
+                    pass
+                else:
+                    sg.popup_error("Todos os campos devem ser preenchidos!")
+    if event == 'btnCadVeiculoNacional':
+        popup_window = sg.Window('Cadastro de Veiculo Nacional', cadastroVeiculoNacional, size=(400, 350), element_justification='c')
+        while True:
+            popup_event, popup_values = popup_window.read()
+            if popup_event in (sg.WINDOW_CLOSED, 'Cancelar'):
+                break
+            if popup_event == 'salvarVeiculoNacional':
+                if popup_values['nomeModelo'] != '' and popup_values['montadora'] != '' and popup_values['anoFabricacao'] != '' and popup_values['anoModelo'] != '' and popup_values['placa'] != '' and popup_values['categoria'] != '' and popup_values['valorFipe'] != '' and popup_values['valorDiaria'] != '' and popup_values['categoriaCNH'] != '' and popup_values['taxaImpostoEstadual'] != '':
+                    ## Salvar no banco
+                    pass
+                else:
+                    sg.popup_error("Todos os campos devem ser preenchidos!")
+    if event == 'btnCadVeiculoImportado':
+        popup_window = sg.Window('Cadastro de Veiculo Importado', cadastroVeiculoImportado, size=(400, 350), element_justification='c')
+        while True:
+            popup_event, popup_values = popup_window.read()
+            if popup_event in (sg.WINDOW_CLOSED, 'Cancelar'):
+                break
+            if popup_event == 'salvarVeiculoImportado':
+                if popup_values['nomeModelo'] != '' and popup_values['montadora'] != '' and popup_values['anoFabricacao'] != '' and popup_values['anoModelo'] != '' and popup_values['placa'] != '' and popup_values['categoria'] != '' and popup_values['valorFipe'] != '' and popup_values['valorDiaria'] != '' and popup_values['categoriaCNH'] != '' and popup_values['taxaImpostoEstadual'] != '' and popup_values['taxaImpostoFeredal'] != '':
+                    ## Salvar no banco
+                    pass
+                else:
+                    sg.popup_error("Todos os campos devem ser preenchidos!")
 window.close()
