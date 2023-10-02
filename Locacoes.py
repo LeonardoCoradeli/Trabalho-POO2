@@ -1,17 +1,17 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from datetime import datetime
 
 #Classe seguro e seus atributos
 class Seguro():
-    estatico_codigoSeguro = 0
+    Estatico_codigoSeguro = 0
     def __init__(self,nome,tipo,descricao,valor,codigoSeguro=None):
         if codigoSeguro == None:
-            self._codigoSeguro = Seguro.estatico_codigoSeguro
+            self._codigoSeguro = Seguro.Estatico_codigoSeguro
             self._nome = nome
             self._tipo = tipo
             self._descricao = descricao
             self._valor = valor
-            Seguro.estatico_codigoSeguro+=1
+            Seguro.Estatico_codigoSeguro+=1
         else:
             self._codigoSeguro = codigoSeguro
             self._nome = nome
@@ -57,6 +57,14 @@ class Seguro():
     @valor.setter
     def valor(self, valor):
         self._valor = valor
+
+
+    def setEstatico_codigoSeguro(self, numero):
+        self.Estatico_codigoSeguro = numero
+
+
+    def getEstatico_codigoSeguro(self):
+        return self.Estatico_codigoSeguro
 
 #Classe abstrata pagamento
 class Pagamento(ABC):
@@ -139,10 +147,10 @@ class Cartao(Pagamento):
         self._cvv = cvv
 
 class Locacao():
-    estatico_codigoLocacao = 0
+    Estatico_codigoLocacao = 0
     def __init__(self,codCliente,codFuncionario,dataLocacao,dataDevolucao,valorBase,formaPagamento,finalizada,segurosContratados=None, codLocacao=None):
         if codLocacao  == None:
-            self._codLocacao = Locacao.estatico_codigoLocacao
+            self._codLocacao = Locacao.Estatico_codigoLocacao
             self._codCliente = codCliente
             self._codFuncionario = codFuncionario
             self._dataLocacao = datetime.strptime(dataLocacao, "%d/%m/%Y")
@@ -151,9 +159,9 @@ class Locacao():
             self._formaPagamento = formaPagamento
             self._segurosContratados = segurosContratados if not segurosContratados == None else []
             self._finalizada = finalizada
-            Locacao.estatico_codigoLocacao+=1
+            Locacao.Estatico_codigoLocacao+=1
         else:
-            self._codLocacao = Locacao.estatico_codigoLocacao
+            self._codLocacao = codLocacao
             self._codCliente = codCliente
             self._codFuncionario = codFuncionario
             self._dataLocacao = datetime.strptime(dataLocacao, "%d/%m/%Y")
@@ -257,3 +265,11 @@ class Locacao():
             return True
         else:
             return False
+
+
+    def setEstatico_codigoLocacao(self, numero):
+        self.Estatico_codigoLocacao = numero
+
+
+    def getEstatico_codigoLocacao(self):
+        return self.Estatico_codigoLocacao

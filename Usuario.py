@@ -141,6 +141,15 @@ class Cliente(Usuario):
         self._clienteOuro = clienteOuro
 
 
+    def setEstatico_codigoFuncionari(self, numero):
+        self.Estatico_codigoCliente = numero
+
+
+    def getEstatico_codigoCliente(self):
+        return self.Estatico_codigoCliente
+
+
+
 class Funcionario(Usuario):
     Estatico_codigoFuncionario = 0
     def __init__(self, nome, cpf, rg, dataNascimento, endereco, cep, email, salario, pis, dataAdmissao,codigoUsuario=None):
@@ -187,3 +196,10 @@ class Funcionario(Usuario):
     def dataAdmissao(self, data):
         self._dataAdmissao = data
 
+
+    def setEstatico_codigoFuncionari(self, numero):
+        self.Estatico_codigoFuncionario = numero
+
+
+    def getEstatico_codigoFuncionario(self):
+        return self.Estatico_codigoFuncionario

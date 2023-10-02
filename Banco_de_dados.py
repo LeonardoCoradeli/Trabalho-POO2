@@ -4,9 +4,6 @@ import Locacoes
 import Usuario
 import Veiculos
 
-
-
-
 class BancodeDados:
     URLBanco = 'https://trabalho-pratico-c3891-default-rtdb.firebaseio.com/'
     URLTClientes = 'Clientes'
@@ -30,7 +27,7 @@ class BancodeDados:
     def recuperarFuncionario(codFuncioanrio):
         response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTFuncionarios}/{codFuncioanrio}/.json")
         funcionario_dict = response.json()
-        funcionario = Usuario.Funcionario('', '', '', '', '', '', '', 0, '', '')
+        funcionario = Usuario.Funcionario('', '', '', '1/1/2023', '', '', '', 0, '', '1/1/2023')
         funcionario.__dict__.update(funcionario_dict)
         return funcionario
 
@@ -378,7 +375,7 @@ class BancodeDados:
         funcionario_list = response.json()
         funcionarios = []
         for funcionario in funcionario_list:
-            f = Usuario.Funcionario('', '', '', '', '', '', '', 0, '', '')
+            f = Usuario.Funcionario('', '', '', '1/1/2023', '', '', '', 0, '', '1/1/2023')
             f.__dict__.update(funcionario)
             funcionarios.append(f)
         return funcionarios
@@ -413,7 +410,7 @@ class BancodeDados:
         veiculo_list = response.json()
         veiculos = []
         for veiculo in veiculo_list:
-            v = Veiculos.VeiculoNacional('', '', 0, 0, '', '', 0, 0, '', False, 0)
+            v = Veiculos.VeiculoNacional('','',0,0,'','',0,0,'',False,0)
             v.__dict__.update(veiculo)
             veiculos.append(v)
 
@@ -425,7 +422,7 @@ class BancodeDados:
         veiculo_list = response.json()
         veiculos = []
         for veiculo in veiculo_list:
-            v = Veiculos.VeiculoImportado('', '', 0, 0, '', '', 0, 0, '', False, 0)
+            v = Veiculos.VeiculoImportado('', '', 0, 0, '', '', 0, 0, '', False, 0,0)
             v.__dict__.update(veiculo)
             veiculos.append(v)
 

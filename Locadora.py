@@ -14,108 +14,96 @@ class Locadora:
         self._clientes = self._conifguracao.recuperarTodosClientes()
         self._funcionarios = self._conifguracao.recuperarTodosFuncionarios()
         self._seguros = self._conifguracao.recuperarTodosSeguros()
-        self._veiculos = self._conifguracao.recuperarTodosVeiculosNacionais()+self._conifguracao.recuperarTodosVeiculosImportados()
+        self._veiculos = self._conifguracao.recuperarTodosVeiculosNacionais()
+        self._veiculos.extend(self._conifguracao.recuperarTodosVeiculosImportados())
 
     def ListarVeiculos(self):
         for i in self._veiculos:
-            print(i)
+            i.__str__()
     
     def ListarVeiculosNacionais(self):
         for i in self._veiculos:
             if i.getTipo() == "Nacional":
-                print(i)
+                i.__str__()
     
     def ListaVeiculosImportados(self):
         for i in self._veiculos:
             if i.getTipo() == "Importado":
-                print(i)
+                i.__str__()
     
     def ListasVeiulosDisponiveis(self):
         for i in self._veiculos:
             if i.getDisponivel() == True:
-                print(i)
+                i.__str__()
     
     def ListarVeiculosDisponiveisCategoria(self,categoria):
         for i in self._veiculos:
             if i.getDisponivel() == True and i.getCategoria() == categoria:
-                print(i)
+                i.__str__()
     
     def ListarVeiculosNãoDisponiveis(self):
         for i in self._veiculos:
             if i.getDisponivel() == False:
-                print(i)
+                i.__str__()
     
     def ListarVeiculosAtrasados(self):
         for i in self._locacoes:
             if i.getAtrasado() == True:
-                print(i)
-    
+                i.__str__()
     def ListarClientesComLocacao(self):
         for i in self._locacoes:
-            print(i.getCliente())
+            i.getCliente().__str__
     
     def ListarFuncionarios(self):
         for i in self._funcionarios:
-            print(i)
+            i.__str__
     
     def ListarFuncionarioDoMes(self):
         for i in self._funcionarios:
             if i.getFuncionarioDoMes() == True:
-                print(i)
-    
+                i.__str__()
     def ListarClientes(self):
         for i in self._clientes:
-            print(i)
-    
+            i.__str__()
     def ListarHistoricoLocacaoCliente(self,cliente):
         for i in self._locacoes:
             if i.getCliente() == cliente:
-                print(i)
-    
+                i.__str__()
     def ListarTodasLocacoes(self):
         for i in self._locacoes:
-            print(i)
-    
+            i.__str__()
     def ListarLocacaoMes(self,mes):
         for i in self._locacoes:
             if i.getMes() == mes:
-                print(i)
-
+                i.__str__()
     def ListarLocacaoMescomLucro(self,mes):
         for i in self._locacoes:
             if i.getMes() == mes:
-                print(i.getLucro())
-    
+                i.getLucro().__str__
+
     def ListarLocacoesFinalizadas(self):
         for i in self._locacoes:
             if i.getFinalizada() == True:
-                print(i)
-    
+                i.__str__()
     def ListarLocacoesNaoFinalizadas(self):
         for i in self._locacoes:
             if i.getFinalizada() == False:
-                print(i)
-    
+                i.__str__()
     def ListarLocacoesNaoFinalizadasNacional(self):
         for i in self._locacoes:
             if i.getFinalizada() == False and i.getVeiculo().getTipo() == "Nacional":
-                print(i)
-    
+                i.__str__()
     def ListarLocacoesNaoFinalizadasImportado(self):
         for i in self._locacoes:
             if i.getFinalizada() == False and i.getVeiculo().getTipo() == "Importado":
-                print(i)
-
+                i.__str__()
     def ListarLocacoesAtrasadas(self):
         for i in self._locacoes:
             if i.getAtrasado() == True:
-                print(i)
-    
+                i.__str__()
     def ListarTiposSeguros(self):
         for i in self._seguros:
-            print(i)
-    
+            i.__str__()
     def RetornarVeiculoscomoObjeto(self):
         return self._veiculos
-
 

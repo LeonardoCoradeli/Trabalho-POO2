@@ -1,5 +1,8 @@
 import PySimpleGUI as sg
 import os
+import Locadora
+
+locadora = Locadora.Locadora("Teste","Teste","Teste","Teste")
 
 diretorio_atual = os.path.dirname(os.path.abspath(__file__))
 caminho_icone = os.path.join(diretorio_atual, 'assets', 'tela_icon.ico')
@@ -57,7 +60,7 @@ relatorioFuncionarios = [sg.Frame('Funcionarios', layout=[
 
 layout_TelaRelatorios = [
     [sg.Column(layout=[relatoriosVeiculos, relatoriosClientes, relatoriosLocacoes, relatorioFuncionarios]),
-     sg.Column(layout=[[sg.Multiline(size=(400, 450), disabled=True)]])]
+     sg.Column(layout=[[sg.Multiline(size=(400, 450), disabled=True, key='textoRelatorios')]])]
 ]
 
 #Cadastro
@@ -160,6 +163,8 @@ while True:
     if event in (sg.WINDOW_CLOSED, 'Cancelar'):
         break
     if event == 'btnveiculos':
+        if values['todosVeiculos']:
+            window['todosVeiculos'].update(value=locadora.ListarVeiculos())
         if values['CNHNecessaria']:
             popup_window = sg.Window(title='CNH', layout=relatoriosVeiculos_popup, modal=True, size=(150, 80))
 

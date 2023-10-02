@@ -1,12 +1,9 @@
 from abc import ABC, abstractmethod
-from Banco_de_dados import BancodeDados
-
-BD = BancodeDados()
 #Classe veiculos e seus atributos
 
 class Veiculo(ABC):
-    def __init__(self,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado):
-        self._codigoVeiculo = self.codigo_veiculo_estatico
+    def __init__(self,codigoVeiculo,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado):
+        self._codigoVeiculo = codigoVeiculo
         self._nomeModelo = nomeModelo
         self._montadora = montadora
         self._anoFabricacao = anoFabricacao
@@ -17,7 +14,6 @@ class Veiculo(ABC):
         self._valorDiaria = valorDiaria
         self._categoriaCNHNecessaria = categoriaCNHNecessaria
         self._alugado = alugado
-        self.codigo_veiculo_estatico+=1
 
     def __str__(self):
         return f"Código do Veículo: {self._codigoVeiculo}\n" \
@@ -156,8 +152,7 @@ class VeiculoNacional(Veiculo):
             super().__init__(VeiculoNacional.codigo_veiculo_Estatico,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado)
             self._taxaImpostoEstadual = taxaImpostoEstadual
         else:
-            super().__init__(codigoVeiculo, nomeModelo, montadora, anoFabricacao, anoModelo,
-                             placa, categoria, valorFipe, valorDiaria, categoriaCNHNecessaria, alugado)
+            super().__init__(codigoVeiculo, nomeModelo, montadora, anoFabricacao, anoModelo,placa, categoria, valorFipe, valorDiaria, categoriaCNHNecessaria, alugado)
             self._taxaImpostoEstadual = taxaImpostoEstadual
     
     @property
@@ -186,6 +181,14 @@ class VeiculoNacional(Veiculo):
                f"Categoria CNH Necessária: {self._categoriaCNHNecessaria}\n" \
                f"Alugado: {'Sim' if self._alugado else 'Não'}\n" \
                f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%"
+
+
+    def setCodigoVeiculo(self, numero):
+        self.codigo_veiculo_Estatico = numero
+
+
+    def getCodigoVeiculo(self):
+        return self.codigo_veiculo_Estatico
         
 class VeiculoImportado(Veiculo):
     codigo_veiculo_Estatico = 0
@@ -236,3 +239,11 @@ class VeiculoImportado(Veiculo):
                f"Alugado: {'Sim' if self._alugado else 'Não'}\n" \
                f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%\n" \
                f"Taxa de Imposto Federal: {self._taxaImpostoFederal}%"
+
+
+    def setCodigoVeiculo(self,numero):
+        self.codigo_veiculo_Estatico = numero
+
+
+    def getCodigoVeiculo(self):
+        return self.codigo_veiculo_Estatico
