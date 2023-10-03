@@ -58,52 +58,77 @@ class Locadora:
         for i in self._funcionarios:
             i.__str__
     
-    def ListarFuncionarioDoMes(self):
-        for i in self._funcionarios:
-            if i.getFuncionarioDoMes() == True:
-                i.__str__()
+    def ListarFuncionarioDoMes(self,mes):
+        locacoes_por_funcionario = {}
+        for i in self._locacoes:
+            if i.dataLocacao.month == mes:
+                funcionario = i.funcionario
+                valor_locacao = i.valorLocacao
+
+
+                if funcionario in locacoes_por_funcionario:
+                    locacoes_por_funcionario[funcionario] += valor_locacao
+                else:
+                    locacoes_por_funcionario[funcionario] = valor_locacao
+
+        funcionario_do_mes = max(locacoes_por_funcionario, key=locacoes_por_funcionario.get)
+        valor_mais_alto = locacoes_por_funcionario[funcionario_do_mes]
+
+        return f'O funcionário do mês é: {funcionario_do_mes} faturando: {valor_mais_alto}'
+
     def ListarClientes(self):
         for i in self._clientes:
-            i.__str__()
+            str(i)
     def ListarHistoricoLocacaoCliente(self,cliente):
         for i in self._locacoes:
             if i.getCliente() == cliente:
-                i.__str__()
+                str(i)
     def ListarTodasLocacoes(self):
         for i in self._locacoes:
-            i.__str__()
+            str(i)
     def ListarLocacaoMes(self,mes):
         for i in self._locacoes:
             if i.getMes() == mes:
-                i.__str__()
+                str(i)
     def ListarLocacaoMescomLucro(self,mes):
+        valor = 0.0
         for i in self._locacoes:
             if i.getMes() == mes:
-                i.getLucro().__str__
+                valor += i.valorTotal()
+        return f'Lucro do mês {mes}: {str(valor)}'
 
     def ListarLocacoesFinalizadas(self):
         for i in self._locacoes:
             if i.getFinalizada() == True:
-                i.__str__()
+                str(i)
     def ListarLocacoesNaoFinalizadas(self):
         for i in self._locacoes:
             if i.getFinalizada() == False:
-                i.__str__()
+                return str(i)
     def ListarLocacoesNaoFinalizadasNacional(self):
+        locacoes = []
         for i in self._locacoes:
             if i.getFinalizada() == False and i.getVeiculo().getTipo() == "Nacional":
-                i.__str__()
+                locacoes.append(str(i))
+        return ''.join(locacoes)
     def ListarLocacoesNaoFinalizadasImportado(self):
+        locacoes = []
         for i in self._locacoes:
             if i.getFinalizada() == False and i.getVeiculo().getTipo() == "Importado":
-                i.__str__()
+                locacoes.append(str(i))
+        return ''.join(locacoes)
     def ListarLocacoesAtrasadas(self):
+        locacoes =[]
         for i in self._locacoes:
             if i.getAtrasado() == True:
-                i.__str__()
+                locacoes.append(str(i))
+        return ''.join(locacoes)
+
     def ListarTiposSeguros(self):
+        seguros = []
         for i in self._seguros:
-            i.__str__()
+            seguros.append(str(i))
+        return ''.join(seguros)
     def RetornarVeiculoscomoObjeto(self):
         return self._veiculos
 
