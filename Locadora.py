@@ -102,9 +102,12 @@ class Locadora:
             if i.getFinalizada() == True:
                 str(i)
     def ListarLocacoesNaoFinalizadas(self):
+        locacoes = []
         for i in self._locacoes:
             if i.getFinalizada() == False:
-                return str(i)
+                locacoes.append(str(locacoes))
+        return ''.join(locacoes)
+
     def ListarLocacoesNaoFinalizadasNacional(self):
         locacoes = []
         for i in self._locacoes:
