@@ -58,23 +58,42 @@ class Locadora:
     def locacoes(self):
         return self._locacoes
 
+    @locacoes.setter
+    def locacoes(self,locacao):
+        self._locacoes.append(locacao)
+
     @property
     def clientes(self):
         return self._clientes
+
+    @clientes.setter
+    def clientes(self,cliente):
+        self._clientes.append(cliente)
 
     @property
     def funcionarios(self):
         return self._funcionarios
 
+    @funcionarios.setter
+    def funcionarios(self,funcionario):
+        self._funcionarios.append(funcionario)
+
     @property
     def seguros(self):
         return self._seguros
 
+    @seguros.setter
+    def seguros(self,seguro):
+        self._seguros.append(seguro)
+
     @property
     def veiculos(self):
         return self._veiculos
-    
 
+    @veiculos.setter
+    def veiculos(self,veiculo):
+        self._veiculos.append(veiculo)
+    
     def ListarVeiculos(self):
         veiculos = []
         for i in self._veiculos:
