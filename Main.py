@@ -195,7 +195,7 @@ while True:
                 elif popup_event == 'Gerar':
                     sg.popup('Trabalhando nisso.')
                     window['todosClientes'].update(True)
-                    popup_window.close()
+                    popup_window.hide()
     if event == 'btnlocacoes':
         if values['NaoFinalizadas']:
             popup_window = sg.Window('Não finalizadas', relatoriosLocacoes_popup, modal=True)

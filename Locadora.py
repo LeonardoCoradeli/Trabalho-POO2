@@ -9,54 +9,129 @@ class Locadora:
         self._endereco = endereco
         self._website = website
         self._redeSocial = redeSocial
-        self._conifguracao = Banco_de_dados.BancodeDados()
-        self._locacoes = self._conifguracao.recuperarTodasLocacoes()
-        self._clientes = self._conifguracao.recuperarTodosClientes()
-        self._funcionarios = self._conifguracao.recuperarTodosFuncionarios()
-        self._seguros = self._conifguracao.recuperarTodosSeguros()
-        self._veiculos = self._conifguracao.recuperarTodosVeiculosNacionais()
-        self._veiculos.extend(self._conifguracao.recuperarTodosVeiculosImportados())
+        self._configuracao = Banco_de_dados.BancodeDados()
+        self._locacoes = self._configuracao.recuperarTodasLocacoes()
+        self._clientes = self._configuracao.recuperarTodosClientes()
+        self._funcionarios = self._configuracao.recuperarTodosFuncionarios()
+        self._seguros = self._configuracao.recuperarTodosSeguros()
+        self._veiculos = self._configuracao.recuperarTodosVeiculosNacionais()
+        self._veiculos.extend(self._configuracao.recuperarTodosVeiculosImportados())
+
+    #getter e setters
+    @property
+    def nome(self):
+        return self._nome
+
+    @nome.setter
+    def nome(self,nome):
+        self._nome = nome
+
+    @property
+    def endereco(self):
+        return self._endereco
+
+    @endereco.setter
+    def endereco(self,endereco):
+        self._endereco = endereco
+
+    @property
+    def website(self):
+        return self._website
+
+    @website.setter
+    def website(self,website):
+        self._website = website
+
+    @property
+    def redeSocial(self):
+        return self._redeSocial
+
+    @redeSocial.setter
+    def redeSocial(self,redeSocial):
+        self._redeSocial = redeSocial
+
+    @property
+    def configuracao(self):
+        return self._configuracao
+
+    @property
+    def locacoes(self):
+        return self._locacoes
+
+    @property
+    def clientes(self):
+        return self._clientes
+
+    @property
+    def funcionarios(self):
+        return self._funcionarios
+
+    @property
+    def seguros(self):
+        return self._seguros
+
+    @property
+    def veiculos(self):
+        return self._veiculos
+    
 
     def ListarVeiculos(self):
+        veiculos = []
         for i in self._veiculos:
-            i.__str__()
+            veiculos.append(str(i))
+        return ''.join(veiculos)
+
     
     def ListarVeiculosNacionais(self):
+        veiculos = []
         for i in self._veiculos:
             if i.getTipo() == "Nacional":
-                i.__str__()
+                veiculos.append(str(i))
+        return ''.join(veiculos)
     
     def ListaVeiculosImportados(self):
+        veiculos = []
         for i in self._veiculos:
             if i.getTipo() == "Importado":
-                i.__str__()
+                veiculos.append(str(i))
+        return ''.join(veiculos)
     
     def ListasVeiulosDisponiveis(self):
+        veiculos = []
         for i in self._veiculos:
             if i.getDisponivel() == True:
-                i.__str__()
+                veiculos.append(str(i))
+        return ''.join(veiculos)
     
     def ListarVeiculosDisponiveisCategoria(self,categoria):
+        veiculos = []
         for i in self._veiculos:
             if i.getDisponivel() == True and i.getCategoria() == categoria:
-                i.__str__()
+                veiculos.append(str(i))
+        return ''.join(veiculos)
     
     def ListarVeiculosNãoDisponiveis(self):
+        veiculos = []
         for i in self._veiculos:
             if i.getDisponivel() == False:
-                i.__str__()
+                veiculos.append(str(i))
+        return ''.join(veiculos)
     
     def ListarVeiculosAtrasados(self):
+        veiculos = []
         for i in self._locacoes:
             if i.getAtrasado() == True:
-                i.__str__()
+                veiculos.append(str(i))
+        return ''.join(veiculos)
     def ListarClientesComLocacao(self):
         for i in self._locacoes:
             i.getCliente().__str__
     
     def ListarFuncionarios(self):
+        funcionarios = []
         for i in self._funcionarios:
-            i.__str__
+            funcionarios.append(str(i))
+        return ''.join(funcionarios)
     
     def ListarFuncionarioDoMes(self,mes):
         locacoes_por_funcionario = {}
@@ -77,19 +152,27 @@ class Locadora:
         return f'O funcionário do mês é: {funcionario_do_mes} faturando: {valor_mais_alto}'
 
     def ListarClientes(self):
+        locacoes = []
         for i in self._clientes:
-            str(i)
+            locacoes.append(str(i))
+        return ''.join(locacoes)
     def ListarHistoricoLocacaoCliente(self,cliente):
+        locacoes = []
         for i in self._locacoes:
             if i.getCliente() == cliente:
-                str(i)
+                locacoes.append(str(i))
+        return ''.join(locacoes)
     def ListarTodasLocacoes(self):
+        locacoes = []
         for i in self._locacoes:
-            str(i)
+            locacoes.append(str(i))
+        return ''.join(locacoes)
     def ListarLocacaoMes(self,mes):
+        locacoes = []
         for i in self._locacoes:
             if i.getMes() == mes:
-                str(i)
+                locacoes.append(str(i))
+        return ''.join(locacoes)
     def ListarLocacaoMescomLucro(self,mes):
         valor = 0.0
         for i in self._locacoes:
@@ -98,9 +181,11 @@ class Locadora:
         return f'Lucro do mês {mes}: {str(valor)}'
 
     def ListarLocacoesFinalizadas(self):
+        locacoes = []
         for i in self._locacoes:
             if i.getFinalizada() == True:
-                str(i)
+                locacoes.append(str(i))
+        return ''.join(locacoes)
     def ListarLocacoesNaoFinalizadas(self):
         locacoes = []
         for i in self._locacoes:
