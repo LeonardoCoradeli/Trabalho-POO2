@@ -4,10 +4,11 @@ from Banco_de_dados import BancodeDados
 from Locacoes import Locacao,Seguro
 from Usuario import Cliente, Funcionario
 from Veiculos import VeiculoNacional, VeiculoImportado
+from Tela_inicial import telaInicial
 
 if __name__ == '__main__':
     #Abre uma tela na primeira vez
-    dados = GUI.tela.telaInicial()
+    dados = telaInicial()
     locadora = Locadora.Locadora(dados[0], dados[1], dados[2], dados[3])
 
     #Recupera os dados do banco de dados sobre o numero de itens
