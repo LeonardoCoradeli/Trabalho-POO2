@@ -154,16 +154,17 @@ class Cartao(Pagamento):
 
 class Locacao():
     Estatico_codigoLocacao = 0
-    def __init__(self,codCliente,veiculo,codFuncionario,dataLocacao,dataDevolucao,valorBase,formaPagamento,finalizada,segurosContratados=None, codLocacao=None):
+    def __init__(self,codCliente,veiculo,codFuncionario,dataLocacao,dataDevolucao,valorBase,formaPagamento,finalizada,segurosContratados='', codLocacao=None):
         if codLocacao  == None:
             self._codLocacao = Locacao.Estatico_codigoLocacao
             self._codCliente = codCliente
             self._codFuncionario = codFuncionario
             self._dataLocacao = datetime.strptime(str(dataLocacao), "%d/%m/%Y")
-            self._dataDevolucao = datetime.strptime(str(dataDevolucao), "%d/%m/%Y")
+            self._dataDevolucao =  datetime.strptime(str(dataDevolucao), "%d/%m/%Y")
             self._valorTotal = float(valorBase)
             self._formaPagamento = formaPagamento
-            self._segurosContratados = segurosContratados if not segurosContratados == None else []
+            self._segurosContratados = []
+            self._segurosContratados.append(segurosContratados)
             self._finalizada = finalizada
             self._veiculo = veiculo
             Locacao.Estatico_codigoLocacao+=1
@@ -269,6 +270,14 @@ class Locacao():
     @finalizada.setter
     def finalizada(self, finalizada):
         self._finalizada = finalizada
+
+    @property
+    def veiculo(self):
+        return self._veiculo
+
+    @veiculo.setter
+    def veiculo(self, veiculo):
+        self._veiculo = veiculo
 
     def calcularValorTotal(self):
         for seguro in self._segurosContratados:

@@ -11,185 +11,6 @@ caminho_icone = os.path.join(diretorio_atual, 'assets', 'tela_icon.ico')
 
 sg.theme('BlueMono')
 
-# Tela de relatórios
-listadeCNH = ['A', 'B', 'C', 'D', 'E']
-relatoriosVeiculos = \
-[
-                        sg.Frame('Veiculos', layout=[
-                        [sg.Radio('Todos', group_id='veiculos', default=True, key='todosVeiculos'),
-                         sg.Radio('Nacionais', group_id='veiculos',key='veiculoNacionais'), sg.Radio('Importados', group_id='veiculos',key='veiculosImportados')],
-                        [sg.Radio('Disponivel', group_id='veiculos',key='veiculosDisponiveis'), sg.Radio('Locado', group_id='veiculos',key='veiculosLocados'),
-                         sg.Radio('Devolução atrasada', group_id='veiculos',key='veiculosDevolucaoAtrasada')],
-                        [sg.Radio('CNH Necessaria', group_id='veiculos', key='CNHNecessaria')],
-                        [sg.Button('Gerar', key='btnveiculos')]], vertical_alignment='c', key='frameVeiculos', size=(330, 150))
-
-]
-
-
-relatoriosClientes = \
-[
-                        sg.Frame('Clientes', layout=[
-                        [sg.Radio('Todos', group_id='clientes', default=True, key='todosClientes'),
-                         sg.Radio('Locações com atraso', group_id='clientes')],
-                        [sg.Radio('Veiculo Especifico', group_id='clientes', key='clienteVeiculoAtrasado')],
-                        [sg.Button('Gerar', key='btnclientes')]], size=(330, 120))
-]
-# mudar esses input para combo com respectivos dados
-
-relatoriosLocacoes = \
-[
-                        sg.Frame('Locações', layout=[
-                        [sg.Radio('Todos', group_id='locacoes', default=True, key='todosLocacoes'),
-                         sg.Radio('Finalizadas', group_id='locacoes'), sg.Radio('Atrasadas', group_id='locacoes')],
-                        [sg.Radio('Cliente especifico', group_id='locacoes'), sg.Radio('Mês especifico', group_id='locacoes')],
-                        [sg.Radio('Não finalizadas', group_id='locacoes', key='NaoFinalizadas')],
-                        [sg.Button('Gerar', key='btnlocacoes')]], size=(330, 150))
-]
-
-relatorioFuncionarios = \
-[
-                        sg.Frame('Funcionarios', layout=[
-                        [sg.Radio('Todos', group_id='funcionarios', default=True, key='todosfuncionarios'),
-                         sg.Radio('Funcionario do mês', group_id='funcionarios', key='funcionarioMes')],
-                        [sg.Button('Gerar', key='btnFuncionario')]], size=(330, 100))
-]
-
-layout_TelaRelatorios = [
-    [sg.Column(layout=[relatoriosVeiculos, relatoriosClientes, relatoriosLocacoes, relatorioFuncionarios]),
-     sg.Column(layout=[[sg.Multiline(size=(400, 450), disabled=True, key='textoRelatorios',font=('Verdana', 10))]])]
-]
-
-#Cadastro
-layout_TelaCadastro = \
-[
-                    [sg.Column(layout=[
-                            [sg.Button('Funcionario', size=(15, 1),key='btncadFuncionario',font=('Verdana', 15))],
-                            [sg.Text('',size=(15,1))],
-                            [sg.Button('Cliente', size=(15, 1),key='btncadCliente',font=('Verdana', 15))],
-                            [sg.Text('',size=(15,1))],
-                            [sg.Button('Veiculo Nacional', size=(15, 1), key='btnCadVeiculoNacional',font=('Verdana', 15))],
-                            [sg.Text('',size=(15,1))],
-                            [sg.Button('Veiculo Importado', size=(15, 1), key='btnCadVeiculoImportado',font=('Verdana', 15))],
-                            [sg.Text('',size=(15,1))],
-                            [sg.Button('Seguro', size=(15, 1),key='btnCadSeguro',font=('Verdana', 15))]
-                    ]),
-                    sg.Frame('',layout=[[]],size=(450, 500),key='lugarAparacerCadastro')]
-]
-
-def getNomeClientes():
-    clientes = Banco_de_dados.BancodeDados.recuperarTodosClientes()
-    aux = []
-    if clientes != None:
-        for cliente in clientes:
-            aux.append(cliente.nome)
-    return aux
-
-
-def getNomeFuncionarios():
-    funcionarios = Banco_de_dados.BancodeDados.recuperarTodosFuncionarios()
-    aux = []
-    if funcionarios != None:
-        for funcionario in funcionarios:
-            aux.append(funcionario.nome)
-        print(aux)
-    return aux
-
-
-def getNomeVeiculos():
-    veiculosNacionais = Banco_de_dados.BancodeDados.recuperarTodosVeiculosNacionais()
-    veiculosImportados = Banco_de_dados.BancodeDados.recuperarTodosVeiculosImportados()
-    aux = []
-    if veiculosNacionais != None:
-        for veiculo in veiculosNacionais:
-            aux.append(veiculo.nomeModelo)
-    if veiculosImportados != None:
-        for veiculo in veiculosImportados:
-            aux.append(veiculo.nomeModelo)
-    return aux
-
-def getNomeSeguros():
-    seguros = Banco_de_dados.BancodeDados.recuperarTodosSeguros()
-    aux = []
-    if seguros != None:
-        for seguro in seguros:
-            aux.append(seguro.nome)
-    return aux
-
-def getVeiculo(nomeVeiculo):
-    veiculosNacionais = Banco_de_dados.BancodeDados.recuperarTodosVeiculosNacionais()
-    veiculosImportados = Banco_de_dados.BancodeDados.recuperarTodosVeiculosImportados()
-    veiculos = []
-    if veiculosNacionais != None:
-        for veiculo in veiculosNacionais:
-            veiculos.append(veiculo)
-    if veiculosImportados != None:
-        for veiculo in veiculosImportados:
-            veiculos.append(veiculo)
-
-    for veiculo in veiculos:
-        if veiculo.nomeModelo == nomeVeiculo:
-            return veiculo
-
-def getCliente(nomeCliente):
-    clientes = Banco_de_dados.BancodeDados.recuperarTodosClientes()
-    for cliente in clientes:
-        if cliente.nome == nomeCliente:
-            return cliente
-
-def getFuncionario(nomeFuncionario):
-    funcionarios = Banco_de_dados.BancodeDados.recuperarTodosFuncionarios()
-    for funcionario in funcionarios:
-        if funcionario.nome == nomeFuncionario:
-            return funcionario
-
-def getSeguro(nomeSeguro):
-    seguros = Banco_de_dados.BancodeDados.recuperarTodosSeguros()
-    for seguro in seguros:
-        if seguro.nome == nomeSeguro:
-            return seguro
-
-def getValorBase(veiculo, seguro, locacao, devolucao):
-    dataLocacao = datetime.strptime(str(locacao), "%d/%m/%Y")
-    dataDevolucao = datetime.strptime(str(devolucao), "%d/%m/%Y")
-    dias = (dataDevolucao - dataLocacao).days
-    valorBase = veiculo.valorDiaria * dias
-    if seguro != None:
-        valorBase += seguro.valor
-    return valorBase
-
-locacaoLayout = [
-                    [sg.Text('Cliente:'), sg.Text('Funcionario:', pad=(100, 0))],
-                    [sg.Combo(getNomeClientes(), default_value='', key='comboCliente'), sg.Combo(getNomeFuncionarios(), default_value='', key='comboFuncionario', pad=(40, 0))],
-                    [sg.Text('Seguros:'), sg.Text('Veiculos:', pad=(100, 0))],
-                    [sg.Combo(getNomeSeguros(), default_value='', key='comboSeguros'), sg.Combo(getNomeVeiculos(), default_value='', key='comboVeiculos', pad=(40, 0))],
-                    [sg.Text('Data de Locação:'), sg.Text('Data de Devolução:', pad=(100, 0))],
-                    [sg.InputText(key='dataLocacao'), sg.InputText(key='dataDevolucao', pad=(40, 0))],
-                    [sg.Button("Calcular Valor", key='btnCalcularValor', pad=(0, 20))],
-                    [sg.Text('Valor Base:'), sg.Text(key='valorBase', pad=(100, 0))],
-                    [sg.Text('Forma de pagamento: ')],
-                    [sg.Combo(['Dinheiro', 'Cartão'], default_value='', key='comboFormaPagamento')],
-                    [sg.Button('Salvar', key='btnAddLocacao', size=(20, 1), pad=(0, 20))],
-]
-
-
-
-
-layout_TelaSobre = [
-    [sg.Text('',size=(10,15))],
-    [sg.Frame('', layout=[
-        [sg.Column(layout=[
-            [sg.Text('Nome: ',font=('Verdana',16,'bold')),sg.Text(f'{locadora.nome}',font=('Verdana',16))],
-            [sg.Text('Endereço: ',font=('Verdana',16,'bold')),sg.Text(f'{locadora.endereco}',font=('Verdana',16))]
-        ]),
-        sg.Column(layout=[
-            [sg.Text('Website: ',font=('Verdana',16,'bold')),sg.Text(f'{locadora.website}',font=('Verdana',16))],
-            [sg.Text('Rede Social: ',font=('Verdana',16,'bold')),sg.Text(f'{locadora.redeSocial}',font=('Verdana',16))]
-    ])]])]]
-
-
-
-
-
 def createWindow(type, veiculo=None, dataLocacao=None, dataDevolucao=None):
     frame_element = window.Element('lugarAparacerCadastro')
     frame_size = frame_element.Widget.winfo_reqwidth()-15, frame_element.Widget.winfo_reqheight()-15
@@ -350,7 +171,7 @@ def createWindow(type, veiculo=None, dataLocacao=None, dataDevolucao=None):
     elif type == 'relatorioVeiculos':
         relatoriosVeiculos_popup = \
             [
-                [sg.Combo(['A', 'B', 'C', 'D', 'E'], default_value='A', key='combo')],
+                [sg.Combo(['A', 'B', 'C', 'D', 'E'], default_value='A', key='comboVeiculos')],
                 [sg.Button('Gerar'), sg.Button('Cancelar')],
             ]
         return sg.Window('Relatório de Veiculos', relatoriosVeiculos_popup, size=(150, 80), element_justification='c')
@@ -362,8 +183,8 @@ def createWindow(type, veiculo=None, dataLocacao=None, dataDevolucao=None):
                 [sg.Text('Codigo do Veiculo'), sg.InputText(key='codveiculo', size=(10, 1))],
                 [sg.Button('Gerar'), sg.Button('Cancelar')]
             ]
-        return sg.Window('Relatório de Clientes', relatoriosClientes_popup, size=(150, 80), element_justification='c')
-    elif type == 'relatorioLocacoes':
+        return sg.Window('Relatório de Clientes', relatoriosClientes_popup, size=(200, 150), element_justification='c')
+    elif type == 'relatorioLocacoesNaoFinalizadas':
         relatoriosLocacoes_popup = \
             [
                 [sg.Radio('Todos', group_id='locacoes_popup', default=True, key='todosNaoFinalizados'),
@@ -372,7 +193,31 @@ def createWindow(type, veiculo=None, dataLocacao=None, dataDevolucao=None):
                 [sg.Button('Gerar'), sg.Button('Cancelar')]
 
             ]
-        return sg.Window('Relatório de Locações', relatoriosLocacoes_popup, size=(150, 80), element_justification='c')
+        return sg.Window('Relatório de Locações', relatoriosLocacoes_popup, size=(400, 100), element_justification='c')
+    elif type == 'relatorioLocacoesClientesEspecificos':
+        relatoriosLocacoes_popup = \
+            [
+                [sg.Text('Código:'),sg.InputText(key='codigoCliente', size=(10, 1)),sg.Text('Nome:'),sg.InputText(key='nomeCliente', size=(10, 1))],
+                [sg.Button('Gerar'), sg.Button('Cancelar')]
+
+            ]
+        return sg.Window('Relatório de Locações', relatoriosLocacoes_popup, size=(250, 150), element_justification='c')
+    elif type == 'relatorioLocacoesMesEspecifico':
+        relatoriosLocacoes_popup = \
+            [
+                [sg.Text('Mês:'),sg.InputText(key='mesLocacao', size=(10, 1))],
+                [sg.Button('Gerar'), sg.Button('Cancelar')]
+
+            ]
+        return sg.Window('Relatório de Locações', relatoriosLocacoes_popup, size=(250, 150), element_justification='c')
+    elif type == 'relatorioFuncionarioMes':
+        relatoriosFuncionario_popup = \
+            [
+                [sg.Text('Mês:'),sg.InputText(key='mesfuncionario', size=(10, 1))],
+                [sg.Button('Gerar'), sg.Button('Cancelar')]
+
+            ]
+        return sg.Window('Relatório de Locações', relatoriosFuncionario_popup, size=(250, 150), element_justification='c')
     #elif type == 'calcularValor':
     elif type == 'adicionarCartao':
         layoutPagamento = \
@@ -391,6 +236,182 @@ def createWindow(type, veiculo=None, dataLocacao=None, dataDevolucao=None):
                 [sg.Button('Salvar', key='salvarPagamento')]
             ]
         return sg.Window('Adicionar Dinheiro', layoutPagamento, size=(200, 200), element_justification='c')
+
+
+# Tela de relatórios
+listadeCNH = ['A', 'B', 'C', 'D', 'E']
+relatoriosVeiculos = \
+[
+                        sg.Frame('Veiculos', layout=[
+                        [sg.Radio('Todos', group_id='veiculos', default=True, key='todosVeiculos'),
+                         sg.Radio('Nacionais', group_id='veiculos',key='veiculoNacionais'), sg.Radio('Importados', group_id='veiculos',key='veiculosImportados')],
+                        [sg.Radio('Disponivel', group_id='veiculos',key='veiculosDisponiveis'), sg.Radio('Locado', group_id='veiculos',key='veiculosLocados'),
+                         sg.Radio('Devolução atrasada', group_id='veiculos',key='veiculosDevolucaoAtrasada')],
+                        [sg.Radio('CNH Necessaria', group_id='veiculos', key='CNHNecessaria')],
+                        [sg.Button('Gerar', key='btnveiculos')]], vertical_alignment='c', key='frameVeiculos', size=(330, 150))
+
+]
+
+
+relatoriosClientes = \
+[
+                        sg.Frame('Clientes', layout=[
+                        [sg.Radio('Todos', group_id='clientes', default=True, key='todosClientes'),
+                         sg.Radio('Locações com atraso', group_id='clientes', key='clientesLocacoesAtrasadas')],
+                        [sg.Radio('Veiculo Especifico', group_id='clientes', key='clienteVeiculoEspecifico')],
+                        [sg.Button('Gerar', key='btnclientes')]], size=(330, 120))
+]
+# mudar esses input para combo com respectivos dados
+
+relatoriosLocacoes = \
+[
+                        sg.Frame('Locações', layout=[
+                        [sg.Radio('Todos', group_id='locacoes', default=True, key='todosLocacoes'),
+                         sg.Radio('Finalizadas', group_id='locacoes',key='locacoesFinalizadas'), sg.Radio('Atrasadas', group_id='locacoes',key='locacoesAtrasadas')],
+                        [sg.Radio('Cliente especifico', group_id='locacoes',key='locacoesClientesEspecificos'), sg.Radio('Mês especifico', group_id='locacoes',key='locacoesMesEspecifico')],
+                        [sg.Radio('Não finalizadas', group_id='locacoes', key='locacoesNaoFinalizadas')],
+                        [sg.Button('Gerar', key='btnlocacoes')]], size=(330, 150))
+]
+
+relatorioFuncionarios = \
+[
+                        sg.Frame('Funcionarios', layout=[
+                        [sg.Radio('Todos', group_id='funcionarios', default=True, key='todosfuncionarios'),
+                         sg.Radio('Funcionario do mês', group_id='funcionarios', key='funcionarioMes')],
+                        [sg.Button('Gerar', key='btnFuncionario')]], size=(330, 100))
+]
+
+layout_TelaRelatorios = [
+    [sg.Column(layout=[relatoriosVeiculos, relatoriosClientes, relatoriosLocacoes, relatorioFuncionarios]),
+     sg.Column(layout=[[sg.Multiline(size=(400, 450), disabled=True, key='textoRelatorios',font=('Verdana', 10))]])]
+]
+
+#Cadastro
+layout_TelaCadastro = \
+[
+                    [sg.Column(layout=[
+                            [sg.Button('Funcionario', size=(15, 1),key='btncadFuncionario',font=('Verdana', 15))],
+                            [sg.Text('',size=(15,1))],
+                            [sg.Button('Cliente', size=(15, 1),key='btncadCliente',font=('Verdana', 15))],
+                            [sg.Text('',size=(15,1))],
+                            [sg.Button('Veiculo Nacional', size=(15, 1), key='btnCadVeiculoNacional',font=('Verdana', 15))],
+                            [sg.Text('',size=(15,1))],
+                            [sg.Button('Veiculo Importado', size=(15, 1), key='btnCadVeiculoImportado',font=('Verdana', 15))],
+                            [sg.Text('',size=(15,1))],
+                            [sg.Button('Seguro', size=(15, 1),key='btnCadSeguro',font=('Verdana', 15))]
+                    ]),
+                    sg.Frame('',layout=[[]],size=(450, 500),key='lugarAparacerCadastro')]
+]
+
+def getNomeClientes():
+    clientes = Banco_de_dados.BancodeDados.recuperarTodosClientes()
+    aux = []
+    if clientes != None:
+        for cliente in clientes:
+            aux.append(cliente.nome)
+    return aux
+
+
+def getNomeFuncionarios():
+    funcionarios = Banco_de_dados.BancodeDados.recuperarTodosFuncionarios()
+    aux = []
+    if funcionarios != None:
+        for funcionario in funcionarios:
+            aux.append(funcionario.nome)
+        print(aux)
+    return aux
+
+
+def getNomeVeiculos():
+    veiculosNacionais = Banco_de_dados.BancodeDados.recuperarTodosVeiculosNacionais()
+    veiculosImportados = Banco_de_dados.BancodeDados.recuperarTodosVeiculosImportados()
+    aux = []
+    if veiculosNacionais != None:
+        for veiculo in veiculosNacionais:
+            aux.append(veiculo.nomeModelo)
+    if veiculosImportados != None:
+        for veiculo in veiculosImportados:
+            aux.append(veiculo.nomeModelo)
+    return aux
+
+def getNomeSeguros():
+    seguros = Banco_de_dados.BancodeDados.recuperarTodosSeguros()
+    aux = []
+    if seguros != None:
+        for seguro in seguros:
+            aux.append(seguro.nome)
+    return aux
+
+def getVeiculo(nomeVeiculo):
+    veiculosNacionais = Banco_de_dados.BancodeDados.recuperarTodosVeiculosNacionais()
+    veiculosImportados = Banco_de_dados.BancodeDados.recuperarTodosVeiculosImportados()
+    veiculos = []
+    if veiculosNacionais != None:
+        for veiculo in veiculosNacionais:
+            veiculos.append(veiculo)
+    if veiculosImportados != None:
+        for veiculo in veiculosImportados:
+            veiculos.append(veiculo)
+
+    for veiculo in veiculos:
+        if veiculo.nomeModelo == nomeVeiculo:
+            return veiculo
+
+def getCliente(nomeCliente):
+    clientes = Banco_de_dados.BancodeDados.recuperarTodosClientes()
+    for cliente in clientes:
+        if cliente.nome == nomeCliente:
+            return cliente
+
+def getFuncionario(nomeFuncionario):
+    funcionarios = Banco_de_dados.BancodeDados.recuperarTodosFuncionarios()
+    for funcionario in funcionarios:
+        if funcionario.nome == nomeFuncionario:
+            return funcionario
+
+def getSeguro(nomeSeguro):
+    seguros = Banco_de_dados.BancodeDados.recuperarTodosSeguros()
+    for seguro in seguros:
+        if seguro.nome == nomeSeguro:
+            return seguro
+
+def getValorBase(veiculo, seguro, locacao, devolucao):
+    dataLocacao = datetime.strptime(str(locacao), "%d/%m/%Y")
+    dataDevolucao = datetime.strptime(str(devolucao), "%d/%m/%Y")
+    dias = (dataDevolucao - dataLocacao).days
+    valorBase = veiculo.valorDiaria * dias
+    if seguro != None:
+        valorBase += seguro.valor
+    return valorBase
+
+locacaoLayout = [
+                    [sg.Text('Cliente:'), sg.Text('Funcionario:', pad=(100, 0))],
+                    [sg.Combo(getNomeClientes(), default_value='', key='comboCliente'), sg.Combo(getNomeFuncionarios(), default_value='', key='comboFuncionario', pad=(40, 0))],
+                    [sg.Text('Seguros:'), sg.Text('Veiculos:', pad=(100, 0))],
+                    [sg.Combo(getNomeSeguros(), default_value='', key='comboSeguros'), sg.Combo(getNomeVeiculos(), default_value='', key='comboVeiculos', pad=(40, 0))],
+                    [sg.Text('Data de Locação:'), sg.Text('Data de Devolução:', pad=(100, 0))],
+                    [sg.InputText(key='dataLocacao'), sg.InputText(key='dataDevolucao', pad=(40, 0))],
+                    [sg.Button("Calcular Valor", key='btnCalcularValor', pad=(0, 20))],
+                    [sg.Text('Valor Base:'), sg.Text(key='valorBase', pad=(100, 0))],
+                    [sg.Text('Forma de pagamento: ')],
+                    [sg.Combo(['Dinheiro', 'Cartão'], default_value='', key='comboFormaPagamento')],
+                    [sg.Button('Salvar', key='btnAddLocacao', size=(20, 1), pad=(0, 20))],
+]
+
+
+
+
+layout_TelaSobre = [
+    [sg.Text('',size=(10,15))],
+    [sg.Frame('', layout=[
+        [sg.Column(layout=[
+            [sg.Text('Nome: ',font=('Verdana',16,'bold')),sg.Text(f'{locadora.nome}',font=('Verdana',16))],
+            [sg.Text('Endereço: ',font=('Verdana',16,'bold')),sg.Text(f'{locadora.endereco}',font=('Verdana',16))]
+        ]),
+        sg.Column(layout=[
+            [sg.Text('Website: ',font=('Verdana',16,'bold')),sg.Text(f'{locadora.website}',font=('Verdana',16))],
+            [sg.Text('Rede Social: ',font=('Verdana',16,'bold')),sg.Text(f'{locadora.redeSocial}',font=('Verdana',16))]
+    ])]])]]
 
 #Tela de Busca
 buscaVeiculos = \
@@ -460,42 +481,59 @@ while True:
         if values['veiculosLocados']:
             window['textoRelatorios'].update(value=locadora.ListarVeiculosAtrasados())
         if values['veiculosDevolucaoAtrasada']:
-            window['textoRelatorios'].update(value=locadora.ListarVeiculosDevolucaoAtrasada())
+            window['textoRelatorios'].update(value=locadora.ListarVeiculosAtrasados())
         if values['CNHNecessaria']:
             popup_window = createWindow('relatorioVeiculos')
             popup_window = createWindow('relatorioVeiculos')
-
             while True:
                 popup_event, popup_values = popup_window.read()
 
                 if popup_event == sg.WIN_CLOSED:
+                    popup_window.close()
                     break
                 elif popup_event == 'Cancelar':
                     window['todosVeiculos'].update(True)
                     popup_window.close()
+                    break
                 elif popup_event == 'Gerar':
                     window['todosVeiculos'].update(True)
-                    sg.popup('Trabalhando nisso.')
+                    window['textoRelatorios'].update(value=locadora.ListarVeiculosDisponiveisCategoria(popup_values['comboVeiculos']))
                     popup_window.close()
+                    break
     if event == 'btnclientes':
-        if values['clienteVeiculoAtrasado']:
+        if values['todosClientes']:
+            window['textoRelatorios'].update(value=locadora.ListarClientes())
+        if values['clientesLocacoesAtrasadas']:
+            window['textoRelatorios'].update(value=locadora.ListaClienteLocacaoAtrasa())
+        if values['clienteVeiculoEspecifico']:
             popup_window = createWindow('relatorioClientes')
 
             while True:
                 popup_event, popup_values = popup_window.read()
 
                 if popup_event == sg.WIN_CLOSED:
+                    popup_window.close()
                     break
                 elif popup_event == 'Cancelar':
                     window['todosClientes'].update(True)
                     popup_window.close()
+                    break
                 elif popup_event == 'Gerar':
                     sg.popup('Trabalhando nisso.')
                     window['todosClientes'].update(True)
-                    popup_window.hide()
+                    window['textoRelatorios'].update(value=locadora.ListarClientesVeiculo(popup_values['placaVeiculo'], popup_values['codveiculo']))
+                    popup_window.close()
+                    break
     if event == 'btnlocacoes':
-        if values['NaoFinalizadas']:
-            popup_window = createWindow('relatorioLocacoes')
+        if values['todosLocacoes']:
+            window['textoRelatorios'].update(value=locadora.ListarTodasLocacoes())
+        if values['locacoesFinalizadas']:
+            window['textoRelatorios'].update(value=locadora.ListarLocacoesFinalizadas())
+        if values['locacoesAtrasadas']:
+            window['textoRelatorios'].update(value=locadora.ListarLocacoesAtrasadas())
+        if values['locacoesClientesEspecificos']:
+            popup_window = createWindow('relatorioLocacoesClientesEspecificos')
+
 
             while True:
                 popup_event, popup_values = popup_window.read()
@@ -506,9 +544,60 @@ while True:
                     window['todosLocacoes'].update(True)
                     popup_window.close()
                 elif popup_event == 'Gerar':
-                    sg.popup('Trabalhando nisso.')
+                    window['todosLocacoes'].update(True)
+                    window['textoRelatorios'].update(value=locadora.ListarLocacoesClienteEspecificos(popup_values['codigoCliente'], popup_values['nomeCliente']))
+                    popup_window.close()
+        if values['locacoesMesEspecifico']:
+            popup_window = createWindow('relatorioLocacoesMesEspecifico')
+
+            while True:
+                popup_event, popup_values = popup_window.read()
+
+                if popup_event == sg.WIN_CLOSED:
+                    break
+                elif popup_event == 'Cancelar':
                     window['todosLocacoes'].update(True)
                     popup_window.close()
+                elif popup_event == 'Gerar':
+                    window['todosLocacoes'].update(True)
+                    window['textoRelatorios'].update(value=locadora.ListarLocacaoMes(popup_values['mesLocacao']))
+                    popup_window.close()
+
+        if values['locacoesNaoFinalizadas']:
+            popup_window = createWindow('relatorioLocacoesNaoFinalizadas')
+
+            while True:
+                popup_event, popup_values = popup_window.read()
+
+                if popup_event == sg.WIN_CLOSED:
+                    break
+                elif popup_event == 'Cancelar':
+                    window['todosLocacoes'].update(True)
+                    popup_window.close()
+                elif popup_event == 'Gerar':
+                    window['todosLocacoes'].update(True)
+                    window['textoRelatorios'].update(value=locadora.ListarLocacoesNaoFinalizadas(popup_values['todosNaoFinalizados'], popup_values['todosNaoFinalizadosNacionais'], popup_values['todosNaoFinalizadosImportados']))
+                    popup_window.close()
+
+    if event == 'btnFuncionario':
+        if values['todosfuncionarios']:
+            window['textoRelatorios'].update(value=locadora.ListarFuncionarios())
+        if values['funcionarioMes']:
+            popup_window = createWindow('relatorioFuncionarioMes')
+
+            while True:
+                popup_event, popup_values = popup_window.read()
+
+                if popup_event == sg.WIN_CLOSED:
+                    break
+                elif popup_event == 'Cancelar':
+                    window['todosfuncionarios'].update(True)
+                    popup_window.close()
+                elif popup_event == 'Gerar':
+                    window['todosfuncionarios'].update(True)
+                    window['textoRelatorios'].update(value=locadora.ListarFuncionarioDoMes(popup_values['mesfuncionario']))
+                    popup_window.close()
+
     if event == 'btncadFuncionario':
         popup_window = createWindow('cadastrarFuncionario')
         while True:

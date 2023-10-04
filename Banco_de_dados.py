@@ -3,6 +3,7 @@ import json
 import Locacoes
 import Usuario
 import Veiculos
+from datetime import datetime
 
 class BancodeDados:
     URLBanco = 'https://trabalho-pratico-c3891-default-rtdb.firebaseio.com/'
@@ -415,6 +416,22 @@ class BancodeDados:
             pagamento = Locacoes.Cartao('', '', '', 0, 0) if locacao['_formaPagamento']['_tipo'] == 'cartao' else Locacoes.Dinheiro('', 0)
             pagamento.__dict__.update(pag)
             locacao['_formaPagamento'] = pagamento
+            datalocacao = locacao['_dataLocacao']
+            dataDevolucao = locacao['_dataDevolucao']
+            locacao['_dataLocacao'] = datetime.strptime(str(datalocacao), "%d/%m/%Y")
+            locacao['_dataDevolucao'] = datetime.strptime(str(dataDevolucao), "%d/%m/%Y")
+            cliente = locacao['_codCliente']
+            c = Usuario.Cliente('', '', '', '1/1/2023', '', '', '', '', '', '1/1/2023', False, 0)
+            c.__dict__.update(cliente)
+            locacao['_codCliente'] = c
+            funcionario = locacao['_codFuncionario']
+            f = Usuario.Funcionario('', '', '', '1/1/2023', '', '', '', 0, '', '1/1/2023')
+            f.__dict__.update(funcionario)
+            locacao['_codFuncionario'] = f
+            veiculo = locacao['_veiculo']
+            v = Veiculos.VeiculoNacional('', '', 0, 0, '', '', 0, 0, '', False, 0)
+            v.__dict__.update(veiculo)
+            locacao['_veiculo'] = v
             l = Locacoes.Locacao('', '', '', '1/1/2023','1/1/2023', 0, '', '', '', 1)
             l.__dict__.update(locacao)
             locacoes.append(l)

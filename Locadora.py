@@ -149,7 +149,7 @@ class Locadora:
     def ListarVeiculosDisponiveisCategoria(self,categoria):
         veiculos = []
         for i in self._veiculos:
-            if not i.alugado and i.categoria == categoria:
+            if not i.alugado and i.categoriaCNHNecessaria == categoria:
                 veiculos.append(str(i))
         return ''.join(veiculos)
     
@@ -220,7 +220,7 @@ class Locadora:
     def ListarLocacaoMes(self,mes):
         locacoes = []
         for i in self._locacoes:
-            if i.getMes() == mes:
+            if i.dataLocacao.month == mes:
                 locacoes.append(str(i))
         return ''.join(locacoes)
     def ListarLocacaoMescomLucro(self,mes):
@@ -236,11 +236,20 @@ class Locadora:
             if i.getFinalizada() == True:
                 locacoes.append(str(i))
         return ''.join(locacoes)
-    def ListarLocacoesNaoFinalizadas(self):
+    def ListarLocacoesNaoFinalizadas(self,opcao1,opcao2,opcao3):
         locacoes = []
-        for i in self._locacoes:
-            if i.getFinalizada() == False:
-                locacoes.append(str(locacoes))
+        if opcao1:
+            for i in self._locacoes:
+                if i.finalizada == False:
+                    locacoes.append(str(locacoes))
+        elif opcao2:
+            for i in self._locacoes:
+                if i.finalizada == False and isinstance(i.veiculo,Veiculos.VeiculoNacional):
+                    locacoes.append(str(i))
+        elif opcao3:
+            for i in self._locacoes:
+                if i.finalizada == False and isinstance(i.veiculo,Veiculos.VeiculoImportado):
+                    locacoes.append(str(i))
         return ''.join(locacoes)
 
     def ListarLocacoesNaoFinalizadasNacional(self):
@@ -267,6 +276,38 @@ class Locadora:
         for i in self._seguros:
             seguros.append(str(i))
         return ''.join(seguros)
+
+    def ListaClienteLocacaoAtrasa(self):
+        clientes = []
+        for i in self._locacoes:
+            if i.verificarAtrasado():
+                clientes.append(str(i))
+        return ''.join(clientes)
+
+    def ListarClientesVeiculo(self,placa='',codigoVeiculo=''):
+        clientes = []
+        if not codigoVeiculo == '':
+            for i in self._locacoes:
+                if i.getVeiculo().getCodigoVeiculo() == codigoVeiculo:
+                    clientes.append(str(i.getCliente()))
+        elif not placa == '':
+            for i in self._locacoes:
+                if i.getVeiculo().getPlaca() == placa:
+                    clientes.append(str(i.getCliente()))
+        return ''.join(clientes)
+
+    def ListarLocacoesClienteEspecificos(self,codigoUsuario,nome):
+        clientes = []
+        if not codigoUsuario == '':
+            for i in self._locacoes:
+                if i.codCliente.codigoUsuario == codigoUsuario:
+                    clientes.append(str(i))
+        elif not nome == '':
+            for i in self._locacoes:
+                if i.codCliente.nome == nome:
+                    clientes.append(str(i))
+        return ''.join(clientes)
+
     def RetornarVeiculoscomoObjeto(self):
         return self._veiculos
 
