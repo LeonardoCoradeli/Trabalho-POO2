@@ -195,7 +195,8 @@ class Locadora:
                     locacoes_por_funcionario[funcionario] += valor_locacao
                 else:
                     locacoes_por_funcionario[funcionario] = valor_locacao
-
+        if locacoes_por_funcionario == {}:
+            return 'Não houve locações nesse mês'
         funcionario_do_mes = max(locacoes_por_funcionario, key=locacoes_por_funcionario.get)
         valor_mais_alto = locacoes_por_funcionario[funcionario_do_mes]
 
