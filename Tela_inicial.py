@@ -34,9 +34,8 @@ def telaInicial():
                     Banco_de_dados.BancodeDados.criarLocadora({'_nome':values['nomeLocadora'],'_endereco': values['endereco'],
                                                              '_website':values['website'],'_redeSocial': values['redeSocial']})
                     window.close()
-                    break
                     return [values['nomeLocadora'], values['endereco'], values['website'], values['redeSocial']]
-
+                    break
                 else:
                     popup = sg.popup_error('Todos os campos devem ser preenchidos!')
     else:
