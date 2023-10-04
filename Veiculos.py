@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from random import randint
 #Classe veiculos e seus atributos
 
 class Veiculo(ABC):
@@ -153,7 +154,7 @@ class VeiculoNacional(Veiculo):
     codigo_veiculo_Estatico = 0
     def __init__(self,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado,taxaImpostoEstadual,codigoVeiculo = None):
         if codigoVeiculo == None:
-            super().__init__(VeiculoNacional.codigo_veiculo_Estatico,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado)
+            super().__init__(randint(0,100000),nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado)
             self._taxaImpostoEstadual = taxaImpostoEstadual
         else:
             super().__init__(codigoVeiculo, nomeModelo, montadora, anoFabricacao, anoModelo,placa, categoria, valorFipe, valorDiaria, categoriaCNHNecessaria, alugado)
@@ -188,19 +189,11 @@ class VeiculoNacional(Veiculo):
                 f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%\n" \
                 f"-----------------------------------------\n"
 
-
-    def setCodigoVeiculo(self, numero):
-        self.codigo_veiculo_Estatico = numero
-
-
-    def getCodigoVeiculo(self):
-        return self.codigo_veiculo_Estatico
         
 class VeiculoImportado(Veiculo):
-    codigo_veiculo_Estatico = 0
     def __init__(self,nomeModelo,montadora,anoFabricacao,anoModelo,placa,categoria,valorFipe,valorDiaria,categoriaCNHNecessaria,alugado,taxaImpostoEstadual,taxaImpostoFederal,codigoVeiculo=None):
         if codigoVeiculo == None:
-            super().__init__(VeiculoImportado.codigo_veiculo_Estatico,nomeModelo, montadora, anoFabricacao, anoModelo, placa, categoria, valorFipe, valorDiaria,categoriaCNHNecessaria, alugado)
+            super().__init__(randint(0,100000),nomeModelo, montadora, anoFabricacao, anoModelo, placa, categoria, valorFipe, valorDiaria,categoriaCNHNecessaria, alugado)
             self._taxaImpostoEstadual = taxaImpostoEstadual
             self._taxaImpostoFederal = taxaImpostoFederal
         else:
@@ -247,11 +240,3 @@ class VeiculoImportado(Veiculo):
                 f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%\n" \
                 f"Taxa de Imposto Federal: {self._taxaImpostoFederal}%\n" \
                 f"-----------------------------------------\n"
-
-
-    def setCodigoVeiculo(self,numero):
-        self.codigo_veiculo_Estatico = numero
-
-
-    def getCodigoVeiculo(self):
-        return self.codigo_veiculo_Estatico

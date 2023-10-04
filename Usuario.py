@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
+from random import randint
 
 
 class Usuario(ABC):
@@ -90,12 +91,11 @@ class Cliente(Usuario):
     Estatico_codigoCliente = 0
     def __init__(self, nome, cpf, rg, dataNascimento, endereco, cep, email, categoriaCNH, numeroCNH, validadeCNH, clienteOuro,codigoUsuario=None):
         if codigoUsuario == None:
-            super().__init__(Cliente.Estatico_codigoCliente,nome, cpf, rg, dataNascimento, endereco, cep, email)
+            super().__init__(randint(0,100000),nome, cpf, rg, dataNascimento, endereco, cep, email)
             self._categoriaCNH = categoriaCNH
             self._numeroCNH = numeroCNH
             self._validadeCNH = datetime.strptime(validadeCNH, "%d/%m/%Y")
             self._clienteOuro = clienteOuro
-            Cliente.Estatico_codigoCliente +=1
         else:
             super().__init__(codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep, email)
             self._categoriaCNH = categoriaCNH
@@ -145,24 +145,13 @@ class Cliente(Usuario):
         self._clienteOuro = clienteOuro
 
 
-    def setEstatico_codigoFuncionari(self, numero):
-        self.Estatico_codigoCliente = numero
-
-
-    def getEstatico_codigoCliente(self):
-        return self.Estatico_codigoCliente
-
-
-
 class Funcionario(Usuario):
-    Estatico_codigoFuncionario = 0
     def __init__(self, nome, cpf, rg, dataNascimento, endereco, cep, email, salario, pis, dataAdmissao,codigoUsuario=None):
         if codigoUsuario == None:
-            super().__init__(Funcionario.Estatico_codigoFuncionario,nome, cpf, rg, dataNascimento, endereco, cep, email)
+            super().__init__(randint(0,100000),nome, cpf, rg, dataNascimento, endereco, cep, email)
             self._salario = float(salario)
             self._pis = pis
             self._dataAdmissao = datetime.strptime(dataAdmissao, "%d/%m/%Y")
-            Funcionario.Estatico_codigoFuncionario +=1
         else:
             super().__init__(codigoUsuario, nome, cpf, rg, dataNascimento, endereco, cep,email)
             self._salario = float(salario)
@@ -203,9 +192,3 @@ class Funcionario(Usuario):
         self._dataAdmissao = data
 
 
-    def setEstatico_codigoFuncionari(self, numero):
-        self.Estatico_codigoFuncionario = numero
-
-
-    def getEstatico_codigoFuncionario(self):
-        return self.Estatico_codigoFuncionario

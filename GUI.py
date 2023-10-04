@@ -423,20 +423,35 @@ class tela:
 
     def layoutTelaLocacao(self):
         locacaoLayout = [
-            [sg.Text('Cliente:'), sg.Text('Funcionario:', pad=(100, 0))],
-            [sg.Combo(getNomeClientes(), default_value='', key='comboCliente'),
-             sg.Combo(getNomeFuncionarios(), default_value='', key='comboFuncionario', pad=(40, 0))],
-            [sg.Text('Seguros:'), sg.Text('Veiculos:', pad=(100, 0))],
-            [sg.Combo(getNomeSeguros(), default_value='', key='comboSeguros'),
-             sg.Combo(getNomeVeiculos(), default_value='', key='comboVeiculos', pad=(40, 0))],
-            [sg.Text('Data de Locação:'), sg.Text('Data de Devolução:', pad=(100, 0))],
-            [sg.InputText(key='dataLocacao'), sg.InputText(key='dataDevolucao', pad=(40, 0))],
-            [sg.Button("Calcular Valor", key='btnCalcularValor', pad=(0, 20))],
-            [sg.Text('Valor Base:'), sg.Text(key='valorBase', pad=(100, 0))],
-            [sg.Text('Forma de pagamento: ')],
-            [sg.Combo(['Dinheiro', 'Cartão'], default_value='', key='comboFormaPagamento')],
-            [sg.Button('Salvar', key='btnAddLocacao', size=(20, 1), pad=(0, 20))],
-        ]
+            [sg.Frame('',layout=[
+                [sg.Column(layout=[
+                    [sg.Text('Cliente:')],
+                    [sg.Text('Funcionario:')],
+                    [sg.Text('Seguros:')],
+                    [sg.Text('Veiculos:')],
+                    [sg.Text('Data de Locação:')],
+                    [sg.Text('Data de Devolução:')],
+                ]),
+                    sg.Column(layout=[
+                        [sg.Combo(getNomeClientes(), default_value='', key='comboCliente')],
+                        [sg.Combo(getNomeFuncionarios(), default_value='', key='comboFuncionario')],
+                        [sg.Combo(getNomeSeguros(), default_value='', key='comboSeguros')],
+                        [sg.Combo(getNomeVeiculos(), default_value='', key='comboVeiculos')],
+                        [sg.InputText(key='dataLocacao')],
+                        [sg.InputText(key='dataDevolucao')],
+                    ])],
+                [sg.Button("Calcular Valor", key='btnCalcularValor', pad=(0, 20))],
+                [sg.Column(layout=[
+                    [sg.Text('Valor Base:')],
+                    [sg.Text('Forma de pagamento: ')],
+
+                ]),
+                    sg.Column(layout=[
+                        [sg.Text(key='valorBase', pad=(10, 0))],
+                        [sg.Combo(['Dinheiro', 'Cartão'], default_value='', key='comboFormaPagamento')]
+                    ])],
+                [sg.Button('Salvar', key='btnAddLocacao', size=(20, 1), pad=(0, 20))]
+            ])]]
         return locacaoLayout
 
     def layoutTelaBusca(self):
@@ -505,7 +520,7 @@ class tela:
 
     def rodando(self):
         layout_Geral = [[sg.TabGroup([[
-            sg.Tab('Locação', self.layoutTelaLocacao()),
+            sg.Tab('Locação', self.layoutTelaLocacao(),element_justification='c'),
             sg.Tab('Relatórios', self.layoutTelaRelatorios()),
             sg.Tab('Busca', self.layoutTelaBusca()),
             sg.Tab('Cadastro', self.layoutTelaCadastro(), element_justification='c'),

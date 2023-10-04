@@ -1,17 +1,16 @@
 from abc import ABC
 from datetime import datetime
+from random import randint
 
 #Classe seguro e seus atributos
 class Seguro():
-    Estatico_codigoSeguro = 0
     def __init__(self,nome,tipo,descricao,valor,codigoSeguro=None):
         if codigoSeguro == None:
-            self._codigoSeguro = Seguro.Estatico_codigoSeguro
+            self._codigoSeguro = randint(0,100000)
             self._nome = nome
             self._tipo = tipo
             self._descricao = descricao
             self._valor = valor
-            Seguro.Estatico_codigoSeguro+=1
         else:
             self._codigoSeguro = codigoSeguro
             self._nome = nome
@@ -60,13 +59,6 @@ class Seguro():
     def valor(self, valor):
         self._valor = valor
 
-
-    def setEstatico_codigoSeguro(self, numero):
-        self.Estatico_codigoSeguro = numero
-
-
-    def getEstatico_codigoSeguro(self):
-        return self.Estatico_codigoSeguro
 
 #Classe abstrata pagamento
 class Pagamento(ABC):
@@ -153,10 +145,9 @@ class Cartao(Pagamento):
         self._cvv = cvv
 
 class Locacao():
-    Estatico_codigoLocacao = 0
     def __init__(self,codCliente,veiculo,codFuncionario,dataLocacao,dataDevolucao,valorBase,formaPagamento,finalizada,segurosContratados='', codLocacao=None):
         if codLocacao  == None:
-            self._codLocacao = Locacao.Estatico_codigoLocacao
+            self._codLocacao = randint(0,100000)
             self._codCliente = codCliente
             self._codFuncionario = codFuncionario
             self._dataLocacao = datetime.strptime(str(dataLocacao), "%d/%m/%Y")
@@ -167,7 +158,6 @@ class Locacao():
             self._segurosContratados.append(segurosContratados)
             self._finalizada = finalizada
             self._veiculo = veiculo
-            Locacao.Estatico_codigoLocacao+=1
         else:
             self._codLocacao = codLocacao
             self._codCliente = codCliente
@@ -298,9 +288,3 @@ class Locacao():
             return False
 
 
-    def setEstatico_codigoLocacao(self, numero):
-        self.Estatico_codigoLocacao = numero
-
-
-    def getEstatico_codigoLocacao(self):
-        return self.Estatico_codigoLocacao
