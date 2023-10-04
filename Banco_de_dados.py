@@ -14,6 +14,7 @@ class BancodeDados:
     URLTSeguros = 'Seguros'
     URLTNumeros = 'Numero'
     URLTLocadora = 'Locadora'
+    URLTPagamento = 'Pagamento'
 
     #Enviar e receber dados
     @staticmethod
@@ -41,9 +42,12 @@ class BancodeDados:
         locacao_dict["_dataDevolucao"] = dataDevolucao
         if locacao_dict['_segurosContratados'] != None:
             listaSeguros = locacao_dict['_segurosContratados']
-            locacao_dict['_segurosContratados'] = [c.__dict__ for c in listaSeguros]
+            locacao_dict['_segurosContratados'] = listaSeguros.__dict__  ##[c.__dict__ for c in listaSeguros]
         else:
             locacao_dict = ''
+        locacao_dict['_veiculo'] = locacao_dict['_veiculo'].__dict__
+        locacao_dict['_codCliente'] = locacao_dict['_codCliente'].__dict__
+        locacao_dict['_codFuncionario'] = locacao_dict['_codFuncionario'].__dict__
         pagamento = locacao_dict['_formaPagamento']
         locacao_dict['_formaPagamento'] = pagamento.__dict__
         requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTabelaLocacoes}/{locacao_dict['_codLocacao']}.json",data=json.dumps(locacao_dict))
@@ -127,6 +131,18 @@ class BancodeDados:
         seguro.__dict__.update(seguro_dict)
         return seguro
 
+    @staticmethod
+    def criarPagamento(pagamento):
+        pagamento_dict = pagamento.__dict__
+        requests.put(f"{BancodeDados.URLBanco}{BancodeDados.URLTPagamento}/{pagamento_dict['_codigoPagamento']}/.json", data=json.dumps(pagamento_dict))
+
+    @staticmethod
+    def recuperarPagamento(codPagamento):
+        response = requests.get(f"{BancodeDados.URLBanco}{BancodeDados.URLTPagamento}/{codPagamento}/.json")
+        pagamento_dict = response.json()
+        pagamento = Locacoes.Cartao('','','',0,0) if pagamento_dict['_tipo'] == 'cartao' else Locacoes.Dinheiro('',0)
+        pagamento.__dict__.update(pagamento_dict)
+        return pagamento
     #quando for fazer passar os argumentos fazer um dicionario com os nomes dos campos  valores atualizar(cod...,**dicionario)
 
     @staticmethod
@@ -375,9 +391,10 @@ class BancodeDados:
         funcionario_list = response.json()
         funcionarios = []
         for funcionario in funcionario_list:
-            f = Usuario.Funcionario('', '', '', '1/1/2023', '', '', '', 0, '', '1/1/2023')
-            f.__dict__.update(funcionario)
-            funcionarios.append(f)
+            if funcionario != None:
+                f = Usuario.Funcionario('', '', '', '1/1/2023', '', '', '', 0, '', '1/1/2023')
+                f.__dict__.update(funcionario)
+                funcionarios.append(f)
         return funcionarios
 
     @staticmethod
@@ -398,7 +415,7 @@ class BancodeDados:
             pagamento = Locacoes.Cartao('', '', '', 0, 0) if locacao['_formaPagamento']['_tipo'] == 'cartao' else Locacoes.Dinheiro('', 0)
             pagamento.__dict__.update(pag)
             locacao['_formaPagamento'] = pagamento
-            l = Locacoes.Locacao('', '', '1/1/2023', '1/1/2023', 0, '', '', '', 1)
+            l = Locacoes.Locacao('', '', '', '1/1/2023','1/1/2023', 0, '', '', '', 1)
             l.__dict__.update(locacao)
             locacoes.append(l)
 

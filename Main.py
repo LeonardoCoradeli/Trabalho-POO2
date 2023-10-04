@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import PySimpleGUI as sg
 import os
 import Locadora, Banco_de_dados, Veiculos, Locacoes, Usuario
@@ -77,48 +79,99 @@ layout_TelaCadastro = \
 def getNomeClientes():
     clientes = Banco_de_dados.BancodeDados.recuperarTodosClientes()
     aux = []
-    for cliente in clientes:
-        aux.append(cliente.nome)
+    if clientes != None:
+        for cliente in clientes:
+            aux.append(cliente.nome)
     return aux
 
 
 def getNomeFuncionarios():
     funcionarios = Banco_de_dados.BancodeDados.recuperarTodosFuncionarios()
     aux = []
-    for funcionario in funcionarios:
-        aux.append(funcionario.nome)
+    if funcionarios != None:
+        for funcionario in funcionarios:
+            aux.append(funcionario.nome)
+        print(aux)
     return aux
 
 
 def getNomeVeiculos():
-    veiculosNacionais = Banco_de_dados.BancodeDados.recuperarNumeroVeiculosNacionais()
-    veiculosImportados = Banco_de_dados.BancodeDados.recuperarNumeroVeiculosImportados()
+    veiculosNacionais = Banco_de_dados.BancodeDados.recuperarTodosVeiculosNacionais()
+    veiculosImportados = Banco_de_dados.BancodeDados.recuperarTodosVeiculosImportados()
     aux = []
     if veiculosNacionais != None:
         for veiculo in veiculosNacionais:
-            aux.append(veiculo.nome)
+            aux.append(veiculo.nomeModelo)
     if veiculosImportados != None:
         for veiculo in veiculosImportados:
-            aux.append(veiculo.nome)
+            aux.append(veiculo.nomeModelo)
     return aux
-
 
 def getNomeSeguros():
     seguros = Banco_de_dados.BancodeDados.recuperarTodosSeguros()
     aux = []
-    for seguro in seguros:
-        aux.append(seguro.nome)
+    if seguros != None:
+        for seguro in seguros:
+            aux.append(seguro.nome)
     return aux
 
+def getVeiculo(nomeVeiculo):
+    veiculosNacionais = Banco_de_dados.BancodeDados.recuperarTodosVeiculosNacionais()
+    veiculosImportados = Banco_de_dados.BancodeDados.recuperarTodosVeiculosImportados()
+    veiculos = []
+    if veiculosNacionais != None:
+        for veiculo in veiculosNacionais:
+            veiculos.append(veiculo)
+    if veiculosImportados != None:
+        for veiculo in veiculosImportados:
+            veiculos.append(veiculo)
+
+    for veiculo in veiculos:
+        if veiculo.nomeModelo == nomeVeiculo:
+            return veiculo
+
+def getCliente(nomeCliente):
+    clientes = Banco_de_dados.BancodeDados.recuperarTodosClientes()
+    for cliente in clientes:
+        if cliente.nome == nomeCliente:
+            return cliente
+
+def getFuncionario(nomeFuncionario):
+    funcionarios = Banco_de_dados.BancodeDados.recuperarTodosFuncionarios()
+    for funcionario in funcionarios:
+        if funcionario.nome == nomeFuncionario:
+            return funcionario
+
+def getSeguro(nomeSeguro):
+    seguros = Banco_de_dados.BancodeDados.recuperarTodosSeguros()
+    for seguro in seguros:
+        if seguro.nome == nomeSeguro:
+            return seguro
+
+def getValorBase(veiculo, seguro, locacao, devolucao):
+    dataLocacao = datetime.strptime(str(locacao), "%d/%m/%Y")
+    dataDevolucao = datetime.strptime(str(devolucao), "%d/%m/%Y")
+    dias = (dataDevolucao - dataLocacao).days
+    valorBase = veiculo.valorDiaria * dias
+    if seguro != None:
+        valorBase += seguro.valor
+    return valorBase
 
 locacaoLayout = [
-                    [sg.Text('Locação')],
                     [sg.Text('Cliente:'), sg.Text('Funcionario:', pad=(100, 0))],
-                    [sg.Combo([getNomeClientes()], default_value='', key='comboCliente'), sg.Combo([getNomeFuncionarios()], default_value='', key='comboFuncionario', pad=(40, 0))],
+                    [sg.Combo(getNomeClientes(), default_value='', key='comboCliente'), sg.Combo(getNomeFuncionarios(), default_value='', key='comboFuncionario', pad=(40, 0))],
                     [sg.Text('Seguros:'), sg.Text('Veiculos:', pad=(100, 0))],
-                    [sg.Combo([getNomeSeguros()], default_value='', key='comboSeguros'), sg.Combo([getNomeVeiculos()], default_value='', key='comboVeiculos', pad=(40, 0))],
+                    [sg.Combo(getNomeSeguros(), default_value='', key='comboSeguros'), sg.Combo(getNomeVeiculos(), default_value='', key='comboVeiculos', pad=(40, 0))],
+                    [sg.Text('Data de Locação:'), sg.Text('Data de Devolução:', pad=(100, 0))],
+                    [sg.InputText(key='dataLocacao'), sg.InputText(key='dataDevolucao', pad=(40, 0))],
+                    [sg.Button("Calcular Valor", key='btnCalcularValor', pad=(0, 20))],
+                    [sg.Text('Valor Base:'), sg.Text(key='valorBase', pad=(100, 0))],
+                    [sg.Text('Forma de pagamento: ')],
+                    [sg.Combo(['Dinheiro', 'Cartão'], default_value='', key='comboFormaPagamento')],
                     [sg.Button('Salvar', key='btnAddLocacao', size=(20, 1), pad=(0, 20))],
 ]
+
+
 
 
 layout_TelaSobre = [
@@ -136,7 +189,8 @@ layout_TelaSobre = [
 
 
 
-def createWindow(type):
+
+def createWindow(type, veiculo=None, dataLocacao=None, dataDevolucao=None):
     frame_element = window.Element('lugarAparacerCadastro')
     frame_size = frame_element.Widget.winfo_reqwidth()-15, frame_element.Widget.winfo_reqheight()-15
     popup_location = (125,0)
@@ -219,6 +273,7 @@ def createWindow(type):
                     [sg.Text('Valor Fipe:',font=('Verdana',10,'bold'))],
                     [sg.Text('Valor da Diária:',font=('Verdana',10,'bold'))],
                     [sg.Text('Categoria da CNH:',font=('Verdana',10,'bold'))],
+                    [sg.Text('Esta alugado: ',font=('Verdana',10,'bold'))],
                     [sg.Text('Taxa do Imposto Estadual:',font=('Verdana',10,'bold'))],
                 ],element_justification='l'),
                 sg.Column(layout=[
@@ -231,6 +286,7 @@ def createWindow(type):
                     [sg.InputText(size=(20, 1), key='valorFipe')],
                     [sg.InputText(size=(20, 1), key='valorDiaria')],
                     [sg.Combo(['A','B','C','D','E'],size=(20, 1), key='categoriaCNH')],
+                    [sg.Checkbox('Sim',key='alugado')],
                     [sg.InputText(size=(20, 1), key='taxaImpostoEstadual')]
                 ],element_justification='l')],
                 [sg.Text('Não é possivel fechar o programa enquanto cadastra!', text_color='red')],
@@ -241,14 +297,18 @@ def createWindow(type):
         cadastroVeiculoImportado = \
             [
                 [sg.Column(layout=[
-                    [sg.Text('Nome do Modelo:',font=('Verdana',10,'bold'))],
-                    [sg.Text('Montadora:',font=('Verdana',10,'bold'))],
-                    [sg.Text('Ano de Fabricação:',font=('Verdana',10,'bold'))],
-                    [sg.Text('Ano do Modelo:',font=('Verdana',10,'bold'))],
-                    [sg.Text('Placa:',font=('Verdana',10,'bold'))],
-                    [sg.Text('Categoria:',font=('Verdana',10,'bold'))],
-                    [sg.Text('Valor Fipe:',font=('Verdana',10,'bold'))],
-                    [sg.Text('Valor da Diária:',font=('Verdana',10,'bold'))],
+                    [sg.Text('Nome do Modelo:', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Montadora:', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Ano de Fabricação:', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Ano do Modelo:', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Placa:', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Categoria:', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Valor Fipe:', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Valor da Diária:', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Categoria da CNH:', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Esta alugado: ', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Taxa do Imposto Estadual:', font=('Verdana', 10, 'bold'))],
+                    [sg.Text('Taxa do Imposto Federal:', font=('Verdana', 10, 'bold'))],
                 ],element_justification='l'),
                 sg.Column(layout=[
                     [sg.InputText(size=(20, 1), key='nomeModelo')],
@@ -258,7 +318,11 @@ def createWindow(type):
                     [sg.InputText(size=(20, 1), key='placa')],
                     [sg.InputText(size=(20, 1), key='categoria')],
                     [sg.InputText(size=(20, 1), key='valorFipe')],
-                    [sg.InputText(size=(20, 1), key='valorDiaria')]
+                    [sg.InputText(size=(20, 1), key='valorDiaria')],
+                    [sg.Combo(['A', 'B', 'C', 'D', 'E'], size=(20, 1), key='categoriaCNH')],
+                    [sg.Checkbox('Sim', key='alugado')],
+                    [sg.InputText(size=(20, 1), key='taxaImpostoEstadual')],
+                    [sg.InputText(size=(20, 1), key='taxaImpostoFederal')],
                 ],element_justification='l')],
                 [sg.Text('Não é possivel fechar o programa enquanto cadastra!', text_color='red')],
                 [sg.Button('Salvar', key='salvarVeiculoImportado', size=(20, 1)),sg.Button('Cancelar', key='cancelar', size=(15, 1))],
@@ -309,6 +373,24 @@ def createWindow(type):
 
             ]
         return sg.Window('Relatório de Locações', relatoriosLocacoes_popup, size=(150, 80), element_justification='c')
+    #elif type == 'calcularValor':
+    elif type == 'adicionarCartao':
+        layoutPagamento = \
+            [
+                [sg.Text('Número do Cartão:'), sg.InputText(key='numeroCartao', size=(10, 1))],
+                [sg.Text('Nome do Titular:'), sg.InputText(key='nomeTitular', size=(10, 1))],
+                [sg.Text('CVV:'), sg.InputText(key='cvv', size=(10, 1))],
+                [sg.Text('Bandeira:'), sg.InputText(key='bandeira', size=(10, 1))],
+                [sg.Button('Salvar', key='salvarPagamento')]
+            ]
+        return sg.Window('Adicionar Cartão', layoutPagamento, size=(200, 200), element_justification='c')
+    elif type == 'adicionarDinheiro':
+        layoutPagamento = \
+            [
+                [sg.Text('Quantidade de Cedulas:'), sg.InputText(key='quantidadeCedulas', size=(10, 1))],
+                [sg.Button('Salvar', key='salvarPagamento')]
+            ]
+        return sg.Window('Adicionar Dinheiro', layoutPagamento, size=(200, 200), element_justification='c')
 
 #Tela de Busca
 buscaVeiculos = \
@@ -436,9 +518,8 @@ while True:
                 break
             if popup_event == 'salvarFuncionario':
                 if popup_values['nome'] != '' and popup_values['cpf'] != '' and popup_values['rg'] != '' and popup_values['dataNascimento'] != '' and popup_values['endereco'] != '' and popup_values['email'] != '' and popup_values['cep'] != '' and popup_values['salario'] != '' and popup_values['pis'] != '' and popup_values['dataAdmissao'] != '':
-                    funcionario = Usuario.Funcionario(popup_values['nome'], popup_values['cpf'], popup_values['rg'], popup_values['dataNascimento'], popup_values['endereco'], popup_values['email'], popup_values['cep'], popup_values['salario'], popup_values['pis'], popup_values['dataAdmissao'])
-                    Banco_de_dados.BancodeDados.criarFuncionario(funcionario)
-                     #Salvar localmente
+                    funcionario = Usuario.Funcionario(popup_values['nome'], popup_values['cpf'], popup_values['rg'], popup_values['dataNascimento'], popup_values['endereco'], popup_values['email'], popup_values['cep'], float(popup_values['salario']), popup_values['pis'], popup_values['dataAdmissao'])
+                    locadora.CadastrarFuncionario(funcionario)
                 else:
                     sg.popup_error("Todos os campos devem ser preenchidos!")
 
@@ -452,11 +533,11 @@ while True:
             if popup_event == 'salvarCliente':
                 if popup_values['nome'] != '' and popup_values['cpf'] != '' and popup_values['rg'] != '' and popup_values['dataNascimento'] != '' and popup_values['endereco'] != '' and popup_values['email'] != '' and popup_values['cep'] != '' and popup_values['categoriaCNH'] != '' and popup_values['numeroCNH'] != '' and popup_values['dataValidadeCNH'] != '' and popup_values['clienteOuro'] != '':
                     cliente = Usuario.Cliente(popup_values['nome'], popup_values['cpf'], popup_values['rg'], popup_values['dataNascimento'], popup_values['endereco'], popup_values['email'], popup_values['cep'], popup_values['categoriaCNH'], popup_values['numeroCNH'], popup_values['dataValidadeCNH'], popup_values['clienteOuro'])
-                    locadora.configuracao.criarCliente(cliente)
-                    # Salvar localmente
+                    locadora.CadastrarCliente(cliente)
                     pass
                 else:
                     sg.popup_error("Todos os campos devem ser preenchidos!")
+
     if event == 'btnCadVeiculoNacional':
         popup_window = createWindow('cadastrarVeiculoNacional')
         while True:
@@ -467,10 +548,12 @@ while True:
             if popup_event == 'salvarVeiculoNacional':
 
                 if popup_values['nomeModelo'] != '' and popup_values['montadora'] != '' and popup_values['anoFabricacao'] != '' and popup_values['anoModelo'] != '' and popup_values['placa'] != '' and popup_values['categoria'] != '' and popup_values['valorFipe'] != '' and popup_values['valorDiaria'] != '' and popup_values['categoriaCNH'] != '' and popup_values['taxaImpostoEstadual'] != '':
-                    veiculoNacional = Veiculos.VeiculoNacional(popup_values['nomeModelo'], popup_values['montadora'], popup_values['anoFabricacao'], popup_values['anoModelo'], popup_values['placa'], popup_values['categoria'], popup_values['valorFipe'], popup_values['valorDiaria'], popup_values['categoriaCNH'], popup_values['taxaImpostoEstadual'])
-                    locadora.configuracao.criarVeiculoNacional(veiculoNacional)
-                    locadora.veiculos(veiculoNacional)
-                    # Salvar localmente
+                    if popup_values['alugado'] == 'True':
+                        popup_values['alugado'] = True
+                    else:
+                        popup_values['alugado'] = False
+                    veiculoNacional = Veiculos.VeiculoNacional(popup_values['nomeModelo'], popup_values['montadora'], int(popup_values['anoFabricacao']), int(popup_values['anoModelo']), popup_values['placa'], popup_values['categoria'], float(popup_values['valorFipe']), float(popup_values['valorDiaria']), popup_values['categoriaCNH'], bool(popup_values['alugado']), float(popup_values['taxaImpostoEstadual']))
+                    locadora.CadastrarVeiculo(veiculoNacional)
                     pass
                 else:
                     sg.popup_error("Todos os campos devem ser preenchidos!")
@@ -483,9 +566,12 @@ while True:
                 break
             if popup_event == 'salvarVeiculoImportado':
                 if popup_values['nomeModelo'] != '' and popup_values['montadora'] != '' and popup_values['anoFabricacao'] != '' and popup_values['anoModelo'] != '' and popup_values['placa'] != '' and popup_values['categoria'] != '' and popup_values['valorFipe'] != '' and popup_values['valorDiaria'] != '' and popup_values['categoriaCNH'] != '' and popup_values['taxaImpostoEstadual'] != '' and popup_values['taxaImpostoFeredal'] != '':
-                    veiculoImportado = Veiculos.VeiculoImportado(popup_values['nomeModelo'], popup_values['montadora'], popup_values['anoFabricacao'], popup_values['anoModelo'], popup_values['placa'], popup_values['categoria'], popup_values['valorFipe'], popup_values['valorDiaria'], popup_values['categoriaCNH'], popup_values['taxaImpostoEstadual'], popup_values['taxaImpostoFeredal'])
-                    Banco_de_dados.BancodeDados.criarVeiculoImportado(veiculoImportado)
-                    # Salvar localmente
+                    if popup_values['alugado'] == 'True':
+                        popup_values['alugado'] = True
+                    else:
+                        popup_values['alugado'] = False
+                    veiculoImportado = Veiculos.VeiculoImportado(popup_values['nomeModelo'], popup_values['montadora'], int(popup_values['anoFabricacao']), int(popup_values['anoModelo']), popup_values['placa'], popup_values['categoria'], float(popup_values['valorFipe']), float(popup_values['valorDiaria']), popup_values['categoriaCNH'], bool(popup_values['alugado']),float(popup_values['taxaImpostoEstadual']), float(popup_values['taxaImpostoFeredal']))
+                    locadora.CadastrarVeiculo(veiculoImportado)
                     pass
                 else:
                     sg.popup_error("Todos os campos devem ser preenchidos!")
@@ -498,12 +584,56 @@ while True:
                 break
             if popup_event == 'salvarSeguro':
                 if popup_values['nome'] != '' and popup_values['tipo'] != '' and popup_values['descricao'] != '' and popup_values['valor'] != '':
-                    seguro = Locacoes.Seguro(popup_values['nome'], popup_values['tipo'], popup_values['descricao'], popup_values['valor'])
-                    Banco_de_dados.BancodeDados.criarSeguro(seguro)
-                    # Salvar localmente
+                    seguro = Locacoes.Seguro(popup_values['nome'], popup_values['tipo'], popup_values['descricao'], float(popup_values['valor']))
+                    locadora.CadastrarSeguro(seguro)
                     pass
                 else:
                     sg.popup_error("Todos os campos devem ser preenchidos!")
+    if event == 'btnAddLocacao':
+        if values['comboFormaPagamento'] == 'Cartão':
+            popup_window = createWindow('adicionarCartao')
+            while True:
+                popup_event, popup_values = popup_window.read()
+                if popup_event == sg.WIN_CLOSED:
+                    break
+                if popup_event == 'salvarPagamento':
+                    if popup_values['numeroCartao'] != '' and popup_values['nomeTitular'] != '' and popup_values['cvv'] != '' and popup_values['bandeira'] != '':
+                        veiculo = getVeiculo(values['comboVeiculos'])
+                        cliente = getCliente(values['comboCliente'])
+                        funcionario = getFuncionario(values['comboFuncionario'])
+                        seguro = getSeguro(values['comboSeguros'])
+                        valorBase = getValorBase(veiculo, seguro, values['dataLocacao'], values['dataDevolucao'])
+                        cartao = Locacoes.Cartao("Cartao",popup_values['numeroCartao'], popup_values['nomeTitular'], popup_values['cvv'], popup_values['bandeira'])
+                        locacao = Locacoes.Locacao(cliente, veiculo, funcionario, values['dataLocacao'], values['dataDevolucao'], valorBase, cartao, True, seguro)
+                        locadora.CadastrarLocacao(locacao)
+                        pass
+                    else:
+                        sg.popup_error("Todos os campos devem ser preenchidos!")
+        else:
+            popup_window = createWindow('adicionarDinheiro')
+            while True:
+                popup_event, popup_values = popup_window.read()
+                if popup_event == sg.WIN_CLOSED:
+                    break
+                if popup_event == 'salvarPagamento':
+                    if popup_values['quantidadeCedulas'] != '':
+                        veiculo = getVeiculo(values['comboVeiculos'])
+                        cliente = getCliente(values['comboCliente'])
+                        funcionario = getFuncionario(values['comboFuncionario'])
+                        seguro = getSeguro(values['comboSeguros'])
+                        valorBase = getValorBase(veiculo, seguro, values['dataLocacao'], values['dataDevolucao'])
+                        dinheiro = Locacoes.Dinheiro("Dinheiro",float(popup_values['quantidadeCedulas']))
+                        locacao = Locacoes.Locacao(cliente, veiculo, funcionario, values['dataLocacao'], values['dataDevolucao'], valorBase, dinheiro, True, seguro)
+                        locadora.CadastrarLocacao(locacao)
+                        pass
+                    else:
+                        sg.popup_error("Todos os campos devem ser preenchidos!")
+    if event == 'btnCalcularValor':
+        veiculo = getVeiculo(values['comboVeiculos'])
+        seguro = getSeguro(values['comboSeguros'])
+        valorBase = getValorBase(veiculo, seguro, values['dataLocacao'], values['dataDevolucao'])
+        window['valorBase'].update(value=valorBase)
+
     if event == 'btnBuscarVeiculos':
         if values['buscarVeiculosCodigo'] != '':
             window['textoBusca'].update(value=locadora.buscarVeiculo(cod=int(values['buscarVeiculosCodigo'])))

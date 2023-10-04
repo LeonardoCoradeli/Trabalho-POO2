@@ -93,7 +93,31 @@ class Locadora:
     @veiculos.setter
     def veiculos(self,veiculo):
         self._veiculos.append(veiculo)
-    
+
+
+    def CadastrarFuncionario(self,funcionario):
+        self._configuracao.criarFuncionario(funcionario)
+        self._funcionarios.append(funcionario)
+
+    def CadastrarCliente(self,cliente):
+        self._configuracao.criarCliente(cliente)
+        self._clientes.append(cliente)
+
+    def CadastrarVeiculo(self,veiculo):
+        if isinstance(veiculo, Veiculos.VeiculoNacional):
+            self._configuracao.criarVeiculoNacional(veiculo)
+        else:
+            self._configuracao.criarVeiculoImportado(veiculo)
+        self._veiculos.append(veiculo)
+
+    def CadastrarSeguro(self,seguro):
+        self._configuracao.criarSeguro(seguro)
+        self._seguros.append(seguro)
+
+    def CadastrarLocacao(self,locacao):
+        self._configuracao.criarLocacao(locacao)
+        self._locacoes.append(locacao)
+
     def ListarVeiculos(self):
         veiculos = []
         for i in self._veiculos:

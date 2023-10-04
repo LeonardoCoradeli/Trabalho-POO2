@@ -154,27 +154,29 @@ class Cartao(Pagamento):
 
 class Locacao():
     Estatico_codigoLocacao = 0
-    def __init__(self,codCliente,codFuncionario,dataLocacao,dataDevolucao,valorBase,formaPagamento,finalizada,segurosContratados=None, codLocacao=None):
+    def __init__(self,codCliente,veiculo,codFuncionario,dataLocacao,dataDevolucao,valorBase,formaPagamento,finalizada,segurosContratados=None, codLocacao=None):
         if codLocacao  == None:
             self._codLocacao = Locacao.Estatico_codigoLocacao
             self._codCliente = codCliente
             self._codFuncionario = codFuncionario
-            self._dataLocacao = datetime.strptime(dataLocacao, "%d/%m/%Y")
-            self._dataDevolucao = datetime.strptime(dataDevolucao, "%d/%m/%Y")
+            self._dataLocacao = datetime.strptime(str(dataLocacao), "%d/%m/%Y")
+            self._dataDevolucao = datetime.strptime(str(dataDevolucao), "%d/%m/%Y")
             self._valorTotal = float(valorBase)
             self._formaPagamento = formaPagamento
             self._segurosContratados = segurosContratados if not segurosContratados == None else []
             self._finalizada = finalizada
+            self._veiculo = veiculo
             Locacao.Estatico_codigoLocacao+=1
         else:
             self._codLocacao = codLocacao
             self._codCliente = codCliente
             self._codFuncionario = codFuncionario
-            self._dataLocacao = datetime.strptime(dataLocacao, "%d/%m/%Y")
-            self._dataDevolucao = datetime.strptime(dataDevolucao, "%d/%m/%Y")
+            self._dataLocacao = datetime.strptime(str(dataLocacao), "%d/%m/%Y")
+            self._dataDevolucao = datetime.strptime(str(dataDevolucao), "%d/%m/%Y")
             self._valorTotal = float(valorBase)
             self._formapagamento = formaPagamento
             self._segurosContratados = segurosContratados if not segurosContratados == None else []
+            self._veiculo = veiculo
             self._finalizada = finalizada
 
 
@@ -227,6 +229,14 @@ class Locacao():
     @dataDevolucao.setter
     def dataDevolucao(self, dataDevolucao):
         self._dataDevolucao = dataDevolucao
+
+    @property
+    def veiculo(self):
+        return self._veiculo
+
+    @veiculo.setter
+    def veiculo(self, veiculo):
+        self._veiculo = veiculo
 
     @property
     def valorTotal(self):
