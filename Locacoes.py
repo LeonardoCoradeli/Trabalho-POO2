@@ -20,11 +20,13 @@ class Seguro():
             self._valor = valor
 
     def __str__(self):
-        return f"Código de Seguro: {self._codigoSeguro}\n" \
-               f"Nome: {self._nome}\n" \
-               f"Tipo: {self._tipo}\n" \
-               f"Descrição: {self._descricao}\n" \
-               f"Valor: R${self._valor:.2f}"
+        return f"-----------------------------------------\n"\
+            f"Código de Seguro: {self._codigoSeguro}\n" \
+            f"Nome: {self._nome}\n" \
+            f"Tipo: {self._tipo}\n" \
+            f"Descrição: {self._descricao}\n" \
+            f"Valor: R${self._valor:.2f}\n" \
+            f"-----------------------------------------\n"
 
     @property
     def nome(self):
@@ -88,8 +90,10 @@ class Dinheiro(Pagamento):
         self._qtdDeCedulas = qtdDeCelulas
 
     def __str__(self):
-        return  f"{super().__str__}" \
-                f"Quantidade de cédulas: {self._qtdDeCedulas}\n" \
+        return  f"-----------------------------------------\n"\
+            f"{super().__str__}" \
+            f"Quantidade de cédulas: {self._qtdDeCedulas}\n" \
+            f"-----------------------------------------\n"
 
     @property
     def qtdDeCelulas(self):
@@ -108,11 +112,13 @@ class Cartao(Pagamento):
         self._cvv = cvv
 
     def __str__(self):
-        return  f"{super().__str__}" \
-                f"Nome do cartão: {self._nome}\n" \
-                f"Bandeira: {self._bandeira}\n" \
-                f"Número: {self._numero}\n" \
-                f"CVV: {self._cvv}\n"
+        return  f"-----------------------------------------\n"\
+            f"{super().__str__}" \
+            f"Nome do cartão: {self._nome}\n" \
+            f"Bandeira: {self._bandeira}\n" \
+            f"Número: {self._numero}\n" \
+            f"CVV: {self._cvv}\n" \
+            f"-----------------------------------------\n"
 
     @property
     def nome(self):
@@ -173,16 +179,22 @@ class Locacao():
 
 
     def __str__(self):
-        segurosContratados_str = "\n".join(str(seguro) for seguro in self._segurosContratados)
-        return f"Código de Locação: {self._codLocacao}\n" \
+        segurosContratados_str = "".join(seguro.nome for seguro in self._segurosContratados)
+        return f"-----------------------------------------\n"\
+                f"Código de Locação: {self._codLocacao}\n" \
                f"Código de Cliente: {self._codCliente}\n" \
                f"Código de Funcionário: {self._codFuncionario}\n" \
                f"Data de Locação: {self._dataLocacao}\n" \
                f"Data de Devolução: {self._dataDevolucao}\n" \
                f"Valor Total: R${self._valorTotal:.2f}\n" \
                f"Forma de Pagamento: {self._formapagamento}\n" \
-               f"Seguros Contratados: \n\n{segurosContratados_str}\n" \
-               f"Finalizada: {'Sim' if self._finalizada else 'Não'}"
+               f"Seguros Contratados: {segurosContratados_str}\n" \
+               f"Finalizada: {'Sim' if self._finalizada else 'Não'}\n"\
+                f"-----------------------------------------\n"
+
+    @property
+    def codLocacao(self):
+        return self._codLocacao
 
     @property
     def codCliente(self):

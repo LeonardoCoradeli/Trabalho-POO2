@@ -104,47 +104,54 @@ class Locadora:
     def ListarVeiculosNacionais(self):
         veiculos = []
         for i in self._veiculos:
-            if i.getTipo() == "Nacional":
+            if isinstance(i,Veiculos.VeiculoNacional):
                 veiculos.append(str(i))
         return ''.join(veiculos)
     
-    def ListaVeiculosImportados(self):
+    def ListarVeiculosImportados(self):
         veiculos = []
         for i in self._veiculos:
-            if i.getTipo() == "Importado":
+            if isinstance(i,Veiculos.VeiculoImportado):
                 veiculos.append(str(i))
         return ''.join(veiculos)
     
-    def ListasVeiulosDisponiveis(self):
+    def ListarVeiulosDisponiveis(self):
         veiculos = []
         for i in self._veiculos:
-            if i.getDisponivel() == True:
+            if not i.alugado:
                 veiculos.append(str(i))
         return ''.join(veiculos)
     
     def ListarVeiculosDisponiveisCategoria(self,categoria):
         veiculos = []
         for i in self._veiculos:
-            if i.getDisponivel() == True and i.getCategoria() == categoria:
+            if not i.alugado and i.categoria == categoria:
                 veiculos.append(str(i))
         return ''.join(veiculos)
     
     def ListarVeiculosNãoDisponiveis(self):
         veiculos = []
         for i in self._veiculos:
-            if i.getDisponivel() == False:
+            if not i.alugado == False:
                 veiculos.append(str(i))
         return ''.join(veiculos)
     
     def ListarVeiculosAtrasados(self):
         veiculos = []
         for i in self._locacoes:
-            if i.getAtrasado() == True:
+            if i.verificarAtrasado():
                 veiculos.append(str(i))
         return ''.join(veiculos)
     def ListarClientesComLocacao(self):
+        indices = []
+        clientes = []
         for i in self._locacoes:
-            i.getCliente().__str__
+            indices.append(i.codCliente)
+
+        for j in self._clientes:
+            if j.codigoUsuario in indices:
+                clientes.append(str(j))
+        return ''.join(clientes)
     
     def ListarFuncionarios(self):
         funcionarios = []
@@ -239,3 +246,54 @@ class Locadora:
     def RetornarVeiculoscomoObjeto(self):
         return self._veiculos
 
+    def buscarVeiculo(self,cod=None,placa=None):
+        veiculos = []
+        if not placa is None:
+            for i in self._veiculos:
+                if placa in i.placa:
+                    veiculos.append(str(i))
+        elif not cod is None:
+            for i in self._veiculos:
+                if cod == i.codigoVeiculo:
+                    veiculos.append(str(i))
+        return ''.join(veiculos)
+
+    def buscarCliente(self,cod=None,nome=None,cpf=None):
+        clientes = []
+        if not nome is None:
+            for i in self._clientes:
+                if nome in i.nome:
+                    clientes.append(str(i))
+        elif not cod is None:
+            for i in self._clientes:
+                if cod == i.codigoUsuario:
+                    clientes.append(str(i))
+        elif not cpf is None:
+            for i in self._clientes:
+                if cpf in i.cpf:
+                    clientes.append(str(i))
+        return ''.join(clientes)
+
+    def buscarFuncionario(self,cod=None,nome=None,cpf=None):
+        funcionarios = []
+        if not nome is None:
+            for i in self._funcionarios:
+                if nome in i.nome:
+                    funcionarios.append(str(i))
+        elif not cod is None:
+            for i in self._funcionarios:
+                if cod == i.codigoUsuario:
+                    funcionarios.append(str(i))
+        elif not cpf is None:
+            for i in self._funcionarios:
+                if cpf in i.cpf:
+                    funcionarios.append(str(i))
+        return ''.join(funcionarios)
+
+    def buscarLocacao(self,cod=None):
+        locacoes = []
+        if not cod is None:
+            for i in self._locacoes:
+                if cod == i.codLocacao:
+                    locacoes.append(str(i))
+        return ''.join(locacoes)

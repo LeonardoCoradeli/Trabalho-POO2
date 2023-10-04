@@ -15,9 +15,9 @@ relatoriosVeiculos = \
 [
                         sg.Frame('Veiculos', layout=[
                         [sg.Radio('Todos', group_id='veiculos', default=True, key='todosVeiculos'),
-                         sg.Radio('Nacionais', group_id='veiculos'), sg.Radio('Importados', group_id='veiculos')],
-                        [sg.Radio('Disponivel', group_id='veiculos'), sg.Radio('Locado', group_id='veiculos'),
-                         sg.Radio('Devolução atrasada', group_id='veiculos')],
+                         sg.Radio('Nacionais', group_id='veiculos',key='veiculoNacionais'), sg.Radio('Importados', group_id='veiculos',key='veiculosImportados')],
+                        [sg.Radio('Disponivel', group_id='veiculos',key='veiculosDisponiveis'), sg.Radio('Locado', group_id='veiculos',key='veiculosLocados'),
+                         sg.Radio('Devolução atrasada', group_id='veiculos',key='veiculosDevolucaoAtrasada')],
                         [sg.Radio('CNH Necessaria', group_id='veiculos', key='CNHNecessaria')],
                         [sg.Button('Gerar', key='btnveiculos')]], vertical_alignment='c', key='frameVeiculos', size=(330, 150))
 
@@ -54,7 +54,7 @@ relatorioFuncionarios = \
 
 layout_TelaRelatorios = [
     [sg.Column(layout=[relatoriosVeiculos, relatoriosClientes, relatoriosLocacoes, relatorioFuncionarios]),
-     sg.Column(layout=[[sg.Multiline(size=(400, 450), disabled=True, key='textoRelatorios')]])]
+     sg.Column(layout=[[sg.Multiline(size=(400, 450), disabled=True, key='textoRelatorios',font=('Verdana', 10))]])]
 ]
 
 #Cadastro
@@ -133,11 +133,9 @@ layout_TelaSobre = [
             [sg.Text('Rede Social: ',font=('Verdana',16,'bold')),sg.Text(f'{locadora.redeSocial}',font=('Verdana',16))]
     ])]])]]
 
-layoutvazio = [[]]
 
 
 
-layout_TelaBusca = []
 def createWindow(type):
     frame_element = window.Element('lugarAparacerCadastro')
     frame_size = frame_element.Widget.winfo_reqwidth()-15, frame_element.Widget.winfo_reqheight()-15
@@ -312,56 +310,49 @@ def createWindow(type):
             ]
         return sg.Window('Relatório de Locações', relatoriosLocacoes_popup, size=(150, 80), element_justification='c')
 
+#Tela de Busca
 buscaVeiculos = \
 [
                         sg.Frame('Veiculos', layout=[
-                        [sg.Radio('Todos', group_id='veiculos', default=True, key='todosVeiculos'),
-                         sg.Radio('Nacionais', group_id='veiculos'), sg.Radio('Importados', group_id='veiculos')],
-                        [sg.Radio('Disponivel', group_id='veiculos'), sg.Radio('Locado', group_id='veiculos'),
-                         sg.Radio('Devolução atrasada', group_id='veiculos')],
-                        [sg.Radio('CNH Necessaria', group_id='veiculos', key='CNHNecessaria')],
-                        [sg.Button('Gerar', key='btnveiculos')]], vertical_alignment='c', key='frameVeiculos', size=(330, 150))
+                        [sg.Text('Código:'),sg.Combo(list(dict.fromkeys([c.codigoVeiculo for c in locadora.veiculos])),key='buscarVeiculosCodigo'),
+                         sg.Text('Placa:'),sg.InputText(key='buscarVeiculosPlaca',size=(10,1))],
+                        [sg.Button('Buscar', key='btnBuscarVeiculos')]], vertical_alignment='c', key='frameVeiculos', size=(330, 80))
 
 ]
-
 
 buscaClientes = \
 [
                         sg.Frame('Clientes', layout=[
-                        [sg.Radio('Todos', group_id='clientes', default=True, key='todosClientes'),
-                         sg.Radio('Locações com atraso', group_id='clientes')],
-                        [sg.Radio('Veiculo Especifico', group_id='clientes', key='clienteVeiculoAtrasado')],
-                        [sg.Button('Gerar', key='btnclientes')]], size=(330, 120))
+                        [sg.Text('Código:'),sg.Combo([c.codigoUsuario for c in locadora.clientes],key='buscarClientesCodigo'),sg.Text('Nome: '),
+                         sg.InputText(key='buscarClientesNome', size=(10, 1))],
+                        [sg.Text('CPF:'), sg.InputText(key='buscarClientesCPF', size=(11, 1))],
+                        [sg.Button('Buscar', key='btnBuscarClientes')]], size=(330, 100))
 ]
-# mudar esses input para combo com respectivos dados
-
 buscaLocacoes = \
 [
                         sg.Frame('Locações', layout=[
-                        [sg.Radio('Todos', group_id='locacoes', default=True, key='todosLocacoes'),
-                         sg.Radio('Finalizadas', group_id='locacoes'), sg.Radio('Atrasadas', group_id='locacoes')],
-                        [sg.Radio('Cliente especifico', group_id='locacoes'), sg.Radio('Mês especifico', group_id='locacoes')],
-                        [sg.Radio('Não finalizadas', group_id='locacoes', key='NaoFinalizadas')],
-                        [sg.Button('Gerar', key='btnlocacoes')]], size=(330, 150))
+                        [sg.Text('Código:'),sg.Combo([c._codLocacao for c in locadora.locacoes],key='buscarLocacoesCodigo')],
+                        [sg.Button('Buscar', key='btnBuscarLocacoes')]], size=(330, 80))
 ]
 
 buscaFuncionarios = \
 [
                         sg.Frame('Funcionarios', layout=[
-                        [sg.Radio('Todos', group_id='funcionarios', default=True, key='todosfuncionarios'),
-                         sg.Radio('Funcionario do mês', group_id='funcionarios', key='funcionarioMes')],
-                        [sg.Button('Gerar', key='btnFuncionario')]], size=(330, 100))
+                        [sg.Text('Código:'),sg.Combo([c.codigoUsuario for c in locadora.funcionarios],key='buscarFuncionariosCodigo'),sg.Text('Nome: '),sg.InputText(key='buscarFuncionariosNome', size=(10, 1))],
+                        [sg.Text('CPF:'), sg.InputText(key='buscarFuncionariosCPF', size=(11, 1))],
+                        [sg.Button('Buscar', key='btnBuscarFuncionario')]], size=(330, 100))
 ]
 
+
 layout_TelaBusca = [
-    [sg.Column(layout=[relatoriosVeiculos, relatoriosClientes, relatoriosLocacoes, relatorioFuncionarios]),
-     sg.Column(layout=[[sg.Multiline(size=(350, 450), disabled=True, key='textoBusca')]])]
+    [sg.Column(layout=[buscaVeiculos, buscaClientes, buscaLocacoes, buscaFuncionarios]),
+     sg.Column(layout=[[sg.Multiline(size=(350, 450), disabled=True, key='textoBusca',font=('Verdana', 10))]])]
 ]
 
 layout_Geral = [[sg.TabGroup([[
     sg.Tab('Locação', locacaoLayout),
     sg.Tab('Relatórios', layout_TelaRelatorios),
-    sg.Tab('Busca', layoutvazio),
+    sg.Tab('Busca', layout_TelaBusca),
     sg.Tab('Cadastro', layout_TelaCadastro,tooltip='Cadastro no sistema', element_justification='c'),
     sg.Tab('Sobre', layout_TelaSobre, tooltip='Sobre o sistema', element_justification='c')
 ]], size=(900, 600))]]
@@ -373,11 +364,23 @@ window.set_icon(caminho_icone)
 while True:
     event, values = window.read()
     if event in (sg.WINDOW_CLOSED, 'Cancelar'):
+        window.close()
         break
     if event == 'btnveiculos':
         if values['todosVeiculos']:
-            window['todosVeiculos'].update(value=locadora.ListarVeiculos())
+            window['textoRelatorios'].update(value=locadora.ListarVeiculos())
+        if values['veiculoNacionais']:
+            window['textoRelatorios'].update(value=locadora.ListarVeiculosNacionais())
+        if values['veiculosImportados']:
+            window['textoRelatorios'].update(value=locadora.ListarVeiculosImportados())
+        if values['veiculosDisponiveis']:
+            window['textoRelatorios'].update(value=locadora.ListarVeiulosDisponiveis())
+        if values['veiculosLocados']:
+            window['textoRelatorios'].update(value=locadora.ListarVeiculosAtrasados())
+        if values['veiculosDevolucaoAtrasada']:
+            window['textoRelatorios'].update(value=locadora.ListarVeiculosDevolucaoAtrasada())
         if values['CNHNecessaria']:
+            popup_window = createWindow('relatorioVeiculos')
             popup_window = createWindow('relatorioVeiculos')
 
             while True:
@@ -501,4 +504,60 @@ while True:
                     pass
                 else:
                     sg.popup_error("Todos os campos devem ser preenchidos!")
+    if event == 'btnBuscarVeiculos':
+        if values['buscarVeiculosCodigo'] != '':
+            window['textoBusca'].update(value=locadora.buscarVeiculo(cod=int(values['buscarVeiculosCodigo'])))
+            window['buscarVeiculosCodigo'].update(value='')
+            window['buscarVeiculosPlaca'].update(value='')
+        elif values['buscarVeiculosPlaca'] != '':
+            window['textoBusca'].update(value=locadora.buscarVeiculo(placa=values['buscarVeiculosPlaca']))
+            window['buscarVeiculosCodigo'].update(value='')
+            window['buscarVeiculosPlaca'].update(value='')
+        else:
+            window['textoBusca'].update(value='')
+
+    if event == 'btnBuscarClientes':
+        if values['buscarClientesCodigo'] != '':
+            window['textoBusca'].update(value=locadora.buscarCliente(cod=int(values['buscarClientesCodigo'])))
+            window['buscarClientesCodigo'].update(value='')
+            window['buscarClientesNome'].update(value='')
+            window['buscarClientesCPF'].update(value='')
+        elif values['buscarClientesNome'] != '':
+            window['textoBusca'].update(value=locadora.buscarCliente(nome=values['buscarClientesNome']))
+            window['buscarClientesCodigo'].update(value='')
+            window['buscarClientesNome'].update(value='')
+            window['buscarClientesCPF'].update(value='')
+        elif values['buscarClientesCPF'] != '':
+            window['textoBusca'].update(value=locadora.buscarCliente(cpf=values['buscarClientesCPF']))
+            window['buscarClientesCodigo'].update(value='')
+            window['buscarClientesNome'].update(value='')
+            window['buscarClientesCPF'].update(value='')
+        else:
+            window['textoBusca'].update(value='')
+
+    if event == 'btnBuscarLocacoes':
+        if values['buscarLocacoesCodigo'] != '':
+            window['textoBusca'].update(value=locadora.buscarLocacao(cod=int(values['buscarLocacoesCodigo'])))
+            window['buscarLocacoesCodigo'].update(value='')
+        else:
+            window['textoBusca'].update(value='')
+    if event == 'btnBuscarFuncionario':
+        if values['buscarFuncionariosCodigo'] != '':
+            window['textoBusca'].update(value=locadora.buscarFuncionario(cod=int(values['buscarFuncionariosCodigo'])))
+            window['buscarFuncionariosCodigo'].update(value='')
+            window['buscarFuncionariosNome'].update(value='')
+            window['buscarFuncionariosCPF'].update(value='')
+        elif values['buscarFuncionariosNome'] != '':
+            window['textoBusca'].update(value=locadora.buscarFuncionario(nome=values['buscarFuncionariosNome']))
+            window['buscarFuncionariosCodigo'].update(value='')
+            window['buscarFuncionariosNome'].update(value='')
+            window['buscarFuncionariosCPF'].update(value='')
+        elif values['buscarFuncionariosCPF'] != '':
+            window['textoBusca'].update(value=locadora.buscarFuncionario(cpf=values['buscarFuncionariosCPF']))
+            window['buscarFuncionariosCodigo'].update(value='')
+            window['buscarFuncionariosNome'].update(value='')
+            window['buscarFuncionariosCPF'].update(value='')
+        else:
+            window['textoBusca'].update(value='')
+
 window.close()

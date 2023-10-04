@@ -16,17 +16,19 @@ class Veiculo(ABC):
         self._alugado = alugado
 
     def __str__(self):
-        return f"Código do Veículo: {self._codigoVeiculo}\n" \
-               f"Nome do Modelo: {self._nomeModelo}\n" \
-               f"Montadora: {self._montadora}\n" \
-               f"Ano de Fabricação: {self._anoFabricacao}\n" \
-               f"Ano do Modelo: {self._anoModelo}\n" \
-               f"Placa: {self._placa}\n" \
-               f"Categoria: {self._categoria}\n" \
-               f"Valor FIPE: R${self._valorFipe:.2f}\n" \
-               f"Valor da Diária: R${self._valorDiaria:.2f}\n" \
-               f"Categoria CNH Necessária: {self._categoriaCNHNecessaria}\n" \
-               f"Alugado: {'Sim' if self._alugado else 'Não'}"
+        return  f"-----------------------------------------\n"\
+                f"Código do Veículo: {self._codigoVeiculo}\n" \
+                f"Nome do Modelo: {self._nomeModelo}\n" \
+                f"Montadora: {self._montadora}\n" \
+                f"Ano de Fabricação: {self._anoFabricacao}\n" \
+                f"Ano do Modelo: {self._anoModelo}\n" \
+                f"Placa: {self._placa}\n" \
+                f"Categoria: {self._categoria}\n" \
+                f"Valor FIPE: R${self._valorFipe:.2f}\n" \
+                f"Valor da Diária: R${self._valorDiaria:.2f}\n" \
+                f"Categoria CNH Necessária: {self._categoriaCNHNecessaria}\n" \
+                f"Alugado: {'Sim' if self._alugado else 'Não'}\n" \
+                f"-----------------------------------------\n"
 
 
     @property
@@ -133,7 +135,8 @@ class Veiculo(ABC):
         return "O veiculo não foi alugado ainda"
     
     def __str__(self):
-        return  f"Codigo Veiculo: {self._codigoVeiculo}\n" \
+        return  f"-----------------------------------------\n"\
+                f"Codigo Veiculo: {self._codigoVeiculo}\n" \
                 f"Modelo: {self._nomeModelo}\n" \
                 f"Montadora: {self._montadora}\n" \
                 f"Ano Fabricação: {self._anoFabricacao}\n" \
@@ -143,7 +146,8 @@ class Veiculo(ABC):
                 f"Valor do Fipe: {self._valorFipe}\n" \
                 f"Valor da Diaria: {self._valorDiaria}\n" \
                 f"Categoria da CNH necessaria: {self._categoriaCNHNecessaria}\n" \
-                f"Alugado: {'Sim' if self._alugado else 'Não'}\n"
+                f"Alugado: {'Sim' if self._alugado else 'Não'}\n" \
+                f"-----------------------------------------\n"
         
 class VeiculoNacional(Veiculo):
     codigo_veiculo_Estatico = 0
@@ -169,18 +173,20 @@ class VeiculoNacional(Veiculo):
         return self._valorDiaria+self._valorDiaria*self._taxaImpostoEstadual
 
     def __str__(self):
-        return f"Código do Veículo: {self._codigoVeiculo}\n" \
-               f"Nome do Modelo: {self._nomeModelo}\n" \
-               f"Montadora: {self._montadora}\n" \
-               f"Ano de Fabricação: {self._anoFabricacao}\n" \
-               f"Ano do Modelo: {self._anoModelo}\n" \
-               f"Placa: {self._placa}\n" \
-               f"Categoria: {self._categoria}\n" \
-               f"Valor FIPE: R${self._valorFipe:.2f}\n" \
-               f"Valor da Diária: R${self._valorDiaria:.2f}\n" \
-               f"Categoria CNH Necessária: {self._categoriaCNHNecessaria}\n" \
-               f"Alugado: {'Sim' if self._alugado else 'Não'}\n" \
-               f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%"
+        return  f"-----------------------------------------\n"\
+                f"Código do Veículo: {self._codigoVeiculo}\n" \
+                f"Nome do Modelo: {self._nomeModelo}\n" \
+                f"Montadora: {self._montadora}\n" \
+                f"Ano de Fabricação: {self._anoFabricacao}\n" \
+                f"Ano do Modelo: {self._anoModelo}\n" \
+                f"Placa: {self._placa}\n" \
+                f"Categoria: {self._categoria}\n" \
+                f"Valor FIPE: R${self._valorFipe:.2f}\n" \
+                f"Valor da Diária: R${self._valorDiaria:.2f}\n" \
+                f"Categoria CNH Necessária: {self._categoriaCNHNecessaria}\n" \
+                f"Alugado: {'Sim' if self._alugado else 'Não'}\n" \
+                f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%\n" \
+                f"-----------------------------------------\n"
 
 
     def setCodigoVeiculo(self, numero):
@@ -226,19 +232,21 @@ class VeiculoImportado(Veiculo):
         return self._valorDiaria+self._valorDiaria*self._taxaImpostoEstadual+self._valorDiaria*self._taxaImpostoFederal
 
     def __str__(self):
-        return f"Código do Veículo: {self._codigoVeiculo}\n" \
-               f"Nome do Modelo: {self._nomeModelo}\n" \
-               f"Montadora: {self._montadora}\n" \
-               f"Ano de Fabricação: {self._anoFabricacao}\n" \
-               f"Ano do Modelo: {self._anoModelo}\n" \
-               f"Placa: {self._placa}\n" \
-               f"Categoria: {self._categoria}\n" \
-               f"Valor FIPE: R${self._valorFipe:.2f}\n" \
-               f"Valor da Diária: R${self._valorDiaria:.2f}\n" \
-               f"Categoria CNH Necessária: {self._categoriaCNHNecessaria}\n" \
-               f"Alugado: {'Sim' if self._alugado else 'Não'}\n" \
-               f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%\n" \
-               f"Taxa de Imposto Federal: {self._taxaImpostoFederal}%"
+        return  f"-----------------------------------------\n"\
+                f"Código do Veículo: {self._codigoVeiculo}\n" \
+                f"Nome do Modelo: {self._nomeModelo}\n" \
+                f"Montadora: {self._montadora}\n" \
+                f"Ano de Fabricação: {self._anoFabricacao}\n" \
+                f"Ano do Modelo: {self._anoModelo}\n" \
+                f"Placa: {self._placa}\n" \
+                f"Categoria: {self._categoria}\n" \
+                f"Valor FIPE: R${self._valorFipe:.2f}\n" \
+                f"Valor da Diária: R${self._valorDiaria:.2f}\n" \
+                f"Categoria CNH Necessária: {self._categoriaCNHNecessaria}\n" \
+                f"Alugado: {'Sim' if self._alugado else 'Não'}\n" \
+                f"Taxa de Imposto Estadual: {self._taxaImpostoEstadual}%\n" \
+                f"Taxa de Imposto Federal: {self._taxaImpostoFederal}%\n" \
+                f"-----------------------------------------\n"
 
 
     def setCodigoVeiculo(self,numero):

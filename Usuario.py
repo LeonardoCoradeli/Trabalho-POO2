@@ -14,14 +14,16 @@ class Usuario(ABC):
         self._email = email
 
     def __str__(self):
-        return f"Código do Usuário: {self._codigoUsuario}\n" \
-               f"Nome: {self._nome}\n" \
-               f"CPF: {self._cpf}\n" \
-               f"RG: {self._rg}\n" \
-               f"Data de Nascimento: {self._dataNascimento}\n" \
-               f"Endereço: {self._endereco}\n" \
-               f"CEP: {self._cep}\n" \
-               f"Email: {self._email}"
+        return  f"-----------------------------------------\n"\
+                f"Código do Usuário: {self._codigoUsuario}\n" \
+                f"Nome: {self._nome}\n" \
+                f"CPF: {self._cpf}\n" \
+                f"RG: {self._rg}\n" \
+                f"Data de Nascimento: {self._dataNascimento}\n" \
+                f"Endereço: {self._endereco}\n" \
+                f"CEP: {self._cep}\n" \
+                f"Email: {self._email}\n" \
+                f"-----------------------------------------\n"
 
     @property
     def codigoUsuario(self):
@@ -103,11 +105,13 @@ class Cliente(Usuario):
 
     def __str__(self):
         usuarioStr = super().__str__()
-        return f"{usuarioStr}\n" \
-               f"Categoria da CNH: {self._categoriaCNH}\n" \
-               f"Número da CNH: {self._numeroCNH}\n" \
-               f"Validade da CNH: {self._validadeCNH}\n" \
-               f"Cliente Ouro: {self._clienteOuro}"
+        return  f"-----------------------------------------\n"\
+                f"{usuarioStr}\n" \
+                f"Categoria da CNH: {self._categoriaCNH}\n" \
+                f"Número da CNH: {self._numeroCNH}\n" \
+                f"Validade da CNH: {self._validadeCNH}\n" \
+                f"Cliente Ouro: {self._clienteOuro}\n" \
+                f"-----------------------------------------\n"
     @property
     def categoriaCNH(self):
         return self._categoriaCNH
@@ -167,10 +171,12 @@ class Funcionario(Usuario):
 
     def __str__(self):
         usuarioStr = super().__str__()
-        return f"{usuarioStr}\n"\
-               f"Salário: {self._salario}\n" \
-               f"PIS: {self._pis}\n" \
-               f"Data de Admissão: {self._dataAdmissao}"
+        return f"-----------------------------------------\n"\
+                f"{usuarioStr}\n"\
+                f"Salário: {self._salario}\n" \
+                f"PIS: {self._pis}\n" \
+                f"Data de Admissão: {self._dataAdmissao}\n" \
+                f"-----------------------------------------\n"
 
     @property
     def salario(self):
